@@ -51,13 +51,13 @@ function App() {
     <Router>
       <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       <Switch>
-        <Route exact path="/signup">
+        {/* <Route exact path="/signup">
           {isAuthenticated ? (
             <Redirect to="/devices" />
           ) : (
             <Signup setIsAuthenticated={setIsAuthenticated} />
           )}
-        </Route>
+        </Route> */}
         <Route exact path="/login">
           {isAuthenticated ? (
             <Redirect to="/devices" />

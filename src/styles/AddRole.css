@@ -1,0 +1,75 @@
+.formDevList {
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.form-label {
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.form-check {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 1rem;
+  margin-left: 1rem;
+}
+
+.form-check-label {
+  margin-left: 1rem;
+}
+
+.form-check-input {
+  margin-right: 0rem;
+}
+
+.form-control {
+  width: 100%;
+  margin-left: 1rem;
+  display: flex;
+}
+
+.form-input-role .form-label {
+  width: 100%;
+  margin-left: -1rem;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.form-input-role .form-control {
+  width: 20rem;
+  margin-left: -1rem;
+  display: flex;
+  margin-top: 1rem;
+}
+
+
+.card-body{
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.form-input-roles {
+  width: 65%;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 1rem;
+}

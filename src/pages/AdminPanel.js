@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, Button, Alert, Table } from "react-bootstrap";
-import Header from "../components/Header";
+import AddUser from "../components/AddUser";
 import RoleManagement from "../components/AddRole";
 import { useSelector } from "react-redux";
-
+import "../styles/AdminPanel.css";
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [role, setRole] = useState("");
-
-  const userInfo = useSelector(
-    (state) => state.userInformation.userInformation
-  );
-  const roleNam = useSelector((state) => state.userInformation.roles);
-  console.log(roleNam);
-
-  console.log(userInfo);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [newUser, setNewUser] = useState(null);
 
   useEffect(() => {
     fetchUsers();
     fetchRoles();
   }, []);
+  
+
+  const userInfo = useSelector(
+    (state) => state.userInformation.userInformation
+  );
+  const roleNam = useSelector((state) => state.userInformation.roles);
 
   const fetchUsers = async () => {
     try {
@@ -36,18 +36,20 @@ const AdminPanel = () => {
     try {
       const response = await axios.get("http://localhost:5000/roles");
       setRole(response.data);
+    } catch (error) {
+      console.error(error);
     }
-  catch (error) {
-    console.error(error);
-  }
-};
+  };
+
+
+  
 
   const handleRoleChange = (event) => {
     const newRole = event.target.value;
     setRole(newRole);
     setSelectedUser({ ...selectedUser, role: newRole });
   };
-  
+
   const handleEditUser = (user) => {
     setSelectedUser(user);
   };
@@ -69,22 +71,31 @@ const AdminPanel = () => {
     }
   };
 
-
   const handleDeleteUser = async (userId) => {
     try {
       await axios.delete(`http://localhost:5000/auth/users/${userId}`);
-
       fetchUsers();
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleAddUser = (newUser) => {
+    setNewUser(newUser);
+    fetchUsers();
+  };
+  
+  
+
+
+
   return (
     <div>
       <RoleManagement />
+     
+  
       {selectedUser ? (
-        <form onSubmit={handleUpdateUser}>
+        <form className="admin-form" onSubmit={handleUpdateUser}>
           <h2>Edit User</h2>
           <div>
             <label>Name:</label>
@@ -119,12 +130,14 @@ const AdminPanel = () => {
             </select>
           </div>
           <div>
-            <Button type="submit">Update</Button>
-            <Button onClick={() => setSelectedUser(null)}>Cancel</Button>
+            <Button variant="success" onClick={handleUpdateUser}>
+              Update
+            </Button>
+            <Button variant="primary" onClick={() => setSelectedUser(null)}>Cancel</Button>
           </div>
         </form>
       ) : (
-        <Table striped bordered hover>
+        <Table>
           <thead>
             <tr>
               <th>#</th>
@@ -142,8 +155,8 @@ const AdminPanel = () => {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td>
-                  <Button onClick={() => handleEditUser(user)}>Edit</Button>
-                  <Button onClick={() => handleDeleteUser(user._id)}>
+                  <Button variant ="primary" onClick={() => handleEditUser(user)}>Edit</Button>
+                  <Button variant= "danger" onClick={() => handleDeleteUser(user._id)}>
                     Delete
                   </Button>
                 </td>
@@ -152,8 +165,16 @@ const AdminPanel = () => {
           </tbody>
         </Table>
       )}
+       <div className="add-button">
+        <Button variant="success" onClick={() => setShowAddUser(!showAddUser)}>
+          {showAddUser ? "Close" : "Add New User"}
+        </Button>
+        {showAddUser && <AddUser onAddUser={handleAddUser} />}
+      </div>
     </div>
+    
   );
+  
 };
 
 export default AdminPanel;

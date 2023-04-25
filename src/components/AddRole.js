@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { saveNewRole, deleteRole } from "../Redux/UserInformation/userInformationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import "../styles/AddRole.css"
 
 function RoleManagement() {
   const [devices, setDevices] = useState([]);
@@ -47,7 +48,7 @@ function RoleManagement() {
       setSelectedDevices([...selectedDevices, deviceId]);
     }
   };
-
+  
   const handleRoleDelete = async (roleId) => {
     try {
         dispatch(deleteRole(roleId));
@@ -60,13 +61,12 @@ function RoleManagement() {
 
   return (
     <Container>
-      <h1 className="mt-4 mb-4">Role Management</h1>
       <Row>
       <Col>
-  <Card className="mb-4">
+
     <Card.Body>
       <Form onSubmit={handleRoleSubmit}>
-        <Form.Group controlId="formRoleName">
+        <Form.Group className="form-input-role" controlId="formRoleName">
           <Form.Label>Role Name:</Form.Label>
           <Form.Control
             type="text"
@@ -75,11 +75,11 @@ function RoleManagement() {
             onChange={(e) => setRoleName(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId="formDeviceList">
-          <Form.Label>Devices:</Form.Label>
+        <Form.Group className="formDevList" controlId="formDeviceList">
+          <Form.Label> Devices:</Form.Label>
           {devices.map((device) => (
             <div key={device._id} className="mb-2">
-              <Form.Check
+              <Form.Check 
                 type="checkbox"
                 label={device.name}
                 checked={selectedDevices.includes(device._id)}
@@ -88,33 +88,39 @@ function RoleManagement() {
             </div>
           ))}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="success" type="submit">
           Add Role
         </Button>
       </Form>
     </Card.Body>
-  </Card>
+
 </Col>
 <Col>
-  <h2 className="mt-4 mb-4">Roles</h2>
-  {roles.map((role) => (
-    <Card key={role._id} className="mb-4">
-      <Card.Body>
-        <h3>{role.name}</h3>
-        <ul>
-          {devices
-            .filter((device) => role.devices.includes(device._id))
-            .map((device) => (
-              <li key={device._id}>{device.name}</li>
-            ))}
-        </ul>
-        <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
-          Delete
-        </Button>
-      </Card.Body>
-    </Card>
-  ))}
+<Card.Body>
+  <Form.Group className="form-input-roles" controlId="formRoleName">
+  <div className="roles-container">
+    {roles.map((role) => (
+      <Card key={role._id} className="mb-4">
+        <Card.Body>
+          <h3>{role.name}</h3>
+          <ul className="card-2-ul">
+            {devices
+              .filter((device) => role.devices.includes(device._id))
+              .map((device) => (
+                <li key={device._id}>{device.name}</li>
+              ))}
+          </ul>
+          <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
+            Delete
+          </Button>
+        </Card.Body>
+      </Card>
+    ))}
+  </div>
+  </Form.Group>
+</Card.Body>
 </Col>
+
 
 
         </Row>

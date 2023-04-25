@@ -1,0 +1,13 @@
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.add-button{
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-bottom: -1rem;
+}
