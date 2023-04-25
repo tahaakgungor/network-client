@@ -1,0 +1,108 @@
+.navbar {
+  position: relative;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  width: 95%;
+  margin-left: 2.5rem;
+  margin-top: 1rem;
+  border-radius: 1rem;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #333;
+}
+
+.nav-link {
+  color: #333;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.navbar-nav .active>.nav-link {
+  color: #007bff;
+}
+
+.navbar-nav .nav-link.disabled {
+  color: #999;
+}
+
+.navbar-nav .dropdown-menu {
+  background-color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.dropdown-item {
+  color: #333;
+  font-weight: bold;
+}
+
+.dropdown-item:hover {
+  color: #007bff;
+  background-color: #f7f7f7;
+}
+
+.navbar .dropdown-menu a.active,
+.navbar .dropdown-menu a:active {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.navbar .dropdown-menu a.disabled {
+  color: #999;
+  background-color: transparent;
+}
+
+.navbar .dropdown-menu a.disabled:hover {
+  background-color: transparent;
+}
+
+.navbar .dropdown-menu a:focus,
+.navbar .dropdown-menu a:hover {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.navbar .dropdown-menu a:focus,
+.navbar .dropdown-menu a:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.logout {
+  position: relative;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .nav-link {
+    margin-right: 0;
+  }
+}

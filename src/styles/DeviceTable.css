@@ -1,0 +1,93 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 0.5rem;
+  background-color: #f7f7f7;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #333;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.table-wrapper {
+  overflow-y: scroll;
+  height: 39rem;
+  margin-top: 1rem;
+}
+
+
+
+.contain {
+  position: absolute;
+  margin-left: 30rem;
+  width: 70%;
+}
+
+.buttons {
+  position: relative;
+  text-align: center;
+  margin-top: 1rem;
+
+}
+
+.btn-primary {
+  position: relative;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.btn-danger {
+  position: relative;
+  background-color: #dc3545;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.filter {
+  position: relative;
+  width: 20%;
+  margin-top: 1rem;
+  margin-left: 1rem;
+
+
+}
+
+.btn-success {
+  position: relative;
+  background-color: #28a745;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  margin: 0 -1.50rem;
+  text-align: center;
+
+}
