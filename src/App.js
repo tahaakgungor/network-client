@@ -20,14 +20,13 @@ function App() {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("APPP:",token);
     setIsAuthenticated(token ? true : false);
   }, []);
 
   useEffect(() => {
     const s = io("ws://localhost:3002");
     s.on("connect", () => {
-      console.log("connected");
+      console.log("connected to socket");
     });
     setSocket(s);
     return () => s.disconnect();

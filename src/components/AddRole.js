@@ -75,7 +75,7 @@ function RoleManagement() {
             onChange={(e) => setRoleName(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className="formDevList" controlId="formDeviceList">
+        <Form.Group className="formDevList" >
           <Form.Label> Devices:</Form.Label>
           {devices.map((device) => (
             <div key={device._id} className="mb-2">
@@ -93,12 +93,11 @@ function RoleManagement() {
         </Button>
       </Form>
     </Card.Body>
-
 </Col>
 <Col>
 <Card.Body>
   <Form.Group className="form-input-roles" controlId="formRoleName">
-  <div className="roles-container">
+
     {roles.map((role) => (
       <Card key={role._id} className="mb-4">
         <Card.Body>
@@ -116,13 +115,10 @@ function RoleManagement() {
         </Card.Body>
       </Card>
     ))}
-  </div>
+
   </Form.Group>
 </Card.Body>
 </Col>
-
-
-
         </Row>
     </Container>
     );

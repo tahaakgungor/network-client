@@ -48,10 +48,12 @@ function DeviceTable({ devices, setDevices, socket }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("FORMDATA:", formData);
       const response = await axios.put(
         `http://localhost:5000/devices/${editingDevice._id}`,
         formData
       );
+
       const updatedDevice = response.data;
       setDevices(
         devices.map((device) =>
@@ -98,7 +100,6 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
 
     const deviceIds = roleNam?.find((role) => role.name === userInfo)?.devices ?? [];
-    console.log("deviceIds:", deviceIds);
   
     // Only include the device if the user has access to it
     return deviceIds.includes(device._id);
@@ -109,9 +110,6 @@ function DeviceTable({ devices, setDevices, socket }) {
     )
   );
   
-
-
- 
 
   return (
     <div className="contain">

@@ -31,7 +31,6 @@ const Login = (props) => {
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 }); 
       localStorage.setItem("token", token);
-      console.log("tokenpost", token);
       if(token) {
         console.log("token", token);
         localStorage.setItem("isAuthenticated", true);
@@ -42,7 +41,7 @@ const Login = (props) => {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log("res", res);
+        console.log("response of login", res);
 
        
         const {role} = res.data[0];
@@ -54,7 +53,6 @@ const Login = (props) => {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);
       }
-      console.log("token", token);
     } catch (error) {
       if(error.response.status === 400) {
         setError("Email or password is incorrect");
