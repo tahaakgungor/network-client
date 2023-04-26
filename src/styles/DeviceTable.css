@@ -82,16 +82,3 @@ tr:hover {
 
 }
 
-.btn-success {
-  position: relative;
-  background-color: #28a745;
-  border: none;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  
-  margin: 0 -1.50rem;
-  text-align: center;
-
-}

@@ -138,6 +138,9 @@ function DeviceTable({ devices, setDevices, socket }) {
               <th>IP Address</th>
               <th>Username</th>
               <th>Password</th>
+              <th>Host</th>
+              <th>Device Type</th>
+              <th>Secret</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -166,6 +169,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                       device.name
                     )}
                   </td>
+                  
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
                       <input
@@ -204,6 +208,46 @@ function DeviceTable({ devices, setDevices, socket }) {
                   </td>
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
+                      <input
+                        type="text"
+                        name="host"
+                        value={formData.host}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      device.host
+                    )}
+
+                  </td>
+                  <td>
+                    {editingDevice && editingDevice._id === device._id ? (
+                      <input
+                        type="text"
+                        name="device_type"
+                        value={formData.device_type}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      device.device_type
+                    )}
+
+
+                  </td>
+                  <td>
+                    {editingDevice && editingDevice._id === device._id ? (
+                      <input
+                        type="text"
+                        name="secret"
+                        value={formData.secret}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      device.secret
+                    )}
+
+                  </td>
+                  <td>
+                    {editingDevice && editingDevice._id === device._id ? (
                       <div>
                         <td>
                           <button
@@ -215,7 +259,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                         </td>
                         <td>
                           <button
-                            className="btn btn-danger"
+                            className="btn btn-primary"
                             onClick={handleCancel}
                           >
                             Cancel
