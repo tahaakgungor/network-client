@@ -13,6 +13,7 @@ const Login = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
+    console.log(process.env.REACT_APP_BACKEND_URL)
     event.preventDefault();
     setError("");
 
@@ -27,6 +28,7 @@ const Login = (props) => {
     }
 
     try {
+     
       const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/login", { email, password });
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 }); 
