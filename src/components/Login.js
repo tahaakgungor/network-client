@@ -29,7 +29,7 @@ const Login = (props) => {
 
     try {
      
-      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/login", { email, password });
+      const response = await axios.post("https://network-automation.herokuapp.com/auth/login", { email, password });
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 }); 
       localStorage.setItem("token", token);
@@ -37,7 +37,7 @@ const Login = (props) => {
         console.log("token", token);
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
-        const res = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/user", {email});
+        const res = await axios.post("https://network-automation.herokuapp.com/auth/user", {email});
         console.log("response of login", res);
 
        
