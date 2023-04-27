@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 import Output from "../components/Output";
 import { Tabs } from "antd";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { getDevice } from "../Redux/Device/deviceSlice";
 
 
 import "bootstrap/dist/css/bootstrap.min.css";

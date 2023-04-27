@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Form, Button, Alert, Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import AddUser from "../components/AddUser";
 import RoleManagement from "../components/AddRole";
 import { useSelector } from "react-redux";
@@ -19,9 +19,6 @@ const AdminPanel = () => {
   }, []);
   
 
-  const userInfo = useSelector(
-    (state) => state.userInformation.userInformation
-  );
   const roleNam = useSelector((state) => state.userInformation.roles);
 
   const fetchUsers = async () => {
