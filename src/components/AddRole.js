@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-import { saveNewRole, deleteRole } from "../Redux/UserInformation/userInformationSlice";
-import { useDispatch, useSelector } from "react-redux";
 import "../styles/AddRole.css"
 
 function RoleManagement() {
   const [devices, setDevices] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [selectedDevices, setSelectedDevices] = useState([]);
-
-  const dispatch = useDispatch();
-  const roles = useSelector((state) => state.userInformation.roles);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const deviceResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}devices`);
         setDevices(deviceResponse.data);
+        const roleResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
+        setRoles(roleResponse.data);
       } catch (error) {
         console.error(error);
       }
@@ -33,7 +31,7 @@ function RoleManagement() {
     };
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}roles`, roleData);
-      dispatch(saveNewRole(response.data));
+      setRoles([...roles, response.data]);
       setRoleName("");
       setSelectedDevices([]);
     } catch (error) {
@@ -51,9 +49,8 @@ function RoleManagement() {
   
   const handleRoleDelete = async (roleId) => {
     try {
-        dispatch(deleteRole(roleId));
       await axios.delete(`${process.env.REACT_APP_BACKEND_URL}roles/${roleId}`);
-     
+      setRoles(roles.filter((role) => role._id !== roleId));
     } catch (error) {
       console.error(error);
     }
@@ -110,18 +107,18 @@ function RoleManagement() {
               ))}
           </ul>
           <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
-            Delete
-          </Button>
-        </Card.Body>
-      </Card>
-    ))}
-
-  </Form.Group>
+Delete
+</Button>
 </Card.Body>
+</Card>
+))}
+
+</Form.Group>
+</Card.Body>
+
 </Col>
         </Row>
     </Container>
-    );
+  );
 }
-
 export default RoleManagement;
