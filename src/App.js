@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const s = io("https://network-socket.herokuapp.com");
+    const s = io("ws://network-socket.herokuapp.com");
     s.on("connect", () => {
       console.log("connected to socket");
     });
