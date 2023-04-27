@@ -13,7 +13,7 @@ const Login = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
-    console.log(process.env.REACT_APP_BACKEND_URL)
+    console.log("asdd",process.env.REACT_APP_BACKEND_URL)
     event.preventDefault();
     setError("");
 
@@ -29,7 +29,13 @@ const Login = (props) => {
 
     try {
      
-      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/login", { email, password });
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/login", { email, password },{
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+
+      });
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 }); 
       localStorage.setItem("token", token);
@@ -39,6 +45,7 @@ const Login = (props) => {
         props.setIsAuthenticated(true);
         const res = await axios.post(process.env.REACT_APP_BACKEND_URL+"auth/user", {email}, {
           headers: {
+            "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
           },
