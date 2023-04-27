@@ -16,7 +16,7 @@ function RoleManagement() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const deviceResponse = await axios.get("http://localhost:5000/devices");
+        const deviceResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}devices`);
         setDevices(deviceResponse.data);
       } catch (error) {
         console.error(error);
@@ -32,7 +32,7 @@ function RoleManagement() {
       devices: selectedDevices,
     };
     try {
-      const response = await axios.post(`http://localhost:5000/roles`, roleData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}roles`, roleData);
       dispatch(saveNewRole(response.data));
       setRoleName("");
       setSelectedDevices([]);
@@ -52,7 +52,7 @@ function RoleManagement() {
   const handleRoleDelete = async (roleId) => {
     try {
         dispatch(deleteRole(roleId));
-      await axios.delete(`http://localhost:5000/roles/${roleId}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}roles/${roleId}`);
      
     } catch (error) {
       console.error(error);

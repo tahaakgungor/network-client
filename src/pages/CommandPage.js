@@ -28,7 +28,7 @@ function CommandPage({ socket }) {
       const names = await Promise.all(
         devices.map(async (id) => {
           const response = await axios.get(
-            `http://localhost:5000/devices/selected/${id}`
+            `${process.env.REACT_APP_BACKEND_URL}devices/selected/${id}`
           );
           return response.data[0].name;
         })

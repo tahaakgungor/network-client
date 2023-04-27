@@ -50,10 +50,10 @@ function DeviceTable({ devices, setDevices, socket }) {
     try {
       console.log("FORMDATA:", formData);
       const response = await axios.put(
-        `http://localhost:5000/devices/${editingDevice._id}`,
+        `${process.env.REACT_APP_BACKEND_URL}devices/${editingDevice._id}`,
         formData
       );
-
+      
       const updatedDevice = response.data;
       setDevices(
         devices.map((device) =>
@@ -74,7 +74,7 @@ function DeviceTable({ devices, setDevices, socket }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/devices/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}devices/${id}`);
       setDevices(devices.filter((device) => device._id !== id));
       setSelectedDevices(selectedDevices.filter((deviceId) => deviceId !== id));
     } catch (error) {

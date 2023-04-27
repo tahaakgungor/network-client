@@ -27,7 +27,7 @@ function DeviceForm({ setDevices }) {
             secret
         };
 
-        const response = await axios.post("http://localhost:5000/devices", device);
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}devices`, device);
         setDevices((devices) => [...devices, response.data]);
 
         setName("");

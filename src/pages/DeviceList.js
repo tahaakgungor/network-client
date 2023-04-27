@@ -12,7 +12,7 @@ function DeviceList() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get("http://localhost:5000/devices");
+            const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}devices`);
             setDevices(result.data);
         };
         fetchData();

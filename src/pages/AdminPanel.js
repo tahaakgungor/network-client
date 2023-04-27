@@ -23,7 +23,7 @@ const AdminPanel = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/auth/users");
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}auth/users`);
       setUsers(response.data);
     } catch (error) {
       console.error(error);
@@ -32,7 +32,7 @@ const AdminPanel = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/roles");
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
       setRole(response.data);
     } catch (error) {
       console.error(error);
@@ -62,7 +62,7 @@ const AdminPanel = () => {
         role: roleNam.length === 1 ? roleNam[0].name : role,
       };
   
-      await axios.put(`http://localhost:5000/auth/users/${selectedUser._id}`, updatedUser);
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}auth/users/${selectedUser._id}`, updatedUser);
   
       setSelectedUser(null);
       fetchUsers();
@@ -74,7 +74,7 @@ const AdminPanel = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/auth/users/${userId}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}auth/users/${userId}`);
       fetchUsers();
     } catch (error) {
       console.error(error);
