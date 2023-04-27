@@ -27,7 +27,7 @@ const Login = (props) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", { email, password });
+      const response = await axios.post("https://network-automation.herokuapp.com/auth/login", { email, password });
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 }); 
       localStorage.setItem("token", token);
@@ -35,7 +35,7 @@ const Login = (props) => {
         console.log("token", token);
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
-        const res = await axios.post("http://localhost:5000/auth/user", {email}, {
+        const res = await axios.post("https://network-automation.herokuapp.com/auth/user", {email}, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
