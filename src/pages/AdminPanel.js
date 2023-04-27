@@ -32,7 +32,7 @@ const AdminPanel = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles/`);
       console.log(response.data);
       setRole(response.data);
     } catch (error) {
