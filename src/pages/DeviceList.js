@@ -11,6 +11,10 @@ function DeviceList() {
     const [devices, setDevices] = useState([]);
 
     useEffect(() => {
+        localStorage.setItem("lastVisitedPage", window.location.pathname);
+      }, []);
+
+    useEffect(() => {
         const fetchData = async () => {
             const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}devices`);
             setDevices(result.data);

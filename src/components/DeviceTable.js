@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -12,9 +12,29 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [formData, setFormData] = useState({});
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [filter, setFilter] = useState("");
+  const [role, setRole] = useState([]);
+
 
   const userInfo = useSelector((state) => state.userInformation.userInformation.role);
-  const roleNam = useSelector((state) => state.userInformation.roles);
+
+
+  useEffect(() => {
+    
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
+      setRole(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  fetchRoles();
+}, []);
+
+
+
+
+  
 
 
   const handleSelect = (id) => {
@@ -53,7 +73,7 @@ function DeviceTable({ devices, setDevices, socket }) {
         `${process.env.REACT_APP_BACKEND_URL}devices/${editingDevice._id}`,
         formData
       );
-      
+
       const updatedDevice = response.data;
       setDevices(
         devices.map((device) =>
@@ -93,22 +113,21 @@ function DeviceTable({ devices, setDevices, socket }) {
     console.log("SELECTTT:", cihazlar.length);
   };
 
-  const filteredDevices = devices.filter((device) => {
-    // Get the list of device ids that the user has access to
-    if(userInfo === "admin"){
-      return device;
-    }
-
-    const deviceIds = roleNam?.find((role) => role.name === userInfo)?.devices ?? [];
   
-    // Only include the device if the user has access to it
-    return deviceIds.includes(device._id);
-  }).filter((device) =>
-    Object.values(device).some((value) =>
-      value.toString().toLowerCase().includes(filter.toLowerCase())
+
+  const deviceIds = userInfo === "admin"
+  ? devices.map(device => device)
+  : role.find(role => role.name === userInfo)?.devices ?? [];
+
+  console.log("deviceIds", deviceIds);
+
+
+
+
     
-    )
-  );
+
+
+ 
   
 
   return (
@@ -145,7 +164,7 @@ function DeviceTable({ devices, setDevices, socket }) {
             </tr>
           </thead>
           <tbody>
-            {filteredDevices.map((device) => {
+            {deviceIds.map((device) => {
               
   
               return (

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Output from "../components/Output";
 import { Tabs } from "antd";
@@ -15,6 +15,10 @@ function CommandPage({ socket }) {
 
   const location = useLocation();
   const devices = location.state.ids;
+
+  useEffect(() => {
+    localStorage.setItem("lastVisitedPage", window.location.pathname);
+  }, []);
 
   useLayoutEffect(() => {
     socket.emit("createSSH", devices);

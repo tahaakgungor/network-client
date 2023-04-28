@@ -11,12 +11,14 @@ import {
   Switch,
   Route,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 import { io } from "socket.io-client";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -32,7 +34,6 @@ function App() {
     return () => s.disconnect();
   }, []);
 
-  
   useEffect(() => {
     const auth = localStorage.getItem("isAuthenticated");
 
@@ -42,52 +43,56 @@ function App() {
   const handleLogout = () => {
     Cookies.remove("token");
     localStorage.setItem("isAuthenticated", "false");
+    localStorage.clear();
     setIsAuthenticated(false);
   };
-  
+
+  const handlePageChange = () => {
+    localStorage.setItem("lastVisitedPage", window.location.pathname);
+  };
 
   return (
     <Router>
-      <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        handleLogout={handleLogout}
+      />
       <Switch>
-        {/* <Route exact path="/signup">
-          {isAuthenticated ? (
-            <Redirect to="/devices" />
-          ) : (
-            <Signup setIsAuthenticated={setIsAuthenticated} />
-          )}
-        </Route> */}
         <Route exact path="/login">
           {isAuthenticated ? (
-            <Redirect to="/devices" />
+            <Redirect to={localStorage.getItem("lastVisitedPage") || "/devices"} />
           ) : (
             <Login setIsAuthenticated={setIsAuthenticated} />
           )}
         </Route>
         <Route exact path="/devices">
           {isAuthenticated ? (
-            <>
-              <DeviceList />
-            </>
+            <DeviceList onChange={handlePageChange} />
           ) : (
             <Redirect to="/login" />
           )}
         </Route>
         <Route exact path="/devices/command">
           {isAuthenticated ? (
-            <CommandPage socket={socket} />
+            <CommandPage socket={socket} onChange={handlePageChange} />
           ) : (
             <Redirect to="/devices" />
           )}
         </Route>
         <Route exact path="/admin">
           {isAuthenticated ? (
-            <AdminPanel />
+            <AdminPanel onChange={handlePageChange} />
           ) : (
             <Redirect to="/login" />
           )}
         </Route>
-        
+        <Route exact path="/signup">
+          {isAuthenticated ? (
+            <Redirect to="/devices" />
+          ) : (
+            <Signup setIsAuthenticated={setIsAuthenticated} onChange={handlePageChange} />
+          )}
+        </Route>
         <Redirect to="/login" />
       </Switch>
     </Router>
