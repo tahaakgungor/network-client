@@ -94,9 +94,12 @@ function CommandPage({ socket }) {
         items={output.map(({ id, output }, index) => ({
           key: index,
           label: deviceNames[index] || id,
-          children: <Output output={output} />,
+          children: <Output output={output} socket={socket} devices={devices}/>,
+          
         }))}
+        
       />
+
     </div>
   );
 }

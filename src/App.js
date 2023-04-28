@@ -11,14 +11,14 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
+
 } from "react-router-dom";
 import { io } from "socket.io-client";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
-  const history = useHistory();
+
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const s = io("https://network-socket.herokuapp.com");
+    const s = io("ws://localhost:5000");
     s.on("connect", () => {
       console.log("connected to socket");
     });
@@ -49,7 +49,10 @@ function App() {
 
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
+
+  
   };
+
 
   return (
     <Router>
