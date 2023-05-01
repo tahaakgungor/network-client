@@ -4,7 +4,6 @@ import Output from "../components/Output";
 import { Tabs } from "antd";
 import axios from "axios";
 
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
@@ -26,10 +25,8 @@ function CommandPage({ socket }) {
     
     socket.emit("createSSH", devices);
 
-    // Create an empty array to store output for each device
     const initialOutput = devices.map((id) => ({ id, output: "" }));
     setOutput(initialOutput);
-    console.log("asdasd",initialOutput)
 
     const fetchDeviceNames = async () => {
       const names = await Promise.all(
@@ -44,30 +41,37 @@ function CommandPage({ socket }) {
     };
 
     fetchDeviceNames();
-  }, []);
 
+    devices.forEach((deviceId) => {
+      console.log("output" + deviceId);
+      socket.on("output" + deviceId, (result) => {
+        console.log(result);
+        setOutput((prevState) =>
+          prevState.map((deviceOutput) =>
+            deviceOutput.id === deviceId
+              ? { ...deviceOutput, output: deviceOutput.output + result }
+              : deviceOutput
+          )
+        );
+      });
+    });
+
+    return () => {
+      devices.forEach((deviceId) => {
+        socket.off("output" + deviceId);
+      });
+    };
+  }, [devices, socket]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      for (let i = 0; i < devices.length; i++) {
-        const deviceId = devices[i];
-        console.log("forr",deviceId);
-        socket.on("output" + deviceId, (result) => {
-          console.log("output" + deviceId);
-          const index = output.findIndex((item) => item.id === deviceId);
-          console.log(index+"index");
-          const updatedOutput  = [...output];
-          console.log(updatedOutput);
-          updatedOutput[index].output += result;
-          setOutput(updatedOutput);
-        });
-
+      devices.forEach((deviceId) => {
         socket.emit("command", {
           command,
-          deviceId: deviceId,
+          deviceId,
         });
-      }
+      });
     } catch (error) {
       console.error(error);
     }
@@ -93,9 +97,12 @@ function CommandPage({ socket }) {
         items={output.map(({ id, output }, index) => ({
           key: index,
           label: deviceNames[index] || id,
-          children: <Output output={output} />,
+          children: <Output output={output} socket={socket} devices={devices}/>,
+          
         }))}
+        
       />
+
     </div>
   );
 }

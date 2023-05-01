@@ -11,14 +11,14 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
+
 } from "react-router-dom";
 import { io } from "socket.io-client";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
-  const history = useHistory();
+
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -49,7 +49,10 @@ function App() {
 
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
+
+  
   };
+
 
   return (
     <Router>
