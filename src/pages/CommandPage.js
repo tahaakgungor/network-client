@@ -21,9 +21,6 @@ function CommandPage({ socket }) {
 
 
 
-
-
-
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
     
@@ -102,10 +99,10 @@ function CommandPage({ socket }) {
       </form>
       <Tabs
         className="tabs"
-        items={output.map(({ id, output }, index) => ({
+        items={output.map(({ id, output, input}, index) => ({
           key: index,
           label: deviceNames[index] || id,
-          children: <Output output={output} socket={socket} devices={devices}/>,
+          children: <Output output={output} socket={socket} devices={devices} input={input}/>,
           
         }))}
         
