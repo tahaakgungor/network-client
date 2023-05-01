@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const s = io("https://network-socket.herokuapp.com");
+    const s = io("ws://localhost:5000");
     s.on("connect", () => {
       console.log("connected to socket");
     });
@@ -42,7 +42,7 @@ function App() {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    localStorage.setItem("isAuthenticated", "false");
+    localStorage.removeItem("isAuthenticated");
     localStorage.clear();
     setIsAuthenticated(false);
   };

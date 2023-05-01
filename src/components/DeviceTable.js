@@ -33,10 +33,6 @@ function DeviceTable({ devices, setDevices, socket }) {
 
 
 
-
-  
-
-
   const handleSelect = (id) => {
     if (selectedDevices.includes(id)) {
       setSelectedDevices(selectedDevices.filter((deviceId) => deviceId !== id));
@@ -109,7 +105,11 @@ function DeviceTable({ devices, setDevices, socket }) {
       return;
     }
     console.log(cihazlar.name)
-    history.push({ pathname: "/devices/command", state: { ids: cihazlar } });
+    localStorage.setItem("selectedDevices", JSON.stringify(cihazlar));
+    history.push({
+      pathname: "/devices/command",
+      search: `?ids=${cihazlar.join()}`,
+    });
     console.log("SELECTTT:", cihazlar.length);
   };
 
@@ -119,7 +119,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   ? devices.map(device => device)
   : role.find(role => role.name === userInfo)?.devices ?? [];
 
-  console.log("deviceIds", deviceIds);
+
 
 
 

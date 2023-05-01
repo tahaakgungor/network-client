@@ -13,14 +13,17 @@ function CommandPage({ socket }) {
   const [output, setOutput] = useState([]);
   const [deviceNames, setDeviceNames] = useState([]);
 
-  const location = useLocation();
-  const devices = location.state.ids;
+  const devices = JSON.parse(localStorage.getItem("selectedDevices"));
+
 
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
+
   }, []);
 
+
   useLayoutEffect(() => {
+    
     socket.emit("createSSH", devices);
 
     // Create an empty array to store output for each device
