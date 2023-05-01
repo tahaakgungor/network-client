@@ -1,18 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
+// devicesSlice.js
 
-export const deviceSlice = createSlice({
-  name: 'device',
+import { createSlice } from "@reduxjs/toolkit";
+
+const deviceSlice = createSlice({
+  name: "devices",
   initialState: {
-    device: {},
-  },  
+    connectedDeviceIds: [],
+  },
   reducers: {
-    saveDevice: (state,action) => {
-        state.device = action.payload;
+    addConnectedDevice: (state, action) => {
+      state.connectedDeviceIds.push(action.payload);
+    },
+    removeConnectedDevice: (state, action) => {
+      const index = state.connectedDeviceIds.indexOf(action.payload);
+      if (index !== -1) {
+        state.connectedDeviceIds.splice(index, 1);
+      }
     },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { saveDevice } = deviceSlice.actions
+export const { addConnectedDevice, removeConnectedDevice } = deviceSlice.actions;
 
-export default deviceSlice.reducer
+export default deviceSlice.reducer;

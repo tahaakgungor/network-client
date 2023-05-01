@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Output from "../components/Output";
 import { Tabs } from "antd";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,35 +13,26 @@ function CommandPage({ socket }) {
   const [output, setOutput] = useState([]);
   const [deviceNames, setDeviceNames] = useState([]);
 
-  const devices = JSON.parse(localStorage.getItem("selectedDevices"));
+  const location = useLocation();
+
+
+      const storedDevices = localStorage.getItem("cihazlar");
+      const devices = storedDevices ? JSON.parse(storedDevices) : location.state.cihazlar;
+
+
+
+
 
 
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
-
-  }, []);
-
-
-  useLayoutEffect(() => {
     
     socket.emit("createSSH", devices);
 
     const initialOutput = devices.map((id) => ({ id, output: "" }));
     setOutput(initialOutput);
 
-    const fetchDeviceNames = async () => {
-      const names = await Promise.all(
-        devices.map(async (id) => {
-          const response = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}devices/selected/${id}`
-          );
-          return response.data[0].name;
-        })
-      );
-      setDeviceNames(names);
-    };
 
-    fetchDeviceNames();
 
     devices.forEach((deviceId) => {
       console.log("output" + deviceId);
@@ -61,7 +53,23 @@ function CommandPage({ socket }) {
         socket.off("output" + deviceId);
       });
     };
-  }, [devices, socket]);
+  }, [socket]);
+
+  useEffect(() => {
+    const fetchDeviceNames = async () => {
+      const names = await Promise.all(
+        devices.map(async (id) => {
+          const response = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}devices/selected/${id}`
+          );
+          return response.data[0].name;
+        })
+      );
+      setDeviceNames(names);
+    };
+
+    fetchDeviceNames();
+  }, [devices]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

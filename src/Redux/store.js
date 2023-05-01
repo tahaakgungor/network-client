@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import SocketReducer from "./Socket/socketSlice";
@@ -13,6 +13,10 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
 };
 
+const rootReducer = combineReducers({
+  devices: deviceReducer,
+});
+
 const persistedSocketReducer = persistReducer(persistConfig, SocketReducer);
 const persistedDeviceReducer = persistReducer(persistConfig, deviceReducer);
 const persistedUserInformationReducer = persistReducer(
@@ -25,6 +29,7 @@ export const store = configureStore({
     socket: persistedSocketReducer,
     device: persistedDeviceReducer,
     userInformation: persistedUserInformationReducer,
+    reducer: rootReducer,
   },
 });
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addConnectedDevice, removeConnectedDevice } from "../Redux/Device/deviceSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
@@ -13,6 +15,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
+  const [selections , setSelections] = useState([]);
 
 
   const userInfo = useSelector((state) => state.userInformation.userInformation.role);
@@ -98,17 +101,21 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
   };
 
+
   const connectDevices = async (cihazlar = selectedDevices) => {
     if (cihazlar.length === 0) {
       console.log("Please select at least one device.");
       alert("Please select at least one device.");
       return;
     }
-    console.log(cihazlar.name)
-    localStorage.setItem("selectedDevices", JSON.stringify(cihazlar));
+
+    console.log("SELECTIONS:", cihazlar);
+
+    localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
+
     history.push({
       pathname: "/devices/command",
-      search: `?ids=${cihazlar.join()}`,
+      state: { cihazlar: cihazlar },
     });
     console.log("SELECTTT:", cihazlar.length);
   };
