@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
 function CommandPage({ socket }) {
+  const [command, setCommand] = useState("");
   const [commandStates, setCommandStates] = useState({});
   const [output, setOutput] = useState([]);
   const [deviceNames, setDeviceNames] = useState([]);
@@ -69,26 +70,73 @@ function CommandPage({ socket }) {
             fetchDeviceNames();
             }, [devices]);
             
-            const handleSubmit = async (e, deviceId) => {
+            const handleSubmit = async (e) => {
             e.preventDefault();
             try {
+              devices.forEach((deviceId) => {
             socket.emit("command", {
-            command: commandStates[deviceId],
-            deviceId,
+            command: command,
+            deviceId:deviceId,
             });
+            });
+            setCommand("");
             } catch (error) {
             console.error(error);
             }
             };
             
-            const handleChange = (e, deviceId) => {
-            setCommandStates((prevState) => ({
-            ...prevState,
-            [deviceId]: e.target.value,
-            }));
+            const handleChange = (e) => {
+              setCommand(e.target.value);
+              
             };
+
+            const handleOtherChange = (e,deviceId) => {
+              setCommandStates((prevState) => ({
+                ...prevState,
+                [deviceId]: e.target.value,
+                }));
+              };
+
+              const handleOtherSubmit = async (e,deviceId) => {
+                e.preventDefault();
+                try{
+                  socket.emit("privateCommand", {
+                    command: commandStates[deviceId],
+                    devices: deviceId,
+                  });
+                  setCommandStates((prevState) => ({
+                    ...prevState,
+                    [deviceId]: "",
+                    }));
+
+                } catch (error) {
+                  console.error(error);
+                }
+                setCommandStates((prevOutput) => ({ ...prevOutput, [deviceId]: "" }));
+              };
+
             
             return (
+              <div className="command-page">  
+              <form className="all-command" onSubmit={(e) => handleSubmit(e)}>
+                <h5 className="command-title">Command To All Devices</h5>
+         
+              <input
+              className="form-control form-control-sm"
+              type="text"
+              placeholder="Enter command"
+              value={command}
+              onChange={(e) => handleChange(e)}
+              />
+          
+              <Button type="primary" htmlType="submit">
+              Send
+              </Button>
+
+       
+              </form>
+   
+              
             <div>
             <Tabs
             className="tabs"
@@ -103,24 +151,24 @@ function CommandPage({ socket }) {
                        input={input}
                        activeTab={activeTab}
                      >
-            <form onSubmit={(e) => handleSubmit(e, id)}>
-            <div className="output-input-button">
+            <form className="terminal" onSubmit={(e) => handleOtherSubmit(e, id)}>
             <input
             className="form-control form-control-sm"
             type="text"
             placeholder="Enter command"
             value={commandStates[id]}
-            onChange={(e) => handleChange(e, id)}
+            onChange={(e) => handleOtherChange(e, id)}
             />
-            <Button type="primary" size="small" htmlType="submit">
+            <Button type="primary" htmlType="submit">
             Send
             </Button>
-            </div>
+
             </form>
             </Output>
             ),
             }))}
             />
+            </div>
             </div>
             );
             }

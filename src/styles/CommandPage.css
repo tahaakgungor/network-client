@@ -19,3 +19,69 @@ form{
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+.all-command{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+       
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: #000;
+    
+}
+
+.input-command{
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    border-radius: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ccc;
+
+
+
+}
+
+.button-all-command{
+    width: 100%;
+    margin-top: 5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+
+.terminal{
+    width: 100%;
+    height: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background-color: transparent;
+   
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: #000;
+}

@@ -37,22 +37,7 @@ function Output({ output, socket, devices, children, activeTab}) {
         <div ref={ref}></div>
       </div>
       {children}
-      {activeTab && (
-      <form onSubmit={(e) => handleCommandSubmit(e, devices)}>
-        <div className="output-input-button">
-          <input
-            className="form-control form-control-sm"
-            type="text"
-            placeholder="Enter command"
-            value={commandOutput[devices]}
-            onChange={(e) => handleCommandChange(e, devices)}
-          />
-          <Button type="primary" size="small" htmlType="submit">
-            Send
-          </Button>
-        </div>
-      </form>
-      )}
+ 
     </div>
   );
 }
