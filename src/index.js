@@ -19,20 +19,18 @@ const firebaseConfig = {
   storageBucket: "network-automation-d31c2.appspot.com",
   messagingSenderId: "538750354083",
   appId: "1:538750354083:web:86cebe6c4e4a80b891f516",
-  measurementId: "G-NGK00Z08FY"
+  measurementId: "G-NGK00Z08FY",
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
     </PersistGate>
-  </Provider>,
+  </Provider>
 );

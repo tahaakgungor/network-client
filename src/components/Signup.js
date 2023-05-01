@@ -11,18 +11,18 @@ const Signup = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
-    
-    if(name.length < 3) {
+
+    if (name.length < 3) {
       setError("Name should be at least 3 characters long");
       return;
     }
 
-    if(!email.includes("@") || !email.includes(".com")) {
+    if (!email.includes("@") || !email.includes(".com")) {
       setError("Please enter a valid email address");
       return;
     }
 
-    if(password.length < 6) {
+    if (password.length < 6) {
       setError("Password should be at least 6 characters long");
       return;
     }

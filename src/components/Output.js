@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/Output.css";
 import { Button } from "antd";
 
-function Output({ output, socket, devices, children, activeTab}) {
+function Output({ output, socket, devices, children, activeTab }) {
   const [commandOutput, setCommandOutput] = useState([]);
   const ref = React.useRef(null);
 
@@ -37,7 +37,6 @@ function Output({ output, socket, devices, children, activeTab}) {
         <div ref={ref}></div>
       </div>
       {children}
- 
     </div>
   );
 }

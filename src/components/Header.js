@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -6,17 +6,17 @@ import { useSelector, useDispatch } from "react-redux";
 import "../styles/Header.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 
 const Header = ({ isAuthenticated, handleLogout }) => {
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.userInformation.userInformation);
+  const userInfo = useSelector(
+    (state) => state.userInformation.userInformation
+  );
 
   useEffect(() => {
-    
     const userInfoFromCookie = Cookies.get("userInfo");
-    console.log("useEffect",userInfoFromCookie);
+    console.log("useEffect", userInfoFromCookie);
     if (userInfoFromCookie) {
       dispatch(saveUser(JSON.parse(userInfoFromCookie)));
     }
@@ -25,8 +25,6 @@ const Header = ({ isAuthenticated, handleLogout }) => {
   useEffect(() => {
     Cookies.set("userInfo", JSON.stringify(userInfo));
   }, [userInfo]);
-
-
 
   return (
     <Navbar bg="light" expand="lg">
@@ -47,12 +45,11 @@ const Header = ({ isAuthenticated, handleLogout }) => {
                 Devices
               </Nav.Link>
 
-              {(userInfo != null) && userInfo.role == "admin" ? (
+              {userInfo != null && userInfo.role == "admin" ? (
                 <Nav.Link as={Link} to="/admin">
                   Admin
                 </Nav.Link>
-              ) : null} 
-
+              ) : null}
             </>
           )}
         </Nav>

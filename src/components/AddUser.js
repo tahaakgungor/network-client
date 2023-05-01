@@ -14,7 +14,9 @@ const AddUser = ({ onAddUser }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}roles`
+        );
         setRoles(response.data);
       } catch (error) {
         console.error(error);
@@ -52,12 +54,15 @@ const AddUser = ({ onAddUser }) => {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}auth/signup`, {
-        name,
-        email,
-        password,
-        role: selectedUser.role,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}auth/signup`,
+        {
+          name,
+          email,
+          password,
+          role: selectedUser.role,
+        }
+      );
 
       const newUser = response.data.user;
       onAddUser(newUser);
@@ -113,31 +118,34 @@ const AddUser = ({ onAddUser }) => {
                     <div className="role-label">
                       <Form.Label>Role</Form.Label>
                     </div>
-                    <Form.Control as="select" value={selectedUser.role} onChange={handleRoleChange}>
+                    <Form.Control
+                      as="select"
+                      value={selectedUser.role}
+                      onChange={handleRoleChange}
+                    >
                       {roles.map((role) => (
                         <option key={role.id}>{role.name}</option>
                       ))}
                     </Form.Control>
                   </Form.Group>
                 </div>
-                
-      
-                  <div className="button-group">
-                    <Button variant="success" type="submit">
-                      Submit
-                    </Button>
-                    <Button variant="danger" onClick={handleCancel}>
-                      Cancel
-                    </Button>
-                  </div>
-                </Form>
-                {error && <p className="error">{error}</p>}
-              </div>
-            )}
-          </Col>
-        </Row>
-      </Container>
-      );
-      };
-      
-      export default AddUser;
+
+                <div className="button-group">
+                  <Button variant="success" type="submit">
+                    Submit
+                  </Button>
+                  <Button variant="danger" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </div>
+              </Form>
+              {error && <p className="error">{error}</p>}
+            </div>
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default AddUser;

@@ -5,7 +5,6 @@ import AddUser from "../components/AddUser";
 import RoleManagement from "../components/AddRole";
 import "../styles/AdminPanel.css";
 
-
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,7 +13,6 @@ const AdminPanel = () => {
   const [newUser, setNewUser] = useState(null);
   const [roles, setRoles] = useState([]);
 
-  
   useEffect(() => {
     fetchUsers();
     fetchRoles();
@@ -23,11 +21,12 @@ const AdminPanel = () => {
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
   }, []);
-  
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}auth/users`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}auth/users`
+      );
       setUsers(response.data);
     } catch (error) {
       console.error(error);
@@ -36,28 +35,28 @@ const AdminPanel = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}roles`
+      );
       setRoles(response.data);
-
     } catch (error) {
       console.error(error);
     }
   };
 
-const handleRoleChange = (event) => {
-  const newRole = event.target.value;
-  if (!newRole) {
-    setRole(roles[0].name);
-  } else {
-    setRole(newRole);
-  }
-};
+  const handleRoleChange = (event) => {
+    const newRole = event.target.value;
+    if (!newRole) {
+      setRole(roles[0].name);
+    } else {
+      setRole(newRole);
+    }
+  };
 
-const handleEditUser = (user) => {
-  setSelectedUser(user);
-  setRole(user.role);
-};
-
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setRole(user.role);
+  };
 
   const handleUpdateUser = async (event) => {
     event.preventDefault();
@@ -69,11 +68,13 @@ const handleEditUser = (user) => {
         role: role || roles[0].name,
       };
 
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}auth/users/${selectedUser._id}`, updatedUser);
+      await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}auth/users/${selectedUser._id}`,
+        updatedUser
+      );
 
       setSelectedUser(null);
       fetchUsers();
-      
     } catch (error) {
       console.error(error);
     }
@@ -81,7 +82,9 @@ const handleEditUser = (user) => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}auth/users/${userId}`);
+      await axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}auth/users/${userId}`
+      );
       fetchUsers();
     } catch (error) {
       console.error(error);
@@ -96,7 +99,7 @@ const handleEditUser = (user) => {
 
   return (
     <div>
-      <RoleManagement/>
+      <RoleManagement />
       <div>
         {selectedUser && (
           <form className="admin-forms" onSubmit={handleUpdateUser}>
@@ -105,7 +108,9 @@ const handleEditUser = (user) => {
               <input
                 type="text"
                 value={selectedUser.name}
-                onChange={(event) => setSelectedUser({ ...selectedUser, name: event.target.value })}
+                onChange={(event) =>
+                  setSelectedUser({ ...selectedUser, name: event.target.value })
+                }
                 required
               />
             </div>
@@ -114,7 +119,12 @@ const handleEditUser = (user) => {
               <input
                 type="email"
                 value={selectedUser.email}
-                onChange={(event) => setSelectedUser({ ...selectedUser, email: event.target.value })}
+                onChange={(event) =>
+                  setSelectedUser({
+                    ...selectedUser,
+                    email: event.target.value,
+                  })
+                }
                 required
               />
             </div>
@@ -140,7 +150,7 @@ const handleEditUser = (user) => {
         )}
       </div>
 
-            {showAddUser && <AddUser onAddUser={handleAddUser} />}
+      {showAddUser && <AddUser onAddUser={handleAddUser} />}
       {!selectedUser && !showAddUser && (
         <div>
           <div className="admin-form">
@@ -162,10 +172,16 @@ const handleEditUser = (user) => {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
-                      <Button variant="primary" onClick={() => handleEditUser(user)}>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleEditUser(user)}
+                      >
                         Edit
                       </Button>
-                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDeleteUser(user._id)}
+                      >
                         Delete
                       </Button>
                     </td>
@@ -182,10 +198,7 @@ const handleEditUser = (user) => {
         </div>
       )}
     </div>
-
   );
 };
 
 export default AdminPanel;
-            
-                  

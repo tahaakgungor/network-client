@@ -13,57 +13,61 @@ const Login = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
-    console.log("asdd",process.env.REACT_APP_BACKEND_URL)
+    console.log("asdd", process.env.REACT_APP_BACKEND_URL);
     event.preventDefault();
     setError("");
 
-    if(!email.includes("@") || !email.includes(".com")) {
+    if (!email.includes("@") || !email.includes(".com")) {
       setError("Please enter a valid email address");
       return;
     }
 
-    if(password.length < 6) {
+    if (password.length < 6) {
       setError("Password should be at least 6 characters long");
       return;
     }
 
     try {
-     
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}auth/login`, { email, password },{
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-
-      });
-      const token = response.data.token;
-      Cookies.set("token", token, { expires: 7 }); 
-      localStorage.setItem("token", token);
-      if(token) {
-        console.log("token", token);
-        localStorage.setItem("isAuthenticated", true);
-        props.setIsAuthenticated(true);
-        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}auth/user`, {email}, {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}auth/login`,
+        { email, password },
+        {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
           },
-        });
+        }
+      );
+      const token = response.data.token;
+      Cookies.set("token", token, { expires: 7 });
+      localStorage.setItem("token", token);
+      if (token) {
+        console.log("token", token);
+        localStorage.setItem("isAuthenticated", true);
+        props.setIsAuthenticated(true);
+        const res = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}auth/user`,
+          { email },
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("response of login", res);
 
-       
-        const {role} = res.data[0];
+        const { role } = res.data[0];
         console.log("role", role);
 
-        dispatch(saveUser({email,role}));
-      }
-      else{
+        dispatch(saveUser({ email, role }));
+      } else {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);
       }
     } catch (error) {
-      if(error.response.status === 400) {
+      if (error.response.status === 400) {
         setError("Email or password is incorrect");
       } else {
         console.error(error);

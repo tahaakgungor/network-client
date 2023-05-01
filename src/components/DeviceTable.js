@@ -3,7 +3,10 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addConnectedDevice, removeConnectedDevice } from "../Redux/Device/deviceSlice";
+import {
+  addConnectedDevice,
+  removeConnectedDevice,
+} from "../Redux/Device/deviceSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
@@ -15,26 +18,25 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
-  const [selections , setSelections] = useState([]);
+  const [selections, setSelections] = useState([]);
 
-
-  const userInfo = useSelector((state) => state.userInformation.userInformation.role);
-
+  const userInfo = useSelector(
+    (state) => state.userInformation.userInformation.role
+  );
 
   useEffect(() => {
-    
-  const fetchRoles = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}roles`);
-      setRole(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  fetchRoles();
-}, []);
-
-
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}roles`
+        );
+        setRole(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchRoles();
+  }, []);
 
   const handleSelect = (id) => {
     if (selectedDevices.includes(id)) {
@@ -101,7 +103,6 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
   };
 
-
   const connectDevices = async (cihazlar = selectedDevices) => {
     if (cihazlar.length === 0) {
       console.log("Please select at least one device.");
@@ -120,22 +121,10 @@ function DeviceTable({ devices, setDevices, socket }) {
     console.log("SELECTTT:", cihazlar.length);
   };
 
-  
-
-  const deviceIds = userInfo === "admin"
-  ? devices.map(device => device)
-  : role.find(role => role.name === userInfo)?.devices ?? [];
-
-
-
-
-
-
-    
-
-
- 
-  
+  const deviceIds =
+    userInfo === "admin"
+      ? devices.map((device) => device)
+      : role.find((role) => role.name === userInfo)?.devices ?? [];
 
   return (
     <div className="contain">
@@ -148,7 +137,7 @@ function DeviceTable({ devices, setDevices, socket }) {
           onChange={(e) => setFilter(e.target.value)}
         />
       </div>
-  
+
       <div className="table-wrapper">
         <table className="table">
           <thead>
@@ -172,8 +161,6 @@ function DeviceTable({ devices, setDevices, socket }) {
           </thead>
           <tbody>
             {deviceIds.map((device) => {
-              
-  
               return (
                 <tr key={device._id}>
                   <td>
@@ -195,7 +182,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                       device.name
                     )}
                   </td>
-                  
+
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
                       <input
@@ -243,7 +230,6 @@ function DeviceTable({ devices, setDevices, socket }) {
                     ) : (
                       device.host
                     )}
-
                   </td>
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
@@ -256,8 +242,6 @@ function DeviceTable({ devices, setDevices, socket }) {
                     ) : (
                       device.device_type
                     )}
-
-
                   </td>
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
@@ -270,7 +254,6 @@ function DeviceTable({ devices, setDevices, socket }) {
                     ) : (
                       device.secret
                     )}
-
                   </td>
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
@@ -322,11 +305,9 @@ function DeviceTable({ devices, setDevices, socket }) {
         >
           Connect
         </button>
-
       </div>
     </div>
   );
-};
+}
 
 export default DeviceTable;
-

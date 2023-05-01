@@ -11,14 +11,12 @@ import {
   Switch,
   Route,
   Redirect,
-
 } from "react-router-dom";
 import { io } from "socket.io-client";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
-
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -49,21 +47,17 @@ function App() {
 
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
-
-  
   };
-
 
   return (
     <Router>
-      <Header
-        isAuthenticated={isAuthenticated}
-        handleLogout={handleLogout}
-      />
+      <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       <Switch>
         <Route exact path="/login">
           {isAuthenticated ? (
-            <Redirect to={localStorage.getItem("lastVisitedPage") || "/devices"} />
+            <Redirect
+              to={localStorage.getItem("lastVisitedPage") || "/devices"}
+            />
           ) : (
             <Login setIsAuthenticated={setIsAuthenticated} />
           )}
@@ -93,7 +87,10 @@ function App() {
           {isAuthenticated ? (
             <Redirect to="/devices" />
           ) : (
-            <Signup setIsAuthenticated={setIsAuthenticated} onChange={handlePageChange} />
+            <Signup
+              setIsAuthenticated={setIsAuthenticated}
+              onChange={handlePageChange}
+            />
           )}
         </Route>
         <Redirect to="/login" />
