@@ -3,7 +3,10 @@ import axios from "axios";
 import { Button, Table } from "react-bootstrap";
 import AddUser from "../components/AddUser";
 import RoleManagement from "../components/AddRole";
+import UserLog from "./UserLog";
 import "../styles/AdminPanel.css";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
@@ -12,6 +15,7 @@ const AdminPanel = () => {
   const [showAddUser, setShowAddUser] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [roles, setRoles] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     fetchUsers();
@@ -97,9 +101,12 @@ const AdminPanel = () => {
     setShowAddUser(false);
   };
 
+  console.log(users);
+
   return (
     <div>
       <RoleManagement />
+
       <div>
         {selectedUser && (
           <form className="admin-forms" onSubmit={handleUpdateUser}>
@@ -172,6 +179,17 @@ const AdminPanel = () => {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
+                      
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          history.push({pathname: `/userlog/${user._id}`, state: {user}});
+                        }}
+                      >
+                        Log
+                      </Button>
+                      <br/>
+
                       <Button
                         variant="primary"
                         onClick={() => handleEditUser(user)}

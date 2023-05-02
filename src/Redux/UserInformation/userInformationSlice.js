@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
@@ -20,7 +20,7 @@ const userInformationSlice = createSlice({
       state.roles.push(action.payload);
     },
     deleteRole: (state, action) => {
-      state.roles = state.roles.filter((role) => role._id !== action.payload);
+      state.roles = current(state.roles).filter((role) => role._id !== action.payload);
     },
   },
 });

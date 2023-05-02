@@ -18,7 +18,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
-  const [selections, setSelections] = useState([]);
+  const [filteredDevices, setFilteredDevices] = useState([]);
 
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation.role
@@ -122,9 +122,31 @@ function DeviceTable({ devices, setDevices, socket }) {
   };
 
   const deviceIds =
-    userInfo === "admin"
-      ? devices.map((device) => device)
-      : role.find((role) => role.name === userInfo)?.devices ?? [];
+  userInfo === "admin"
+    ? filteredDevices.length > 0 ? filteredDevices.map((device) => device) : devices.map((device) => device)
+    : role.find((role) => role.name === userInfo)?.devices ?? [];
+
+  const filterSearch = (e) => {
+    setFilter(e.target.value);
+   
+    const filt = devices.filter((device) => {
+      return (
+        device.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        device.ip.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        device.username.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        device.password.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        device.host.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        device.device_type
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase()) ||
+        device.secret.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+    });
+    setFilteredDevices(filt);
+
+
+  };
+
 
   return (
     <div className="contain">
@@ -134,7 +156,7 @@ function DeviceTable({ devices, setDevices, socket }) {
           className="form-control"
           placeholder="Search"
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          onChange={filterSearch}
         />
       </div>
 

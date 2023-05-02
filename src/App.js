@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import AdminPanel from "./pages/AdminPanel";
+import UserLog from "./pages/UserLog";
 import Cookies from "js-cookie";
 import {
   BrowserRouter as Router,
@@ -13,6 +14,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { io } from "socket.io-client";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -91,6 +93,13 @@ function App() {
               setIsAuthenticated={setIsAuthenticated}
               onChange={handlePageChange}
             />
+          )}
+        </Route>
+        <Route exact path="/userlog/:userId">
+          {isAuthenticated ? (
+            <UserLog onChange={handlePageChange} />
+          ) : (
+            <Redirect to="/login" />
           )}
         </Route>
         <Redirect to="/login" />
