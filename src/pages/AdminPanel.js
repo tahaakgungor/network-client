@@ -188,7 +188,7 @@ const AdminPanel = () => {
                       >
                         Log
                       </Button>
-                      <br/>
+                      
 
                       <Button
                         variant="primary"

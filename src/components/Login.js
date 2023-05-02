@@ -10,6 +10,8 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loggedDate, setLoggedDate] = useState("");
+  const [loggedTime, setLoggedTime] = useState("");
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
@@ -56,12 +58,38 @@ const Login = (props) => {
             },
           }
         );
-        console.log("response of login", res);
+        console.log("response of login", res.data[0]._id);
+        const userId = res.data[0]._id;
+        console.log("userId", userId);
 
         const { role } = res.data[0];
         console.log("role", role);
 
         dispatch(saveUser({ email, role }));
+
+        const date = new Date().toISOString().split("T")[0];
+      const time = new Date().toISOString().split("T")[1].split(".")[0];
+      setLoggedDate(date);
+      setLoggedTime(time);
+      const userLogPost = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}auth/user/log/${userId}`,
+        {
+          user: userId,
+          date: loggedDate,
+          time: loggedTime,
+          duration: "",
+          activity: "",
+          notes: "",
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("userLogPost", userLogPost.data);
       } else {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);
