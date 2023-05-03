@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import AdminPanel from "./pages/AdminPanel";
 import UserLog from "./pages/UserLog";
 import Cookies from "js-cookie";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,6 +21,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
 
+  
   useEffect(() => {
     const token = Cookies.get("token");
     setIsAuthenticated(token ? true : false);
@@ -37,15 +39,10 @@ function App() {
   useEffect(() => {
     const auth = localStorage.getItem("isAuthenticated");
 
+
     setIsAuthenticated(auth === "true");
   }, []);
 
-  const handleLogout = () => {
-    Cookies.remove("token");
-    localStorage.removeItem("isAuthenticated");
-    localStorage.clear();
-    setIsAuthenticated(false);
-  };
 
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
@@ -53,7 +50,7 @@ function App() {
 
   return (
     <Router>
-      <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+      <Header setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated}  />
       <Switch>
         <Route exact path="/login">
           {isAuthenticated ? (

@@ -13,6 +13,8 @@ import "../styles/DeviceTable.css";
 
 function DeviceTable({ devices, setDevices, socket }) {
   const history = useHistory();
+  const [logList, setLogList] = useState([]);
+  const [userLog, setUserLog] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
   const [formData, setFormData] = useState({});
   const [selectedDevices, setSelectedDevices] = useState([]);
@@ -21,10 +23,40 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [filteredDevices, setFilteredDevices] = useState([]);
 
   const userInfo = useSelector(
-    (state) => state.userInformation.userInformation.role
+    (state) => state.userInformation.userInformation
   );
+    console.log("userInfo", userInfo);
+  const time = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Istanbul",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  
+  });
+
+
+  const fetchUserLog = async () => {
+    try {
+      const getUserId = localStorage.getItem("userId");
+      console.log("getUserId", getUserId);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,{
+        params: {
+          $orderby: { createdAt: -1 },
+          $limit: 1,
+        },
+      }
+      );
+   
+      setUserLog(response.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   useEffect(() => {
+    fetchUserLog();
     const fetchRoles = async () => {
       try {
         const response = await axios.get(
@@ -109,22 +141,62 @@ function DeviceTable({ devices, setDevices, socket }) {
       alert("Please select at least one device.");
       return;
     }
+  
+    try {
+      // Get information of all selected devices
+      const deviceResArray = await Promise.all(
+        cihazlar.map(async (deviceId) => {
+          const response = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}devices/selected/${deviceId}`
+          );
+          return response.data[0];
+        })
+      );
+      console.log("DEVICE RES:", deviceResArray);
+  
+      // Construct activity string
+      const activityString = deviceResArray
+        .map((device) => `${device.name}/${device.ip}`)
+        .join(",") + ` are edited at ${time}.`
 
-    console.log("SELECTIONS:", cihazlar);
 
+        const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];
+        const newLogs = [...currentLogs, activityString];
+    
+        // Save the new logs to localStorage
+        localStorage.setItem("logs", JSON.stringify(newLogs));
+        
+
+      // Send log request
+      const requestBody = {
+        activity: newLogs,
+      };
+      const response = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      console.log("RESPONSE:", response);
+    } catch (error) {
+      console.error(error);
+    }
+  
     localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
-
+  
     history.push({
       pathname: "/devices/command",
       state: { cihazlar: cihazlar },
     });
-    console.log("SELECTTT:", cihazlar.length);
   };
-
+  
   const deviceIds =
-  userInfo === "admin"
+  userInfo.role === "admin"
     ? filteredDevices.length > 0 ? filteredDevices.map((device) => device) : devices.map((device) => device)
-    : role.find((role) => role.name === userInfo)?.devices ?? [];
+    : role.find((role) => role.name === userInfo.role)?.devices ?? [];
 
   const filterSearch = (e) => {
     setFilter(e.target.value);

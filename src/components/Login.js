@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -7,13 +7,44 @@ import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import Cookies from "js-cookie";
 
 const Login = (props) => {
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loggedDate, setLoggedDate] = useState("");
   const [loggedTime, setLoggedTime] = useState("");
-  const dispatch = useDispatch();
 
+  
+
+  const dispatch = useDispatch();
+  
+
+ 
+  useEffect(() => {
+    const date = new Date().toLocaleString("en-US", {
+      timeZone: "Europe/Istanbul",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+
+      
+    const time = new Date().toLocaleString("en-US", {
+      timeZone: "Europe/Istanbul",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    
+    });
+    const localDate = localStorage.setItem("lastLoginDate", date);
+    const localTime = localStorage.setItem("lastLoginTime", time);
+    
+
+    setLoggedDate(date);
+    setLoggedTime(time);
+
+  }, []); 
   const handleSubmit = async (event) => {
     console.log("asdd", process.env.REACT_APP_BACKEND_URL);
     event.preventDefault();
@@ -43,7 +74,7 @@ const Login = (props) => {
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
-      if (token) {
+      if (token) {   
         console.log("token", token);
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
@@ -60,23 +91,23 @@ const Login = (props) => {
         );
         console.log("response of login", res.data[0]._id);
         const userId = res.data[0]._id;
-        console.log("userId", userId);
+        const localId = localStorage.setItem("userId", userId);
 
         const { role } = res.data[0];
         console.log("role", role);
 
-        dispatch(saveUser({ email, role }));
+        dispatch(saveUser({ userId,email, role }));
+        console.log("date", loggedDate);
+        console.log("time", loggedTime);
 
-        const date = new Date().toISOString().split("T")[0];
-      const time = new Date().toISOString().split("T")[1].split(".")[0];
-      setLoggedDate(date);
-      setLoggedTime(time);
       const userLogPost = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}auth/user/log/${userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/${userId}`,
         {
           user: userId,
           date: loggedDate,
-          time: loggedTime,
+          logintime: loggedTime,
+          logouttime: "",
+          status: "login",
           duration: "",
           activity: "",
           notes: "",

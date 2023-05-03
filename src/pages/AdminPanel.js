@@ -15,16 +15,51 @@ const AdminPanel = () => {
   const [showAddUser, setShowAddUser] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [lastLog, setLastLog] = useState([]);
   const history = useHistory();
 
+  const userId = localStorage.getItem("userId");
+
+  console.log(userId);
   useEffect(() => {
     fetchUsers();
     fetchRoles();
+    fetchUserLastLog();
+    const interval = setInterval(() => {
+      fetchUserLastLog();
+    }
+    , 1000);
+    return () => clearInterval(interval);
+
+
   }, []);
 
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
   }, []);
+
+  const fetchUserLastLog = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}auth/users`
+      );
+      const usersWithLogs = await Promise.all(
+        response.data.map(async (user) => {
+          const logResponse = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${user._id}`
+          );
+          const log = logResponse.data[0];
+          return {
+            ...user,
+            lastLog: log,
+          };
+        })
+      );
+      setUsers(usersWithLogs);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -101,8 +136,6 @@ const AdminPanel = () => {
     setShowAddUser(false);
   };
 
-  console.log(users);
-
   return (
     <div>
       <RoleManagement />
@@ -164,7 +197,7 @@ const AdminPanel = () => {
             <Table>
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th>Status</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -174,21 +207,29 @@ const AdminPanel = () => {
               <tbody>
                 {users.map((user, index) => (
                   <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>
+                      {user.lastLog?.status === "login" ? (
+                        <span style={{ color: "green" }}>Online</span>
+                      ) : (
+                        <span style={{ color: "red" }}>Offline</span>
+                      )}
+                    </td>
+
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
-                      
                       <Button
                         variant="primary"
                         onClick={() => {
-                          history.push({pathname: `/userlog/${user._id}`, state: {user}});
+                          history.push({
+                            pathname: `/userlog/${user._id}`,
+                            state: { user },
+                          });
                         }}
                       >
                         Log
-                      </Button>
-                      
+                      </Button>{" "}
 
                       <Button
                         variant="primary"

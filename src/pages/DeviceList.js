@@ -7,6 +7,8 @@ import DeviceForm from "../components/DeviceForm";
 function DeviceList() {
   const [devices, setDevices] = useState([]);
 
+  
+
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
   }, []);

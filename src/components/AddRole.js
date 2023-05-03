@@ -22,7 +22,7 @@ function RoleManagement() {
         if (deviceResponse.data && roleResponse.data) {
           setDevices(deviceResponse.data);
           setRoles(roleResponse.data);
-          console.log("if", roleResponse.data);
+
         }
       } catch (error) {
         console.error(error);
@@ -32,7 +32,7 @@ function RoleManagement() {
     fetchData();
   }, []);
 
-  console.log(roles);
+
 
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
