@@ -13,19 +13,17 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [userLog, setUserLog] = useState([]);
   const [count, setCount] = useState(0);
 
-  const getId = localStorage.getItem("userId");
   const getTokens = localStorage.getItem("token");
 
   const dispatch = useDispatch();
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
-  console.log(count);
+
   useEffect(() => {
     if (getTokens) {
       const intervalId = setInterval(() => {
         setCount(count + 1);
-
       }, 1000);
 
       return () => {
@@ -42,22 +40,10 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
     }
   }, [userLog, getTokens]);
 
-  useEffect(() => {
-    const userInfoFromCookie = Cookies.get("userInfo");
-    if (userInfoFromCookie) {
-      dispatch(saveUser(JSON.parse(userInfoFromCookie)));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    Cookies.set("userInfo", JSON.stringify(userInfo));
-  }, [userInfo]);
-
   const fetchUserLog = async () => {
     try {
-      localStorage.getItem("userId")
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${getId}`,
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,
         {
           params: {
             $orderby: { createdAt: -1 },
@@ -66,7 +52,6 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
         }
       );
       setUserLog(response.data[0]);
-
     } catch (error) {
       console.error(error);
     }
@@ -74,7 +59,6 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
 
   const handleLogout = async () => {
     try {
-     
       const lastLoginTime = localStorage.getItem("lastLoginTime");
       console.log(lastLoginTime);
 
@@ -91,7 +75,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
         duration: count,
         logouttime: logoutTime,
       };
-      console.log("userLOG" , userLog.user)
+      console.log("userLOG", userLog.user);
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
         requestBody,
@@ -113,7 +97,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("loggedUser");
       localStorage.removeItem("lastVisitedPage");
-      localStorage.removeItem("logs")
+      localStorage.removeItem("logs");
 
       setIsAuthenticated(false);
     } catch (error) {

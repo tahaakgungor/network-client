@@ -89,10 +89,6 @@ const Login = (props) => {
 
         const userId = res.data[0]._id;
         const userRole = res.data[0].role;
-        const localRole = localStorage.setItem("userRole", userRole);
-        const localId = localStorage.setItem("userId", userId);
-        const getId = localStorage.getItem("userId");
-        console.log("GETT:",getId);
 
 
         const { role } = res.data[0];
@@ -100,6 +96,7 @@ const Login = (props) => {
         console.log("role", role);
 
         dispatch(saveUser({ userId, email, role }));
+  
 
         console.log("date", loggedDate);
         console.log("time", loggedTime);

@@ -18,6 +18,8 @@ function CommandPage({ socket }) {
 
   const location = useLocation();
 
+
+
   const storedDevices = localStorage.getItem("cihazlar");
   const devices = storedDevices
     ? JSON.parse(storedDevices)

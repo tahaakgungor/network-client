@@ -28,22 +28,6 @@ const userInformationSlice = createSlice({
 export const { saveUser, setRoles, saveNewRole, deleteRole } =
   userInformationSlice.actions;
 
-export const fetchUserInformation = () => async (dispatch) => {
-  try {
-    const response = await axios.get("http://localhost:5000/auth/user");
-    dispatch(saveUser(response.data));
-  } catch (error) {
-    console.error(error);
-  }
-};
 
-export const fetchRoles = () => async (dispatch) => {
-  try {
-    const response = await axios.get("http://localhost:5000/roles");
-    dispatch(setRoles(response.data));
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 export default userInformationSlice.reducer;

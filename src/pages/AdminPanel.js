@@ -18,7 +18,7 @@ const AdminPanel = () => {
   const [lastLog, setLastLog] = useState([]);
   const history = useHistory();
 
-  const userId = localStorage.getItem("userId");
+
 
   useEffect(() => {
     fetchUsers();

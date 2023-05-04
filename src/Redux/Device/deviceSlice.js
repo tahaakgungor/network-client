@@ -1,25 +1,30 @@
-// devicesSlice.js
+const initialState = {
+  devices: JSON.parse(localStorage.getItem("cihazlar")) || [],
+};
 
-import { createSlice } from "@reduxjs/toolkit";
+export default function deviceReducer(state = initialState, action) {
+  switch (action.type) {
+    case "ADD_CONNECTED_DEVICE":
+      return {
+        ...state,
+        devices: [...state.devices, action.payload],
+      };
+    case "REMOVE_CONNECTED_DEVICE":
+      return {
+        ...state,
+        devices: state.devices.filter((deviceId) => deviceId !== action.payload),
+      };
+    default:
+      return state;
+  }
+}
 
-const deviceSlice = createSlice({
-  name: "devices",
-  initialState: {
-    connectedDeviceIds: [],
-  },
-  reducers: {
-    addConnectedDevice: (state, action) => {
-      state.connectedDeviceIds.push(action.payload);
-    },
-    removeConnectedDevice: (state, action) => {
-      const index = state.connectedDeviceIds.indexOf(action.payload);
-      if (index !== -1) {
-        state.connectedDeviceIds.splice(index, 1);
-      }
-    },
-  },
+export const addConnectedDevice = (deviceId) => ({
+  type: "ADD_CONNECTED_DEVICE",
+  payload: deviceId,
 });
 
-export const { addConnectedDevice, removeConnectedDevice } = deviceSlice.actions;
-
-export default deviceSlice.reducer;
+export const removeConnectedDevice = (deviceId) => ({
+  type: "REMOVE_CONNECTED_DEVICE",
+  payload: deviceId,
+});

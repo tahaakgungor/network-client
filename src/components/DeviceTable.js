@@ -7,13 +7,14 @@ import {
   addConnectedDevice,
   removeConnectedDevice,
 } from "../Redux/Device/deviceSlice";
+import CryptoJS from 'crypto-js';
+
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
 
 function DeviceTable({ devices, setDevices, socket }) {
   const history = useHistory();
-  const [logList, setLogList] = useState([]);
   const [userLog, setUserLog] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
   const [formData, setFormData] = useState({});
@@ -21,11 +22,18 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
-  const getUserId = localStorage.getItem("userId");
+
+  const secretKey = 'my-secret-key@123tT!';
+
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
-    console.log("userInfo", userInfo);
+
+
+
+
+
+
   const time = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Istanbul",
     hour: "numeric",
@@ -38,13 +46,12 @@ function DeviceTable({ devices, setDevices, socket }) {
   const fetchUserLog = async () => {
     try {
 
-      console.log("getUserId", getUserId);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${getUserId}`,{
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,{
         params: {
           $orderby: { createdAt: -1 },
           $limit: 1,
-          userId: getUserId,
+          userId: userInfo.userId,
         },
       }
       );
@@ -167,6 +174,9 @@ function DeviceTable({ devices, setDevices, socket }) {
     
         // Save the new logs to localStorage
         localStorage.setItem("logs", JSON.stringify(newLogs));
+
+
+        console.log("CONNECTED DEVICES:", connectDevices);
         
         console.log("GET User Id", newLogs);
       // Send log request
@@ -185,7 +195,10 @@ function DeviceTable({ devices, setDevices, socket }) {
       console.error(error);
     }
   
+    
     localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
+    
+
   
     history.push({
       pathname: "/devices/command",
