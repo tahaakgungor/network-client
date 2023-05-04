@@ -7,20 +7,14 @@ import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import Cookies from "js-cookie";
 
 const Login = (props) => {
-
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loggedDate, setLoggedDate] = useState("");
   const [loggedTime, setLoggedTime] = useState("");
 
-  
-
   const dispatch = useDispatch();
-  
 
- 
   useEffect(() => {
     const date = new Date().toLocaleString("en-US", {
       timeZone: "Europe/Istanbul",
@@ -29,24 +23,21 @@ const Login = (props) => {
       day: "numeric",
     });
 
-      
     const time = new Date().toLocaleString("en-US", {
       timeZone: "Europe/Istanbul",
       hour: "numeric",
       minute: "numeric",
       hour12: true,
-    
     });
+
     const localDate = localStorage.setItem("lastLoginDate", date);
     const localTime = localStorage.setItem("lastLoginTime", time);
-    
 
     setLoggedDate(date);
     setLoggedTime(time);
+  }, []);
 
-  }, []); 
   const handleSubmit = async (event) => {
-    console.log("asdd", process.env.REACT_APP_BACKEND_URL);
     event.preventDefault();
     setError("");
 
@@ -71,13 +62,16 @@ const Login = (props) => {
           },
         }
       );
+
       const token = response.data.token;
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
-      if (token) {   
+
+      if (token) {
         console.log("token", token);
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
+
         const res = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}auth/user`,
           { email },
@@ -89,38 +83,45 @@ const Login = (props) => {
             },
           }
         );
+
         console.log("response of login", res.data[0]._id);
+
         const userId = res.data[0]._id;
         const localId = localStorage.setItem("userId", userId);
+        const getId = localStorage.getItem("userId");
+        console.log("GETT:",getId);
+
 
         const { role } = res.data[0];
+
         console.log("role", role);
 
-        dispatch(saveUser({ userId,email, role }));
+        dispatch(saveUser({ userId, email, role }));
+
         console.log("date", loggedDate);
         console.log("time", loggedTime);
 
-      const userLogPost = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/${userId}`,
-        {
-          user: userId,
-          date: loggedDate,
-          logintime: loggedTime,
-          logouttime: "",
-          status: "login",
-          duration: "",
-          activity: "",
-          notes: "",
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        const userLogPost = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}logs/user/${userId}`,
+          {
+            user: userId,
+            date: loggedDate,
+            logintime: loggedTime,
+            logouttime: "",
+            status: "login",
+            duration: "",
+            activity: "",
+            notes: "",
           },
-        }
-      );
-      console.log("userLogPost", userLogPost.data);
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("userLogPost", userLogPost.data);
       } else {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);

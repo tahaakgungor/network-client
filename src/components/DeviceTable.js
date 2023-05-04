@@ -21,7 +21,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
-
+  const getUserId = localStorage.getItem("userId");
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
@@ -37,10 +37,10 @@ function DeviceTable({ devices, setDevices, socket }) {
 
   const fetchUserLog = async () => {
     try {
-      const getUserId = localStorage.getItem("userId");
+
       console.log("getUserId", getUserId);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,{
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${getUserId}`,{
         params: {
           $orderby: { createdAt: -1 },
           $limit: 1,

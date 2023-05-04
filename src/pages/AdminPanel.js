@@ -20,7 +20,6 @@ const AdminPanel = () => {
 
   const userId = localStorage.getItem("userId");
 
-  console.log(userId);
   useEffect(() => {
     fetchUsers();
     fetchRoles();

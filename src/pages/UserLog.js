@@ -13,6 +13,20 @@ function UserLog() {
 
     const user = location.state.user;
 
+    const deleteLog = async (id) => {
+      try {
+        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}logs/user/${id}`);
+        fetchUserLog();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const handleDelete = (id) => {
+      deleteLog(id);
+    };
+
+
 
   
     useEffect(() => {
@@ -60,6 +74,8 @@ function UserLog() {
         <h5>User: {userInfo.name}</h5>
 
         <br></br>
+
+        <br></br>
         <table>
           
           <thead>
@@ -71,19 +87,24 @@ function UserLog() {
               <th>Logout Time</th>
               <th>Duration</th>
               <th>Activity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {userLog.map((log) => (
               <tr key={log._id}>
-     
+                
                 <td>{log.status}</td>
                 <td>{log.date}</td>
                 <td>{log.logintime}</td>
                 <td>{log.logouttime}</td>
                 <td>{log.duration} mn</td>
                 <td>{log.activity}</td>
-
+                <td>
+                <Button variant="danger" onClick={() => handleDelete(log._id)}>
+                  Delete
+                </Button>
+                </td>
               </tr>
             ))}
           </tbody>
