@@ -14,6 +14,11 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [count, setCount] = useState(0);
 
   const getTokens = localStorage.getItem("token");
+  const userId= localStorage.getItem("userId");
+  const userRole = localStorage.getItem("userRole");
+
+
+
 
   const dispatch = useDispatch();
   const userInfo = useSelector(
@@ -43,7 +48,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const fetchUserLog = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userId}`,
         {
           params: {
             $orderby: { createdAt: -1 },
@@ -92,7 +97,8 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       localStorage.removeItem("lastLoginDate");
       localStorage.removeItem("lastLoginTime");
       Cookies.remove("token");
-
+      localStorage.removeItem("userId");
+      localStorage.removeItem("userRole")
       localStorage.removeItem("isAuthenticated");
       localStorage.removeItem("token");
       localStorage.removeItem("loggedUser");
@@ -124,7 +130,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
                 Devices
               </Nav.Link>
 
-              {userInfo != null && userInfo.role == "admin" ? (
+              {userInfo != null && userRole == "admin" ? (
                 <Nav.Link as={Link} to="/admin">
                   Admin
                 </Nav.Link>

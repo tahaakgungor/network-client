@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import '../styles/Login.css'
+import CryptoJS from "crypto-js";
 
 import Cookies from "js-cookie";
 
@@ -88,8 +89,11 @@ const Login = (props) => {
         console.log("response of login", res.data[0]._id);
 
         const userId = res.data[0]._id;
+        console.log("userId", userId);
+        localStorage.setItem("userId", userId);
         const userRole = res.data[0].role;
-
+        localStorage.setItem("userRole", userRole);
+        
 
         const { role } = res.data[0];
 

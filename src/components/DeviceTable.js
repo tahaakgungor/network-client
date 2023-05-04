@@ -8,7 +8,7 @@ import {
   removeConnectedDevice,
 } from "../Redux/Device/deviceSlice";
 import CryptoJS from 'crypto-js';
-
+import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
@@ -23,11 +23,16 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
 
-  const secretKey = 'my-secret-key@123tT!';
+  const dispatch = useDispatch();
 
+  const secretKey = 'my-secret-key@123tT!';
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
+console.log("userInfo", userInfo)
+  const userId= localStorage.getItem("userId");
+  const userRole = localStorage.getItem("userRole");
+
 
 
 
@@ -47,7 +52,7 @@ function DeviceTable({ devices, setDevices, socket }) {
     try {
 
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userInfo.userId}`,{
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userId}`,{
         params: {
           $orderby: { createdAt: -1 },
           $limit: 1,
@@ -64,6 +69,7 @@ function DeviceTable({ devices, setDevices, socket }) {
 
 
   useEffect(() => {
+
     fetchUserLog();
     const fetchRoles = async () => {
       try {
@@ -205,11 +211,11 @@ function DeviceTable({ devices, setDevices, socket }) {
       state: { cihazlar: cihazlar },
     });
   };
-  
+
   const deviceIds =
-  userInfo.role === "admin"
+ userRole === "admin"
     ? filteredDevices.length > 0 ? filteredDevices.map((device) => device) : devices.map((device) => device)
-    : role.find((role) => role.name === userInfo.role)?.devices ?? [];
+    : role.find((role) => role.name ===userRole)?.devices ?? [];
 
   const filterSearch = (e) => {
     setFilter(e.target.value);
