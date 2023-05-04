@@ -44,10 +44,11 @@ function DeviceTable({ devices, setDevices, socket }) {
         params: {
           $orderby: { createdAt: -1 },
           $limit: 1,
+          userId: getUserId,
         },
       }
       );
-   
+      console.log("response", response.data);
       setUserLog(response.data[0]);
     } catch (error) {
       console.error(error);
@@ -144,6 +145,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   
     try {
       // Get information of all selected devices
+
       const deviceResArray = await Promise.all(
         cihazlar.map(async (deviceId) => {
           const response = await axios.get(
@@ -166,18 +168,16 @@ function DeviceTable({ devices, setDevices, socket }) {
         // Save the new logs to localStorage
         localStorage.setItem("logs", JSON.stringify(newLogs));
         
-
+        console.log("GET User Id", newLogs);
       // Send log request
       const requestBody = {
         activity: newLogs,
       };
+      console.log(newLogs)
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
         requestBody,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
         }
       );
       console.log("RESPONSE:", response);

@@ -26,11 +26,8 @@ const AdminPanel = () => {
     fetchUserLastLog();
     const interval = setInterval(() => {
       fetchUserLastLog();
-    }
-    , 1000);
+    }, 1000);
     return () => clearInterval(interval);
-
-
   }, []);
 
   useEffect(() => {
@@ -229,7 +226,6 @@ const AdminPanel = () => {
                       >
                         Log
                       </Button>{" "}
-
                       <Button
                         variant="primary"
                         onClick={() => handleEditUser(user)}

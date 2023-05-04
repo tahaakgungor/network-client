@@ -91,7 +91,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
         duration: count,
         logouttime: logoutTime,
       };
-
+      console.log("userLOG" , userLog.user)
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
         requestBody,
@@ -99,7 +99,6 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
