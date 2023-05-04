@@ -159,7 +159,7 @@ function DeviceTable({ devices, setDevices, socket }) {
       // Construct activity string
       const activityString = deviceResArray
         .map((device) => `${device.name}/${device.ip}`)
-        .join(",") + ` are edited at ${time}.`
+        .join(", ") + ` are edited at ${time}.`
 
 
         const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];

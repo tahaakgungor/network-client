@@ -3,6 +3,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
+import '../styles/Login.css'
 
 import Cookies from "js-cookie";
 
@@ -87,6 +88,8 @@ const Login = (props) => {
         console.log("response of login", res.data[0]._id);
 
         const userId = res.data[0]._id;
+        const userRole = res.data[0].role;
+        const localRole = localStorage.setItem("userRole", userRole);
         const localId = localStorage.setItem("userId", userId);
         const getId = localStorage.getItem("userId");
         console.log("GETT:",getId);

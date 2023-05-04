@@ -10,6 +10,7 @@
 }
 
 form{
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,9 +19,11 @@ form{
     margin: 0 auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
+
 }
 
 .all-command{
+    width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,4 +87,15 @@ form{
     font-family: 'Courier New', Courier, monospace;
     font-size: 1rem;
     color: #000;
+}
+
+.form-control{
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
 }

@@ -79,9 +79,9 @@ function RoleManagement() {
       <Row>
         <Col>
           <Card.Body>
-            <Form onSubmit={handleRoleSubmit}>
+            <Form className="form-role" onSubmit={handleRoleSubmit}>
               <Form.Group className="form-input-role">
-                <Form.Label>Role Name:</Form.Label>
+                <Form.Label>Role Name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter role name"
@@ -89,8 +89,9 @@ function RoleManagement() {
                   onChange={(e) => setRoleName(e.target.value)}
                 />
               </Form.Group>
+              <Form.Label>Devices</Form.Label>
               <Form.Group className="formDevList">
-                <Form.Label>Devices:</Form.Label>
+ 
                 {devices.map((device) => (
                   <div className="mb-2" key={device._id}>
                     <Form.Check
@@ -102,6 +103,7 @@ function RoleManagement() {
                   </div>
                 ))}
               </Form.Group>
+              <br/> 
               <Button variant="success" type="submit">
                 Add Role
               </Button>

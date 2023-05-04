@@ -129,7 +129,6 @@ function CommandPage({ socket }) {
           value={command}
           onChange={(e) => handleChange(e)}
         />
-
         <Button type="primary" htmlType="submit">
           Send
         </Button>
@@ -153,6 +152,7 @@ function CommandPage({ socket }) {
                   className="terminal"
                   onSubmit={(e) => handleOtherSubmit(e, id)}
                 >
+                  
                   <input
                     className="form-control form-control-sm"
                     type="text"
@@ -160,10 +160,13 @@ function CommandPage({ socket }) {
                     value={commandStates[id]}
                     onChange={(e) => handleOtherChange(e, id)}
                   />
+       
                   <Button type="primary" htmlType="submit">
                     Send
                   </Button>
+
                 </form>
+           
               </Output>
             ),
           }))}

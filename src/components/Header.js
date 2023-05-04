@@ -26,7 +26,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       const intervalId = setInterval(() => {
         setCount(count + 1);
 
-      }, 60000);
+      }, 1000);
 
       return () => {
         clearInterval(intervalId);

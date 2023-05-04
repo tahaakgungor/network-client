@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useHistory, useLocation } from "react-router-dom";
@@ -6,81 +6,68 @@ import axios from "axios";
 import "../styles/UserLog.css";
 
 function UserLog() {
-    const [userLog, setUserLog] = useState([]);
-    const [userInfo, setUserInfo] = useState([]);
-    const history = useHistory();
-    const location = useLocation();
+  const [userLog, setUserLog] = useState([]);
+  const [userInfo, setUserInfo] = useState([]);
+  const history = useHistory();
+  const location = useLocation();
 
-    const user = location.state.user;
+  const user = location.state.user;
 
-    const deleteLog = async (id) => {
-      try {
-        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}logs/user/${id}`);
-        fetchUserLog();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const handleDelete = (id) => {
-      deleteLog(id);
-    };
-
-
-
-  
-    useEffect(() => {
-      fetchUserInformation();
+  const deleteLog = async (id) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}logs/user/${id}`);
       fetchUserLog();
-      const intervalId = setInterval(() => {
-        fetchUserLog();
-      }
-      , 1000);
-      return () => {
-        clearInterval(intervalId);
-      };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
- 
-    }, []);
-  
-    const fetchUserLog = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}logs/user/${user._id}`
-        );
-        setUserLog(response.data);
+  const handleDelete = (id) => {
+    deleteLog(id);
+  };
 
-      } catch (error) {
-        console.error(error);
-      }
+  useEffect(() => {
+    fetchUserInformation();
+    fetchUserLog();
+    const intervalId = setInterval(() => {
+      fetchUserLog();
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
     };
+  }, []);
 
-    const fetchUserInformation = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}auth/user/${user._id}`
-        );
-        setUserInfo(response.data);
-  
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-    return (
-      <div className="user-log-container">
-        <br></br>
-      
-        <h5>User: {userInfo.name}</h5>
+  const fetchUserLog = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/${user._id}`
+      );
+      setUserLog(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        <br></br>
+  const fetchUserInformation = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}auth/user/${user._id}`
+      );
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        <br></br>
+  return (
+    <div className="user-log-container">
+      <br></br>
+
+      <h5>{userInfo.name}</h5>
+      <div className="user-table">
         <table>
-          
           <thead>
             <tr>
-
               <th>Status</th>
               <th>Logged Date</th>
               <th>Login Time</th>
@@ -93,29 +80,33 @@ function UserLog() {
           <tbody>
             {userLog.map((log) => (
               <tr key={log._id}>
-                
                 <td>{log.status}</td>
                 <td>{log.date}</td>
                 <td>{log.logintime}</td>
                 <td>{log.logouttime}</td>
-                <td>{log.duration} mn</td>
+                <td>{log.duration} sec</td>
                 <td>{log.activity}</td>
                 <td>
-                <Button variant="danger" onClick={() => handleDelete(log._id)}>
-                  Delete
-                </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(log._id)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <br></br>
-        <Link to="/admin">
-          <Button variant='primary'>Back to Admin Panel</Button>
-        </Link>
       </div>
-    );
-  }
-  
-  export default UserLog;
-  
+      <div className="back-to-admin">
+      <Link to="/admin">
+        <Button variant="primary">Back to Admin Panel</Button>
+      </Link>
+      </div>
+    
+    </div>
+  );
+}
+
+export default UserLog;

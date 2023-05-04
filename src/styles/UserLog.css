@@ -1,35 +1,68 @@
 .user-log-container {
-    margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.user-log-container h5 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.user-table {
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 1rem;
+  max-height: 47.1rem;
+}
+
+.user-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.user-table th {
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
+
+.user-table td button {
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
+
+.user-table td button:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .user-table {
+    overflow-x: scroll;
+  }
+}
+
+.back-to-admin {
+  margin-left: auto;
+  margin-right: 2rem;
+
+}
+
+  
+
+
+  .table-header {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th,
-  td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  tr:hover {
-    background-color: #ddd;
-  }
-  
-  .Button {
-    margin-top: 20px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
   }
   

@@ -1,13 +1,13 @@
-// DeviceList.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DeviceTable from "../components/DeviceTable";
 import DeviceForm from "../components/DeviceForm";
+import "../styles/DeviceList.css"
+import { Button } from "react-bootstrap";
 
 function DeviceList() {
   const [devices, setDevices] = useState([]);
-
-  
+  const [showDeviceForm, setShowDeviceForm] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
@@ -23,10 +23,22 @@ function DeviceList() {
     fetchData();
   }, []);
 
+  const handleShowDeviceForm = () => {
+    setShowDeviceForm(true);
+  };
+
+  const handleHideDeviceForm = () => {
+    setShowDeviceForm(false);
+  };
+
   return (
     <div>
-      <DeviceForm setDevices={setDevices} />
+
+      {showDeviceForm && <DeviceForm setDevices={setDevices} onHide={handleHideDeviceForm} />}
       <DeviceTable devices={devices} setDevices={setDevices} />
+      <Button className="btn-list" variant="primary" onClick={handleShowDeviceForm}>
+        Add New Device
+      </Button>
     </div>
   );
 }
