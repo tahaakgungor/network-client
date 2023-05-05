@@ -15,22 +15,14 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [count, setCount] = useState(0);
 
   const getTokens = localStorage.getItem("token");
-  if(getTokens){
-
-
+  if (getTokens) {
   }
-
 
   const userRole = localStorage.getItem("userRole");
 
-
-
-
-  const dispatch = useDispatch();
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
-
 
   useEffect(() => {
     if (getTokens) {
@@ -51,7 +43,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       const decoded = jwt_decode(getTokens);
 
       const uid = decoded.userId;
-      console.log("getTokens", uid);
+
       fetchUserLog(uid);
     }
   }, [userLog, getTokens]);
@@ -108,8 +100,9 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       localStorage.removeItem("lastLoginDate");
       localStorage.removeItem("lastLoginTime");
       Cookies.remove("token");
+      localStorage.removeItem("token");
       localStorage.removeItem("userId");
-      localStorage.removeItem("userRole")
+      localStorage.removeItem("userRole");
       localStorage.removeItem("isAuthenticated");
       localStorage.removeItem("token");
       localStorage.removeItem("loggedUser");

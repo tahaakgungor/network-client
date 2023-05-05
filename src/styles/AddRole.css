@@ -6,6 +6,9 @@
   border-radius: 0.25rem;
   padding: 1rem;
   display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+
 }
 
 
@@ -18,6 +21,8 @@
   overflow-y: auto;
   padding: 1rem;
   background-color: #fff;
+  
+  
 
 }
 
@@ -28,6 +33,7 @@
   margin-bottom: 1rem;
   vertical-align: top; 
   border: 1px solid #ced4da;
+  
   padding: 1rem;
   border-radius: 0.25rem;
   justify-content: space-between;
@@ -53,14 +59,17 @@
   margin-top: 1rem;
   max-height: 40rem;
   overflow-y: auto;
+  
 }
 
 .list-group {
   margin-bottom: 1rem;
+  
 }
 
 .list-group-item {
   margin: 0.5rem 1;
+  
 }
 
 .btn {

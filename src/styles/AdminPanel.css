@@ -1,142 +1,90 @@
-.admin-form {
-    width: 80%;
-    margin: auto;
-  }
+.admin-forms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
   
-  .admin-form table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+          
   
-  .admin-form th,
-  .admin-form td {
-    padding: 0.5rem;
-    border: 1px solid #dee2e6;
-    text-align: center;
-  }
+}
+.admin-form{
+  display: flex;
+  overflow-y: auto;
+  max-height: 38.3rem;
+  margin: 2rem;
   
-  .admin-form th {
-    font-weight: bold;
-    background-color: #f8f9fa;
-  }
   
-  .admin-form td button {
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
-  }
-  
-  .admin-form td button:hover {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #fff;
-  }
-  
-  .admin-form .add-user {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  .admin-form .add-user button {
-    padding: 0.5rem 2rem;
-  }
-  
-  .admin-form .role-changes {
-    display: flex;
-    align-items: center;
-  }
-  
-  .admin-form .role-changes select {
-    margin-left: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .admin-form .edit-update-cancel {
-    margin-top: 1rem;
-  }
-  
-  .admin-form .edit-update-cancel button {
-    margin-right: 1rem;
-  }
-  
-  @media (max-width: 768px) {
-    .admin-form table {
-      font-size: 0.8rem;
-    }
-  
-    .admin-form td button {
-      font-size: 0.8rem;
-    }
-  
-    .admin-form .add-user button {
-      font-size: 0.8rem;
-    }
-  }
+}
 
-  .admin-forms {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    
-    
-    }
-    
-    .admin-forms div {
-    margin-bottom: 10px;
- 
+.admin-forms div {
+  margin-bottom: 10px;
 
-    }
-    
-    .admin-forms label {
-    font-weight: bold;
-    margin-right: 10px;
-    }
-    
-    .admin-forms input[type="text"],
-    .admin-forms input[type="email"],
-    .admin-forms select {
-    width: 250px;
-    height: 30px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    padding: 5px;
-    font-size: 16px;
-    }
-    
-    .admin-forms select {
-    width: 256px;
-    
-    }
-    
-    .admin-forms .role-changes {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    
-    }
-    
-    .edit-update-cancel {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 10px;
-    }
-    
-    .edit-update-cancel button {
-    width: 100px;
-    margin: 0 10px;
-    }
+}
 
-    .add-user{
-        margin-left: 10rem;
-    }
-    
-    
-    
-    
-    
-    
-    
+.admin-forms label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+
+.admin-forms select {
+  width: 256px;
+}
+
+.admin-forms .role-changes {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.admin-forms .edit-update-cancel {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.admin-forms .edit-update-cancel button {
+  width: 100px;
+  margin: 0 10px;
+}
+
+.form-group label {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 14px;
+}
+.form-group input {
+  width: 100%;
+  height: 30px;
+  font-size: 14px;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
   
+  
+}
+.form-group input:focus {
+  outline: none;
+  border-color: #2e6da4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.add-user{
+  margin: 2rem;
+  display: flex;
+  margin-bottom: 3rem;
+  margin-right: 2rem;
+}

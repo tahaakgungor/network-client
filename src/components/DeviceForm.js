@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import "../styles/DeviceForm.css";
 
 function DeviceForm({ setDevices, onHide }) {
   const [formData, setFormData] = useState({
@@ -41,75 +42,75 @@ function DeviceForm({ setDevices, onHide }) {
         <Modal.Title>Add New Device</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
+        <form  onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Name</label>
             <input
               type="text"
               className="form-control"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter name"
             />
           </div>
           <div className="form-group">
-            <label>IP Address</label>
             <input
               type="text"
               className="form-control"
               name="ip"
               value={formData.ip}
               onChange={handleChange}
+              placeholder="Enter IP Address"
             />
           </div>
           <div className="form-group">
-            <label>Username</label>
             <input
               type="text"
               className="form-control"
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder="Enter Username"
             />
           </div>
           <div className="form-group">
-            <label>Password</label>
             <input
               type="text"
               className="form-control"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter Password"
             />
           </div>
           <div className="form-group">
-            <label>Host</label>
             <input
               type="text"
               className="form-control"
               name="host"
               value={formData.host}
               onChange={handleChange}
+              placeholder="Enter Host"
             />
           </div>
           <div className="form-group">
-            <label>Device Type</label>
             <input
               type="text"
               className="form-control"
               name="device_type"
               value={formData.device_type}
               onChange={handleChange}
+              placeholder="Enter Device Type"
             />
           </div>
           <div className="form-group">
-            <label>Secret</label>
             <input
               type="text"
               className="form-control"
               name="secret"
               value={formData.secret}
               onChange={handleChange}
+              placeholder="Enter Secret"
             />
           </div>
           <br></br>

@@ -66,8 +66,10 @@ const Login = (props) => {
           },
         }
       );
+      console.log("RESS LOG", response);
 
       const token = response.data.token;
+      console.log("tokeasdasdn", token);
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
  
@@ -147,8 +149,8 @@ const Login = (props) => {
 
   return (
     <div className="login">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
+      <Form className="login-form" onSubmit={handleSubmit}>
+        <Form.Group  controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"

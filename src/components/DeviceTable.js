@@ -24,15 +24,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
 
-  const dispatch = useDispatch();
-
-  const secretKey = "my-secret-key@123tT!";
-  const userInfo = useSelector(
-    (state) => state.userInformation.userInformation
-  );
-
   const getTokens = localStorage.getItem("token");
-
 
   const userRole = localStorage.getItem("userRole");
 
@@ -63,10 +55,10 @@ function DeviceTable({ devices, setDevices, socket }) {
   };
 
   useEffect(() => {
-    if(getTokens){
+    if (getTokens) {
       const decoded = jwt_decode(getTokens);
       const uid = decoded.userId;
-    fetchUserLog(uid);
+      fetchUserLog(uid);
     }
     const fetchRoles = async () => {
       try {
@@ -372,7 +364,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                         </td>
                         <td>
                           <button
-                            className="btn btn-primary"
+                            className="btn btn-secondary"
                             onClick={handleCancel}
                           >
                             Cancel

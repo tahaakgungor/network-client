@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  
 }
 
 .filter {
@@ -52,4 +53,5 @@
 .form-control {
   width: 300px;
   margin-right: 20px;
+
 }

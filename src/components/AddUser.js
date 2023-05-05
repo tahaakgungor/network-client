@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
 import "../styles/AddUser.css";
 
-const AddUser = ({ onAddUser }) => {
+const AddUser = ({ showModal, setShowModal }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [showForm, setShowForm] = useState(true);
   const [roles, setRoles] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({
+    role: "",
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -18,6 +20,7 @@ const AddUser = ({ onAddUser }) => {
           `${process.env.REACT_APP_BACKEND_URL}roles`
         );
         setRoles(response.data);
+        setSelectedUser({ role: response.data[0].name });
       } catch (error) {
         console.error(error);
       }
@@ -25,14 +28,9 @@ const AddUser = ({ onAddUser }) => {
     fetchData();
   }, []);
 
-  const [selectedUser, setSelectedUser] = useState({
-    role: roles[0]?.name || "",
-  });
-
   const handleRoleChange = (e) => {
     const newRole = e.target.value;
-    setSelectedUser({ ...selectedUser, role: newRole || (roles.length > 0 ? roles[0].name : "Seçim yok") });
-
+    setSelectedUser({ ...selectedUser, role: newRole });
   };
 
   const handleSubmit = async (event) => {
@@ -55,6 +53,15 @@ const AddUser = ({ onAddUser }) => {
     }
 
     try {
+      const existingUsers = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}auth/users`
+      );
+      
+      if (existingUsers.data.some(user => user.email === email)) {
+        setError("A user with this email already exists");
+        return;
+      }
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}auth/signup`,
         {
@@ -66,86 +73,66 @@ const AddUser = ({ onAddUser }) => {
       );
 
       const newUser = response.data.user;
-      onAddUser(newUser);
-
-      // Ekleme işlemi başarıyla tamamlandığında formu kapat
-      setShowForm(false);
+      setShowModal(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleCancel = () => {
-    setShowForm(false);
-    onAddUser(null);
-  };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          {showForm && (
-            <div>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicName">
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Form.Group>
-                <div className="role-change">
-                  <Form.Group controlId="formBasicRole">
-                    <div className="role-label">
-                      <Form.Label>Role</Form.Label>
-                    </div>
-                    <Form.Control
-                      as="select"
-                      value={selectedUser.role}
-                      onChange={handleRoleChange}
-                    >
-                      {roles.map((role) => (
-                        <option key={role.id}>{role.name}</option>
-                      ))}
-                    </Form.Control>
-                  </Form.Group>
-                </div>
+    <>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Control
+              type="text"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
-                <div className="button-group">
-                  <Button variant="success" type="submit">
-                    Submit
-                  </Button>
-                  <Button variant="danger" onClick={handleCancel}>
-                    Cancel
-                  </Button>
-                </div>
-              </Form>
-              {error && <p className="error">{error}</p>}
-            </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <Form.Control
+              as="select"
+              value={selectedUser.role}
+              onChange={handleRoleChange}
+            >
+              {roles.map((role) => (
+                <option key={role._id} value={role.name} >
+                  {role.name}
+                </option>
+              ))}
+            </Form.Control>
+            {error && <p className="error">{error}</p>}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit" onClick={handleSubmit}>
+            Add User
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
