@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "../styles/Header.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 
@@ -14,7 +15,12 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [count, setCount] = useState(0);
 
   const getTokens = localStorage.getItem("token");
-  const userId= localStorage.getItem("userId");
+  if(getTokens){
+
+
+  }
+
+
   const userRole = localStorage.getItem("userRole");
 
 
@@ -24,6 +30,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
+
 
   useEffect(() => {
     if (getTokens) {
@@ -41,14 +48,18 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
 
   useEffect(() => {
     if (getTokens) {
-      fetchUserLog();
+      const decoded = jwt_decode(getTokens);
+
+      const uid = decoded.userId;
+      console.log("getTokens", uid);
+      fetchUserLog(uid);
     }
   }, [userLog, getTokens]);
 
-  const fetchUserLog = async () => {
+  const fetchUserLog = async (uid) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${uid}`,
         {
           params: {
             $orderby: { createdAt: -1 },

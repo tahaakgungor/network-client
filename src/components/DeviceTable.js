@@ -7,8 +7,9 @@ import {
   addConnectedDevice,
   removeConnectedDevice,
 } from "../Redux/Device/deviceSlice";
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
+import jwt_decode from "jwt-decode";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
@@ -25,40 +26,34 @@ function DeviceTable({ devices, setDevices, socket }) {
 
   const dispatch = useDispatch();
 
-  const secretKey = 'my-secret-key@123tT!';
+  const secretKey = "my-secret-key@123tT!";
   const userInfo = useSelector(
     (state) => state.userInformation.userInformation
   );
-console.log("userInfo", userInfo)
-  const userId= localStorage.getItem("userId");
+
+  const getTokens = localStorage.getItem("token");
+
+
   const userRole = localStorage.getItem("userRole");
-
-
-
-
-
-
 
   const time = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Istanbul",
     hour: "numeric",
     minute: "numeric",
     hour12: true,
-  
   });
 
-
-  const fetchUserLog = async () => {
+  const fetchUserLog = async (uid) => {
     try {
-
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${userId}`,{
-        params: {
-          $orderby: { createdAt: -1 },
-          $limit: 1,
-          userId: userInfo.userId,
-        },
-      }
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${uid}`,
+        {
+          params: {
+            $orderby: { createdAt: -1 },
+            $limit: 1,
+            userId: uid,
+          },
+        }
       );
       console.log("response", response.data);
       setUserLog(response.data[0]);
@@ -67,10 +62,12 @@ console.log("userInfo", userInfo)
     }
   };
 
-
   useEffect(() => {
-
-    fetchUserLog();
+    if(getTokens){
+      const decoded = jwt_decode(getTokens);
+      const uid = decoded.userId;
+    fetchUserLog(uid);
+    }
     const fetchRoles = async () => {
       try {
         const response = await axios.get(
@@ -155,7 +152,7 @@ console.log("userInfo", userInfo)
       alert("Please select at least one device.");
       return;
     }
-  
+
     try {
       // Get information of all selected devices
 
@@ -168,44 +165,39 @@ console.log("userInfo", userInfo)
         })
       );
       console.log("DEVICE RES:", deviceResArray);
-  
+
       // Construct activity string
-      const activityString = deviceResArray
-        .map((device) => `${device.name}/${device.ip}`)
-        .join(", ") + ` are edited at ${time}.`
+      const activityString =
+        deviceResArray
+          .map((device) => `${device.name}/${device.ip}`)
+          .join(", ") + ` are edited at ${time}.`;
 
+      const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];
+      const newLogs = [...currentLogs, activityString];
 
-        const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];
-        const newLogs = [...currentLogs, activityString];
-    
-        // Save the new logs to localStorage
-        localStorage.setItem("logs", JSON.stringify(newLogs));
+      // Save the new logs to localStorage
+      localStorage.setItem("logs", JSON.stringify(newLogs));
 
+      console.log("CONNECTED DEVICES:", connectDevices);
 
-        console.log("CONNECTED DEVICES:", connectDevices);
-        
-        console.log("GET User Id", newLogs);
+      console.log("GET User Id", newLogs);
       // Send log request
       const requestBody = {
         activity: newLogs,
       };
-      console.log(newLogs)
+      console.log(newLogs);
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
         requestBody,
-        {
-        }
+        {}
       );
       console.log("RESPONSE:", response);
     } catch (error) {
       console.error(error);
     }
-  
-    
-    localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
-    
 
-  
+    localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
+
     history.push({
       pathname: "/devices/command",
       state: { cihazlar: cihazlar },
@@ -213,13 +205,15 @@ console.log("userInfo", userInfo)
   };
 
   const deviceIds =
- userRole === "admin"
-    ? filteredDevices.length > 0 ? filteredDevices.map((device) => device) : devices.map((device) => device)
-    : role.find((role) => role.name ===userRole)?.devices ?? [];
+    userRole === "admin"
+      ? filteredDevices.length > 0
+        ? filteredDevices.map((device) => device)
+        : devices.map((device) => device)
+      : role.find((role) => role.name === userRole)?.devices ?? [];
 
   const filterSearch = (e) => {
     setFilter(e.target.value);
-   
+
     const filt = devices.filter((device) => {
       return (
         device.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
@@ -234,10 +228,7 @@ console.log("userInfo", userInfo)
       );
     });
     setFilteredDevices(filt);
-
-
   };
-
 
   return (
     <div className="contain">

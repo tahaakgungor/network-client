@@ -31,7 +31,8 @@ const AddUser = ({ onAddUser }) => {
 
   const handleRoleChange = (e) => {
     const newRole = e.target.value;
-    setSelectedUser({ ...selectedUser, role: newRole || roles[0]?.name || "" });
+    setSelectedUser({ ...selectedUser, role: newRole || (roles.length > 0 ? roles[0].name : "Seçim yok") });
+
   };
 
   const handleSubmit = async (event) => {
