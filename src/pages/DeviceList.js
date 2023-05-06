@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DeviceTable from "../components/DeviceTable";
 import DeviceForm from "../components/DeviceForm";
+import SnmpForm from "../components/SnmpForm";
 import "../styles/DeviceList.css"
 import { Button } from "react-bootstrap";
 
@@ -39,6 +40,10 @@ function DeviceList() {
       <Button className="btn-list" variant="primary" onClick={handleShowDeviceForm}>
         Add New Device
       </Button>
+      <br />
+      <br />
+      <SnmpForm />
+
     </div>
   );
 }
