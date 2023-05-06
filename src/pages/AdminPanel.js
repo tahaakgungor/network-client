@@ -20,10 +20,10 @@ const AdminPanel = () => {
 
   useEffect(() => {
     fetchUsers();
-    fetchRoles();
     fetchUserLastLog();
     const interval = setInterval(() => {
       fetchUserLastLog();
+      fetchRoles();
     }, 1000);
     return () => clearInterval(interval);
   }, []);

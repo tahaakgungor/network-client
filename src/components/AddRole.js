@@ -4,10 +4,12 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import "../styles/AddRole.css";
 
 function RoleManagement() {
+  const [error, setError] = useState(null);
   const [devices, setDevices] = useState([]);
   const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [selectedDevices, setSelectedDevices] = useState([]);
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -41,6 +43,15 @@ function RoleManagement() {
       devices: selectedDevices,
     };
     try {
+      if (roleName.length < 3) {
+        setError("Role name should be at least 3 characters long");
+        return;
+      }
+      if (selectedDevices.length === 0) {
+        setError("Please select at least one device");
+        return;
+      }
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}roles`,
         roleData
@@ -103,7 +114,9 @@ function RoleManagement() {
                   </div>
                 ))}
               </Form.Group>
+
               <br/> 
+              {error && <div className="alert alert-danger">{error}</div>}
               <Button variant="success" type="submit">
                 Add Role
               </Button>
