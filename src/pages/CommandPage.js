@@ -5,6 +5,8 @@ import { Tabs } from "antd";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "antd";
+import { FaTimes, FaPlusSquare } from "react-icons/fa";
+
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";

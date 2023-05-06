@@ -162,7 +162,7 @@ function DeviceTable({ devices, setDevices, socket }) {
       const activityString =
         deviceResArray
           .map((device) => `${device.name}/${device.ip}`)
-          .join(", ") + ` are edited at ${time}.`;
+          .join(", ") + ` are edited at ${time}. `;
 
       const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];
       const newLogs = [...currentLogs, activityString];
@@ -353,23 +353,27 @@ function DeviceTable({ devices, setDevices, socket }) {
                   </td>
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
-                      <div>
-                        <td>
+                      <div className="save-cancel">
+                        <div
+                          className="save-cancel"
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <button
                             className="btn btn-success"
                             onClick={handleSubmit}
                           >
                             Save
                           </button>
-                        </td>
-                        <td>
                           <button
                             className="btn btn-secondary"
                             onClick={handleCancel}
                           >
                             Cancel
                           </button>
-                        </td>
+                        </div>
                       </div>
                     ) : (
                       <div>

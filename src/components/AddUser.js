@@ -14,19 +14,23 @@ const AddUser = ({ showModal, setShowModal }) => {
   });
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}roles`
-        );
-        setRoles(response.data);
-        setSelectedUser({ role: response.data[0].name });
-      } catch (error) {
-        console.error(error);
-      }
-    }
+const interval = setInterval(() => {
     fetchData();
+  }, 1000);
+  return () => clearInterval(interval);
   }, []);
+  
+  async function fetchData() {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}roles`
+      );
+      setRoles(response.data);
+      setSelectedUser({ role: response.data[0].name });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleRoleChange = (e) => {
     const newRole = e.target.value;
@@ -120,7 +124,7 @@ const AddUser = ({ showModal, setShowModal }) => {
                 </option>
               ))}
             </Form.Control>
-            {error && <p className="error">{error}</p>}
+            {error && <div className="alert alert-danger">{error}</div>}  
           </Form>
         </Modal.Body>
         <Modal.Footer>

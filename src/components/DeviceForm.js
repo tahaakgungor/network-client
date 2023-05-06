@@ -4,6 +4,7 @@ import axios from "axios";
 import "../styles/DeviceForm.css";
 
 function DeviceForm({ setDevices, onHide }) {
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     ip: "",
@@ -24,6 +25,36 @@ function DeviceForm({ setDevices, onHide }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (formData.name === "") {
+        setError("Name is required");
+        return;
+      }
+      if (formData.ip === "") {
+        setError("IP Address is required");
+        return;
+      }
+      if (formData.username === "") {
+        setError("Username is required");
+        return;
+      }
+      if (formData.password === "") {
+        setError("Password is required");
+        return;
+      }
+      if (formData.host === "") {
+        setError("Host is required");
+        return;
+      }
+      if (formData.device_type === "") {
+        setError("Device Type is required");
+        return;
+      }
+      if (formData.secret === "") {
+        setError("Secret is required");
+        return;
+      }
+      setError(null);
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}devices`,
         formData
@@ -113,6 +144,7 @@ function DeviceForm({ setDevices, onHide }) {
               placeholder="Enter Secret"
             />
           </div>
+          {error && <div className="alert alert-danger">{error}</div>}
           <br></br>
           <div>
           <Button variant="primary" type="submit">
