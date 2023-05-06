@@ -5,7 +5,7 @@ import axios from "axios";
 function SnmpForm() {
   const [host, setHost] = useState("");
   const [community, setCommunity] = useState("");
-  const [oid, setOid] = useState("");
+  const [oids, setOids] = useState(new Array(7).fill(""));
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -22,7 +22,7 @@ function SnmpForm() {
       const snmpData = {
         host,
         community,
-        oid,
+        oids,
       };
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}snmp`,
@@ -36,6 +36,12 @@ function SnmpForm() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOidChange = (index, value) => {
+    const newOids = [...oids];
+    newOids[index] = value;
+    setOids(newOids);
   };
 
   return (
@@ -70,15 +76,17 @@ function SnmpForm() {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicOid">
-              <Form.Label>OID</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter OID"
-                value={oid}
-                onChange={(e) => setOid(e.target.value)}
-              />
-            </Form.Group>
+            {[...Array(7)].map((_, index) => (
+              <Form.Group key={index} controlId={`formBasicOid-${index}`}>
+                <Form.Label>OID {index + 1}</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={`Enter OID ${index + 1}`}
+                  value={oids[index]}
+                  onChange={(e) => handleOidChange(index, e.target.value)}
+                />
+              </Form.Group>
+            ))}
 
             {isError && <div className="alert alert-danger">{errorMessage}</div>}
             <Button variant="primary" type="submit" disabled={isLoading}>

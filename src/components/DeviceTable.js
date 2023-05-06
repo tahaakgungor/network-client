@@ -56,9 +56,12 @@ function DeviceTable({ devices, setDevices, socket }) {
 
   useEffect(() => {
     if (getTokens) {
+      
       const decoded = jwt_decode(getTokens);
       const uid = decoded.userId;
       fetchUserLog(uid);
+      fetchSnmpInfo();
+
     }
     const fetchRoles = async () => {
       try {
@@ -72,6 +75,17 @@ function DeviceTable({ devices, setDevices, socket }) {
     };
     fetchRoles();
   }, []);
+
+  const fetchSnmpInfo = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}snmp`
+      );
+      console.log("response", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSelect = (id) => {
     if (selectedDevices.includes(id)) {
