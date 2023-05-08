@@ -76,17 +76,16 @@ function SnmpForm() {
               />
             </Form.Group>
 
-            {[...Array(7)].map((_, index) => (
-              <Form.Group key={index} controlId={`formBasicOid-${index}`}>
-                <Form.Label>OID {index + 1}</Form.Label>
+
+              <Form.Group controlId="formBasicOid">
+                <Form.Label>OIDS</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder={`Enter OID ${index + 1}`}
-                  value={oids[index]}
+                  placeholder="Enter OID Like 1.3.1.4.1"
+                  value={oids}
                   onChange={(e) => handleOidChange(index, e.target.value)}
                 />
               </Form.Group>
-            ))}
 
             {isError && <div className="alert alert-danger">{errorMessage}</div>}
             <Button variant="primary" type="submit" disabled={isLoading}>
