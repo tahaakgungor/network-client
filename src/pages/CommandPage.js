@@ -8,7 +8,6 @@ import axios from "axios";
 import { Button } from "antd";
 import { FaTimes, FaPlusSquare } from "react-icons/fa";
 
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
@@ -20,8 +19,6 @@ function CommandPage({ socket }) {
   const [activeTab, setActiveTab] = useState(null);
 
   const location = useLocation();
-
-
 
   const storedDevices = localStorage.getItem("cihazlar");
   const devices = storedDevices
@@ -78,6 +75,13 @@ function CommandPage({ socket }) {
 
     fetchDeviceNames();
   }, [devices]);
+
+  const handleOpenWindow = (deviceId) => {
+    const url = `http://localhost:3000/terminal/${deviceId}`;
+    window.open(url, "Connect", "width=800,height=600");
+    
+    
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -157,7 +161,6 @@ function CommandPage({ socket }) {
                   className="terminal"
                   onSubmit={(e) => handleOtherSubmit(e, id)}
                 >
-                  
                   <input
                     className="form-control form-control-sm"
                     type="text"
@@ -165,21 +168,22 @@ function CommandPage({ socket }) {
                     value={commandStates[id]}
                     onChange={(e) => handleOtherChange(e, id)}
                   />
-       
+
                   <Button type="primary" htmlType="submit">
                     Send
                   </Button>
-
                 </form>
-           
               </Output>
             ),
           }))}
         />
       </div>
-
+      {devices.map((deviceId, index) => (
+        <Button key={index} onClick={() => handleOpenWindow(deviceId)}>
+          Connect to {deviceNames[index]}
+        </Button>
+      ))}
     </div>
-
   );
 }
 

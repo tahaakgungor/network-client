@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import AdminPanel from "./pages/AdminPanel";
+import TerminalPopUp from "./pages/TerminalPopUp";
 import UserLog from "./pages/UserLog";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -13,6 +14,7 @@ import {
   Switch,
   Route,
   Redirect,
+
 } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -20,6 +22,8 @@ import { io } from "socket.io-client";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
+
+
 
   
   useEffect(() => {
@@ -44,13 +48,20 @@ function App() {
   }, []);
 
 
+  const visitedPAge = localStorage.getItem("lastVisitedPage");
+  console.log("Terminall", visitedPAge);
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
+
+  };
+
+  const handleCloseWindow = () => {
+    localStorage.setItem("lastVisitedPage", "/devices");
   };
 
   return (
     <Router>
-      <Header setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated}  />
+    <Header setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated}  />
       <Switch>
         <Route exact path="/login">
           {isAuthenticated ? (
@@ -99,9 +110,15 @@ function App() {
             <Redirect to="/login" />
           )}
         </Route>
+
+        <Route exact path="/terminal/:id">
+          <TerminalPopUp   onChange={handlePageChange} setLastVisitedPage={localStorage.setItem} />
+        </Route>
+   
         <Redirect to="/login" />
       </Switch>
     </Router>
+
   );
 }
 
