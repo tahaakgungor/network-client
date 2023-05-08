@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Output from "../components/Output";
+import SnmpForm from "../components/SnmpForm";
 import { Tabs } from "antd";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -176,7 +177,9 @@ function CommandPage({ socket }) {
           }))}
         />
       </div>
+
     </div>
+
   );
 }
 

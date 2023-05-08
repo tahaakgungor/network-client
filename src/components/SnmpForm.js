@@ -5,7 +5,7 @@ import axios from "axios";
 function SnmpForm() {
   const [host, setHost] = useState("");
   const [community, setCommunity] = useState("");
-  const [oids, setOids] = useState(new Array(7).fill(""));
+  const [oids, setOids] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -39,11 +39,10 @@ function SnmpForm() {
   };
 
   const handleOidChange = (index, value) => {
-    const newOids = [...oids];
-    newOids[index] = value;
-    setOids(newOids);
+    const tempOids = [...oids];
+    tempOids[index] = value;
+    setOids(tempOids);
   };
-
   return (
     <>
       <Button className="btn-list" variant="primary" onClick={() => setShowModal(true)}>
@@ -83,7 +82,7 @@ function SnmpForm() {
                   type="text"
                   placeholder="Enter OID Like 1.3.1.4.1"
                   value={oids}
-                  onChange={(e) => handleOidChange(index, e.target.value)}
+                  onChange={(e) => setOids(e.target.value)}
                 />
               </Form.Group>
 
