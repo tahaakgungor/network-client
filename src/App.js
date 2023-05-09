@@ -110,6 +110,7 @@ function App() {
         </Route>
 
         <Route exact path="/terminal/:id">
+            <TerminalPopUp socket={socket} onChange={handlePageChange} />
 
         </Route>
    

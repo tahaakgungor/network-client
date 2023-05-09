@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Output from "../components/Output";
 import SnmpForm from "../components/SnmpForm";
 import { Tabs } from "antd";
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "antd";
 import { FaTimes, FaPlusSquare } from "react-icons/fa";
-
+import { BsHouseDoorFill, BsInfoCircleFill, BsFillEnvelopeFill, BsFillGearFill, BsFillAspectRatioFill } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
@@ -17,14 +17,21 @@ function CommandPage({ socket }) {
   const [output, setOutput] = useState([]);
   const [deviceNames, setDeviceNames] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
-
   const location = useLocation();
 
+  localStorage.setItem("output", JSON.stringify(output));
   const storedDevices = localStorage.getItem("cihazlar");
   const devices = storedDevices
     ? JSON.parse(storedDevices)
     : location.state.cihazlar;
 
+    useEffect(() => {
+      const storedOutput = JSON.parse(localStorage.getItem("output"));
+      if (storedOutput) {
+        setOutput(storedOutput);
+      }
+    }, []);
+    
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
 
@@ -42,7 +49,6 @@ function CommandPage({ socket }) {
     devices.forEach((deviceId) => {
       console.log("output" + deviceId);
       socket.on("output" + deviceId, (result) => {
-        console.log(result);
         setOutput((prevState) =>
           prevState.map((deviceOutput) =>
             deviceOutput.id === deviceId
@@ -78,30 +84,9 @@ function CommandPage({ socket }) {
 
   const handleOpenWindow = (deviceId) => {
     const url = `http://localhost:3000/terminal/${deviceId}`;
-    const win = window.open(url, "Connect", "width=800,height=600");
+    window.open(url, "_blank", "width=800,height=600");
   
-    const outputInterval = setInterval(() => {
-      if (win.closed) {
-        clearInterval(outputInterval);
-      } else {
-        win.postMessage({ type: "getOutput", deviceId }, "*");
-      }
-    }, 1000);
-  
-    window.addEventListener("message", (event) => {
-      if (event.origin !== "http://localhost:3000") return;
-      if (event.data.type === "output") {
-        setOutput((prevState) =>
-          prevState.map((deviceOutput) =>
-            deviceOutput.id === deviceId
-              ? { ...deviceOutput, output: deviceOutput.output + event.data.output }
-              : deviceOutput
-          )
-        );
-      }
-    });
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -146,6 +131,12 @@ function CommandPage({ socket }) {
     setCommandStates((prevOutput) => ({ ...prevOutput, [deviceId]: "" }));
   };
 
+  const handleTabClose = (e, deviceId) => {
+    e.stopPropagation();
+    setOutput((prevState) => prevState.filter((device) => device.id !== deviceId));
+    setActiveTab(null);
+  };
+
   return (
     <div className="command-page">
       <form className="all-command" onSubmit={(e) => handleSubmit(e)}>
@@ -166,9 +157,13 @@ function CommandPage({ socket }) {
       <div>
         <Tabs
           className="tabs"
+          type= "editable-card"
           items={output.map(({ id, output, input }, index) => ({
             key: index,
             label: deviceNames[index] || id,
+            closeable: true,
+           
+
             children: (
               <Output
                 output={output}
@@ -199,9 +194,11 @@ function CommandPage({ socket }) {
         />
       </div>
       {devices.map((deviceId, index) => (
-        <Button key={index} onClick={() => handleOpenWindow(deviceId)}>
-          Connect to {deviceNames[index]}
-        </Button>
+  
+        
+        <BsFillAspectRatioFill type="primary" onClick={() => handleOpenWindow(deviceId)}>
+          Open Window
+        </BsFillAspectRatioFill>
       ))}
     </div>
   );

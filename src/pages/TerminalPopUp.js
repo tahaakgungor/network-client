@@ -1,19 +1,20 @@
 import React, { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
-import Output from "../components/Output";
-import CommandPage from "../pages/CommandPage";
-import SnmpForm from "../components/SnmpForm";
-import { Tabs } from "antd";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { Button } from "antd";
-import { FaTimes, FaPlusSquare } from "react-icons/fa";
-
-
 
 function TerminalPopUp() {
-localStorage.setItem("lastVisitedPage", window.location.pathname);
-  const visitedPage = localStorage.getItem("lastVisitedPage");
+  localStorage.setItem("lastVisitedPage", window.location.pathname);
+
+  const location = useLocation();
+  const deviceId = location.pathname.split("/")[2]; // Sayfanın adresindeki cihaz ID'sini alın
+  let output = localStorage.getItem(`output`);
+  if (output) {
+    output = JSON.parse(output);
+  } else {
+    output = [];
+  }
+  
+
+
   
   const handlePageClose = () => {
     localStorage.setItem("lastVisitedPage", "/devices/command");
@@ -26,11 +27,20 @@ localStorage.setItem("lastVisitedPage", window.location.pathname);
     }
   }, []);
   
-  return (
+   return (
     <div>
-      <h1>Terminal {visitedPage}</h1>
+      <div>
+        {output.map((deviceOutput, index) => (
+          <div key={index}>
+            {deviceOutput.id === deviceId && ( // Eşleşen deviceId'li outputu koşula bağlayarak gösterin
+              <pre>{deviceOutput.output}</pre>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
 
 export default TerminalPopUp;

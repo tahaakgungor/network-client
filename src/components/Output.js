@@ -6,6 +6,8 @@ function Output({ output, children }) {
   const [commandOutput, setCommandOutput] = useState([]);
   const ref = React.useRef(null);
 
+
+
   React.useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [output, commandOutput]);

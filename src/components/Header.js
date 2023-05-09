@@ -133,6 +133,10 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
               <Nav.Link as={Link} to="/devices">
                 Devices
               </Nav.Link>
+              <Nav.Link as={Link} to="/devices/command">
+                Command
+              </Nav.Link>
+              
 
               {userInfo != null && userRole == "admin" ? (
                 <Nav.Link as={Link} to="/admin">
