@@ -55,9 +55,7 @@ function App() {
 
   };
 
-  const handleCloseWindow = () => {
-    localStorage.setItem("lastVisitedPage", "/devices");
-  };
+
 
   return (
     <Router>
@@ -112,7 +110,7 @@ function App() {
         </Route>
 
         <Route exact path="/terminal/:id">
-          <TerminalPopUp   onChange={handlePageChange} setLastVisitedPage={localStorage.setItem} />
+
         </Route>
    
         <Redirect to="/login" />

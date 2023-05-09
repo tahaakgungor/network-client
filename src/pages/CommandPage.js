@@ -78,10 +78,30 @@ function CommandPage({ socket }) {
 
   const handleOpenWindow = (deviceId) => {
     const url = `http://localhost:3000/terminal/${deviceId}`;
-    window.open(url, "Connect", "width=800,height=600");
-    
-    
+    const win = window.open(url, "Connect", "width=800,height=600");
+  
+    const outputInterval = setInterval(() => {
+      if (win.closed) {
+        clearInterval(outputInterval);
+      } else {
+        win.postMessage({ type: "getOutput", deviceId }, "*");
+      }
+    }, 1000);
+  
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "http://localhost:3000") return;
+      if (event.data.type === "output") {
+        setOutput((prevState) =>
+          prevState.map((deviceOutput) =>
+            deviceOutput.id === deviceId
+              ? { ...deviceOutput, output: deviceOutput.output + event.data.output }
+              : deviceOutput
+          )
+        );
+      }
+    });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
