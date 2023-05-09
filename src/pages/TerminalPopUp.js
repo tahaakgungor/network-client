@@ -33,7 +33,7 @@ function TerminalPopUp() {
       <div className="output-of-terminal">
         {output.map((deviceOutput, index) => (
           <div key={index}>
-            {deviceOutput.id === deviceId && ( // Eşleşen deviceId'li outputu koşula bağlayarak gösterin
+            {deviceOutput.id === deviceId && ( 
               <pre>{deviceOutput.output}</pre>
             )}
           </div>

@@ -25,7 +25,7 @@ function App() {
 
 
 
-  
+
   useEffect(() => {
     const token = Cookies.get("token");
     setIsAuthenticated(token ? true : false);
@@ -66,7 +66,11 @@ function App() {
               to={localStorage.getItem("lastVisitedPage") || "/devices"}
             />
           ) : (
+            <>
+            <Header setIsAuthenticated={setIsAuthenticated} />
+
             <Login setIsAuthenticated={setIsAuthenticated} />
+            </>
           )}
         </Route>
         <Route exact path="/devices">
@@ -137,16 +141,16 @@ function App() {
             <Redirect to="/login" />
           )}
         </Route>
-            
+
         <Route exact path="/terminal/:id">
 
-     
-             <TerminalPopUp onChange={handlePageChange} />
- 
-     
+
+          <TerminalPopUp onChange={handlePageChange} />
+
+
 
         </Route>
-   
+
         <Redirect to="/login" />
       </Switch>
     </Router>
