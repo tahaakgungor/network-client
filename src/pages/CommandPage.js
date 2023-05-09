@@ -7,25 +7,24 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "antd";
 import { FaTimes, FaPlusSquare, FaWindowMaximize } from "react-icons/fa";
-import {
-  BsHouseDoorFill,
-  BsInfoCircleFill,
-  BsFillEnvelopeFill,
-  BsFillGearFill,
-  BsFillAspectRatioFill,
-} from "react-icons/bs";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
 function CommandPage({ socket }) {
   const [command, setCommand] = useState("");
   const [commandStates, setCommandStates] = useState({});
-  const [output, setOutput] = useState([]);
+  const [output, setOutput] = useState(() => {
+    const storedOutput = localStorage.getItem("output");
+    return storedOutput ? JSON.parse(storedOutput) : [];
+  });
   const [deviceNames, setDeviceNames] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const location = useLocation();
 
-  localStorage.setItem("output", JSON.stringify(output));
+  useEffect(() => {
+    localStorage.setItem("output", JSON.stringify(output));
+  }, [output]);
   const storedDevices = localStorage.getItem("cihazlar");
   const devices = storedDevices
     ? JSON.parse(storedDevices)
@@ -43,7 +42,12 @@ function CommandPage({ socket }) {
 
     socket.emit("createSSH", devices);
 
-    const initialOutput = devices.map((id) => ({ id, output: "" }));
+    const storedOutput = JSON.parse(localStorage.getItem("output"));
+    const initialOutput = devices.map((id) => ({
+      id,
+      output: storedOutput?.find((o) => o.id === id)?.output || "",
+    }));
+    console.log(initialOutput);
     setOutput(initialOutput);
 
     const initialCommandStates = devices.reduce(
@@ -71,6 +75,7 @@ function CommandPage({ socket }) {
       });
     };
   }, [socket]);
+
 
   useEffect(() => {
     const fetchDeviceNames = async () => {
@@ -174,23 +179,23 @@ function CommandPage({ socket }) {
               handleTabClose(targetKey);
             }
           }}
-      
+
           items={output.map(({ id, output, input }, index) => ({
             key: index,
-            label: (  <div className="tab-label-wrapper">
-            <span className="device-name">{deviceNames[index]}</span>
-            <span
-              className="maximize-icon"
-              onClick={() => {
-                handleOpenWindow(id);
-              }}
-            >
-              <FaWindowMaximize />
-            </span>
-          </div>),
+            label: (<div className="tab-label-wrapper">
+              <span className="device-name">{deviceNames[index]}</span>
+              <span
+                className="maximize-icon"
+                onClick={() => {
+                  handleOpenWindow(id);
+                }}
+              >
+                <FaWindowMaximize />
+              </span>
+            </div>),
             closeable: true,
-            
-  
+
+
 
             children: (
               <Output
