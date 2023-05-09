@@ -6,8 +6,14 @@ import { Tabs } from "antd";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "antd";
-import { FaTimes, FaPlusSquare } from "react-icons/fa";
-import { BsHouseDoorFill, BsInfoCircleFill, BsFillEnvelopeFill, BsFillGearFill, BsFillAspectRatioFill } from "react-icons/bs";
+import { FaTimes, FaPlusSquare, FaWindowMaximize } from "react-icons/fa";
+import {
+  BsHouseDoorFill,
+  BsInfoCircleFill,
+  BsFillEnvelopeFill,
+  BsFillGearFill,
+  BsFillAspectRatioFill,
+} from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommandPage.css";
 
@@ -25,13 +31,13 @@ function CommandPage({ socket }) {
     ? JSON.parse(storedDevices)
     : location.state.cihazlar;
 
-    useEffect(() => {
-      const storedOutput = JSON.parse(localStorage.getItem("output"));
-      if (storedOutput) {
-        setOutput(storedOutput);
-      }
-    }, []);
-    
+  useEffect(() => {
+    const storedOutput = JSON.parse(localStorage.getItem("output"));
+    if (storedOutput) {
+      setOutput(storedOutput);
+    }
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
 
@@ -85,7 +91,6 @@ function CommandPage({ socket }) {
   const handleOpenWindow = (deviceId) => {
     const url = `http://localhost:3000/terminal/${deviceId}`;
     window.open(url, "_blank", "width=800,height=600");
-  
   };
 
   const handleSubmit = async (e) => {
@@ -131,10 +136,15 @@ function CommandPage({ socket }) {
     setCommandStates((prevOutput) => ({ ...prevOutput, [deviceId]: "" }));
   };
 
-  const handleTabClose = (e, deviceId) => {
-    e.stopPropagation();
-    setOutput((prevState) => prevState.filter((device) => device.id !== deviceId));
-    setActiveTab(null);
+  const handleTabClose = (targetKey) => {
+    const deviceId = output[targetKey].id;
+    socket.emit("disconnectSSH", deviceId);
+    setOutput((prevState) =>
+      prevState.filter((_, index) => index !== targetKey)
+    );
+    setDeviceNames((prevState) =>
+      prevState.filter((_, index) => index !== targetKey)
+    );
   };
 
   return (
@@ -156,13 +166,31 @@ function CommandPage({ socket }) {
 
       <div>
         <Tabs
+          hideAdd
           className="tabs"
-          type= "editable-card"
+          type="editable-card"
+          onEdit={(targetKey, action) => {
+            if (action === "remove") {
+              handleTabClose(targetKey);
+            }
+          }}
+      
           items={output.map(({ id, output, input }, index) => ({
             key: index,
-            label: deviceNames[index] || id,
+            label: (  <div className="tab-label-wrapper">
+            <span className="device-name">{deviceNames[index]}</span>
+            <span
+              className="maximize-icon"
+              onClick={() => {
+                handleOpenWindow(id);
+              }}
+            >
+              <FaWindowMaximize />
+            </span>
+          </div>),
             closeable: true,
-           
+            
+  
 
             children: (
               <Output
@@ -193,13 +221,7 @@ function CommandPage({ socket }) {
           }))}
         />
       </div>
-      {devices.map((deviceId, index) => (
-  
-        
-        <BsFillAspectRatioFill type="primary" onClick={() => handleOpenWindow(deviceId)}>
-          Open Window
-        </BsFillAspectRatioFill>
-      ))}
+
     </div>
   );
 }

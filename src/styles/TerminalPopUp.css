@@ -1,0 +1,33 @@
+.termianl-pop-up {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background-color: #1c1e22;
+    color: white;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .termianl-pop-up pre {
+    overflow-y: scroll;
+    height: 100%;
+    margin: 0;
+    padding: 10px;
+    white-space: pre-wrap;
+  }
+  
+  .termianl-pop-up pre::-webkit-scrollbar {
+    width: 8px;
+    background-color: #1c1e22;
+  }
+  
+  .termianl-pop-up pre::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+  }
+  

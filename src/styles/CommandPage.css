@@ -99,3 +99,32 @@ form{
     align-items: center;
     border: 1px solid #ccc;
 }
+
+.tab-label-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .tab-label-wrapper .device-name {
+    margin-top: 1px;
+    margin-right: 10px;
+  }
+  
+  .tab-label-wrapper .maximize-icon {
+    position: relative;
+    color: gray;
+  }
+  
+  .tab-label-wrapper .maximize-icon:hover::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+
+  }
+  

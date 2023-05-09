@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
+import '../styles/TerminalPopUp.css'
 
 function TerminalPopUp() {
   localStorage.setItem("lastVisitedPage", window.location.pathname);
@@ -28,8 +29,8 @@ function TerminalPopUp() {
   }, []);
   
    return (
-    <div>
-      <div>
+    <div className="termianl-pop-up">
+      <div className="output-of-terminal">
         {output.map((deviceOutput, index) => (
           <div key={index}>
             {deviceOutput.id === deviceId && ( // Eşleşen deviceId'li outputu koşula bağlayarak gösterin

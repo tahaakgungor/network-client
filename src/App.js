@@ -59,7 +59,6 @@ function App() {
 
   return (
     <Router>
-    <Header setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated}  />
       <Switch>
         <Route exact path="/login">
           {isAuthenticated ? (
@@ -72,21 +71,39 @@ function App() {
         </Route>
         <Route exact path="/devices">
           {isAuthenticated ? (
-            <DeviceList onChange={handlePageChange} />
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <DeviceList onChange={handlePageChange} />
+            </>
           ) : (
             <Redirect to="/login" />
           )}
         </Route>
         <Route exact path="/devices/command">
           {isAuthenticated ? (
-            <CommandPage socket={socket} onChange={handlePageChange} />
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <CommandPage socket={socket} onChange={handlePageChange} />
+            </>
           ) : (
             <Redirect to="/devices" />
           )}
         </Route>
         <Route exact path="/admin">
           {isAuthenticated ? (
-            <AdminPanel onChange={handlePageChange} />
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <AdminPanel onChange={handlePageChange} />
+            </>
           ) : (
             <Redirect to="/login" />
           )}
@@ -95,22 +112,38 @@ function App() {
           {isAuthenticated ? (
             <Redirect to="/devices" />
           ) : (
-            <Signup
-              setIsAuthenticated={setIsAuthenticated}
-              onChange={handlePageChange}
-            />
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <Signup
+                setIsAuthenticated={setIsAuthenticated}
+                onChange={handlePageChange}
+              />
+            </>
           )}
         </Route>
         <Route exact path="/userlog/:userId">
           {isAuthenticated ? (
-            <UserLog onChange={handlePageChange} />
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <UserLog onChange={handlePageChange} />
+            </>
           ) : (
             <Redirect to="/login" />
           )}
         </Route>
-
+            
         <Route exact path="/terminal/:id">
-            <TerminalPopUp socket={socket} onChange={handlePageChange} />
+
+     
+             <TerminalPopUp onChange={handlePageChange} />
+ 
+     
 
         </Route>
    
