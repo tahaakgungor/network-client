@@ -47,11 +47,13 @@ const Login = (props) => {
     setLoading(true);
 
     if (!email.includes("@") || !email.includes(".com")) {
+      setLoading(false);
       setError("Please enter a valid email address");
       return;
     }
 
     if (password.length < 6) {
+      setLoading(false);
       setError("Password should be at least 6 characters long");
       return;
     }
@@ -138,12 +140,17 @@ const Login = (props) => {
       } else {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);
+        setError("Email or password is incorrect");
+        setLoading(false);
       }
     } catch (error) {
       if (error.response.status === 400) {
         setError("Email or password is incorrect");
+        setLoading(false);  
       } else {
         console.error(error);
+        setError("Something went wrong. Please try again later.");
+        setLoading(false);
       }
     }
   };

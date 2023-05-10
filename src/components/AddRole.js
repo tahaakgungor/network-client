@@ -10,7 +10,7 @@ function RoleManagement() {
   const [roleName, setRoleName] = useState("");
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
 
   useEffect(() => {
     async function fetchData() {
@@ -59,12 +59,12 @@ function RoleManagement() {
         roleData
       );
       const updatedRole = { ...response.data, devices: devices.filter(d => selectedDevices.includes(d._id)) };
-setRoles([...roles, updatedRole]);
+      setRoles([...roles, updatedRole]);
 
       setRoleName("");
-      setSelectedDevices([]);
+      setSelectedDevices([]); 
       console.log(response.data);
-    
+
     } catch (error) {
       console.error(error);
     }
@@ -110,7 +110,7 @@ setRoles([...roles, updatedRole]);
               </Form.Group>
               <Form.Label>Devices</Form.Label>
               <Form.Group className="formDevList">
- 
+
                 {devices.map((device) => (
                   <div className="mb-2" key={device._id}>
                     <Form.Check
@@ -123,10 +123,10 @@ setRoles([...roles, updatedRole]);
                 ))}
               </Form.Group>
 
-              <br/> 
+              <br />
               {loading ? (
-  <Spinner animation="border" variant="primary" />
-) : error && <div className="alert alert-danger">{error}</div>}
+                <Spinner animation="border" variant="primary" />
+              ) : error && <div className="alert alert-danger">{error}</div>}
               <Button variant="success" type="submit">
                 Add Role
               </Button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Modal, Spinner } from "react-bootstrap";
 import "../styles/AddUser.css";
 
 const AddUser = ({ showModal, setShowModal }) => {
@@ -12,14 +12,15 @@ const AddUser = ({ showModal, setShowModal }) => {
   const [selectedUser, setSelectedUser] = useState({
     role: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-const interval = setInterval(() => {
-    fetchData();
-  }, 1000);
-  return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      fetchData();
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
-  
+
   async function fetchData() {
     try {
       const response = await axios.get(
@@ -60,7 +61,7 @@ const interval = setInterval(() => {
       const existingUsers = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}auth/users`
       );
-      
+
       if (existingUsers.data.some(user => user.email === email)) {
         setError("A user with this email already exists");
         return;
@@ -124,16 +125,21 @@ const interval = setInterval(() => {
                 </option>
               ))}
             </Form.Control>
-            {error && <div className="alert alert-danger">{error}</div>}  
+            {error && <div className="alert alert-danger">{error}</div>}
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close
           </Button>
-          <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Add User
-          </Button>
+          {loading ? (
+            <Spinner animation="border" variant="primary" />
+          ) : (
+            <Button variant="primary" onClick={handleSubmit}>
+              Add User
+            </Button>
+          )}
+
         </Modal.Footer>
       </Modal>
     </>

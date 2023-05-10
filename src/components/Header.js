@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Spinner} from "react-bootstrap";
+import { Navbar, Nav, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
@@ -67,7 +67,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
     }
   };
 
- 
+
 
 
   const handleLogout = async () => {
@@ -144,7 +144,11 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
               <Nav.Link as={Link} to="/devices/command">
                 Command
               </Nav.Link>
-              
+              <Nav.Link as={Link} to="/snmp">
+                SNMP
+              </Nav.Link>
+
+
 
               {userInfo != null && userRole == "admin" ? (
                 <Nav.Link as={Link} to="/admin">
@@ -155,8 +159,8 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
           )}
         </Nav>
         {loading ? (
-  <Spinner animation="border" variant="primary" />
-) : isAuthenticated ? (
+          <Spinner animation="border" variant="primary" />
+        ) : isAuthenticated ? (
           <div className="logout">
             <Nav>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>

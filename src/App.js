@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import AdminPanel from "./pages/AdminPanel";
 import TerminalPopUp from "./pages/TerminalPopUp";
 import UserLog from "./pages/UserLog";
+import SnmpManagment from "./pages/SnmpManagment";
 import Cookies from "js-cookie";
 import axios from "axios";
 import {
@@ -67,9 +68,9 @@ function App() {
             />
           ) : (
             <>
-            <Header setIsAuthenticated={setIsAuthenticated} />
+              <Header setIsAuthenticated={setIsAuthenticated} />
 
-            <Login setIsAuthenticated={setIsAuthenticated} />
+              <Login setIsAuthenticated={setIsAuthenticated} />
             </>
           )}
         </Route>
@@ -96,7 +97,21 @@ function App() {
               <CommandPage socket={socket} onChange={handlePageChange} />
             </>
           ) : (
-            <Redirect to="/devices" />
+            <Redirect to="/login" />
+          )}
+        </Route>
+
+        <Route exact path="/snmp">
+          {isAuthenticated ? (
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <SnmpManagment onChange={handlePageChange} />
+            </>
+          ) : (
+            <Redirect to="/login" />
           )}
         </Route>
         <Route exact path="/admin">
@@ -112,7 +127,7 @@ function App() {
             <Redirect to="/login" />
           )}
         </Route>
-        <Route exact path="/signup">
+        {/* <Route exact path="/signup">
           {isAuthenticated ? (
             <Redirect to="/devices" />
           ) : (
@@ -127,7 +142,7 @@ function App() {
               />
             </>
           )}
-        </Route>
+        </Route> */}
         <Route exact path="/userlog/:userId">
           {isAuthenticated ? (
             <>

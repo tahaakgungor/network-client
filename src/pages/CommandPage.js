@@ -13,22 +13,30 @@ import "../styles/CommandPage.css";
 
 function CommandPage({ socket }) {
   const [command, setCommand] = useState("");
-  const [commandStates, setCommandStates] = useState({});
+
+  
   const [output, setOutput] = useState(() => {
     const storedOutput = localStorage.getItem("output");
     return storedOutput ? JSON.parse(storedOutput) : [];
   });
   const [deviceNames, setDeviceNames] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
-  const location = useLocation();
+  const location = useLocation()
+  const storedDevices = localStorage.getItem("cihazlar");
+  const [devices, setDevices] = useState(storedDevices
+    ? JSON.parse(storedDevices)
+    : location.state.cihazlar);
+    const [commandStates, setCommandStates] = useState(devices.reduce(
+      (acc, deviceId) => ({ ...acc, [deviceId]: "" }),
+      {}
+    ));
+;
 
   useEffect(() => {
     localStorage.setItem("output", JSON.stringify(output));
   }, [output]);
-  const storedDevices = localStorage.getItem("cihazlar");
-  const devices = storedDevices
-    ? JSON.parse(storedDevices)
-    : location.state.cihazlar;
+
+ 
 
   useEffect(() => {
     const storedOutput = JSON.parse(localStorage.getItem("output"));
@@ -150,6 +158,15 @@ function CommandPage({ socket }) {
     setDeviceNames((prevState) =>
       prevState.filter((_, index) => index !== targetKey)
     );
+
+    const newDevices = devices.filter((_, index) => index !== targetKey);
+    setDevices(newDevices);
+  
+    localStorage.setItem("output", JSON.stringify(output));
+    localStorage.setItem("cihazlar", JSON.stringify(newDevices));
+
+    
+
   };
 
   return (
@@ -180,7 +197,7 @@ function CommandPage({ socket }) {
             }
           }}
 
-          items={output.map(({ id, output, input }, index) => ({
+          items={output.map(({ id, output}, index) => ({
             key: index,
             label: (<div className="tab-label-wrapper">
               <span className="device-name">{deviceNames[index]}</span>
@@ -194,16 +211,9 @@ function CommandPage({ socket }) {
               </span>
             </div>),
             closeable: true,
-
-
-
             children: (
               <Output
                 output={output}
-                socket={socket}
-                devices={devices}
-                input={input}
-                activeTab={activeTab}
               >
                 <form
                   className="terminal"
