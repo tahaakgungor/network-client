@@ -40,9 +40,7 @@ function DeviceList() {
       <Button className="btn-list" variant="primary" onClick={handleShowDeviceForm}>
         Add New Device
       </Button>
-      <br />
-      <br />
-      <SnmpForm />
+
 
     </div>
   );

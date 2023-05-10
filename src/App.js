@@ -8,6 +8,7 @@ import AdminPanel from "./pages/AdminPanel";
 import TerminalPopUp from "./pages/TerminalPopUp";
 import UserLog from "./pages/UserLog";
 import SnmpManagment from "./pages/SnmpManagment";
+import SnmpInformations from "./pages/SnmpInformations";
 import Cookies from "js-cookie";
 import axios from "axios";
 import {
@@ -109,6 +110,19 @@ function App() {
                 isAuthenticated={isAuthenticated}
               />
               <SnmpManagment onChange={handlePageChange} />
+            </>
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+        <Route exact path="/snmp/informations">
+          {isAuthenticated ? (
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <SnmpInformations onChange={handlePageChange} />
             </>
           ) : (
             <Redirect to="/login" />

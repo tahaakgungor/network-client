@@ -29,7 +29,11 @@ function SnmpForm() {
         snmpData
       );
       setShowModal(false);
-      alert("SNMP information successfully added to the database.");
+      setHost("");
+      setCommunity("");
+      setOids("");
+      
+
     } catch (error) {
       setIsError(true);
       setErrorMessage(error.message);
