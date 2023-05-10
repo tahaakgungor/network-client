@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import "../styles/AddRole.css";
 
 function RoleManagement() {
@@ -9,6 +9,7 @@ function RoleManagement() {
   const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [selectedDevices, setSelectedDevices] = useState([]);
+  const [loading, setLoading] = useState(false);
   
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function RoleManagement() {
 
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const roleData = {
       name: roleName,
       devices: selectedDevices,
@@ -56,14 +58,20 @@ function RoleManagement() {
         `${process.env.REACT_APP_BACKEND_URL}roles`,
         roleData
       );
-      setRoles([...roles, response.data]);
+      const updatedRole = { ...response.data, devices: devices.filter(d => selectedDevices.includes(d._id)) };
+setRoles([...roles, updatedRole]);
+
       setRoleName("");
       setSelectedDevices([]);
       console.log(response.data);
-      window.location.reload();
+    
     } catch (error) {
       console.error(error);
     }
+    finally {
+      setLoading(false);
+    }
+
   };
 
   const handleDeviceSelection = (deviceId) => {
@@ -116,7 +124,9 @@ function RoleManagement() {
               </Form.Group>
 
               <br/> 
-              {error && <div className="alert alert-danger">{error}</div>}
+              {loading ? (
+  <Spinner animation="border" variant="primary" />
+) : error && <div className="alert alert-danger">{error}</div>}
               <Button variant="success" type="submit">
                 Add Role
               </Button>

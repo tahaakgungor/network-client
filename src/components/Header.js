@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Spinner} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +13,8 @@ import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [userLog, setUserLog] = useState([]);
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
 
   const getTokens = localStorage.getItem("token");
   if (getTokens) {
@@ -65,8 +67,12 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
     }
   };
 
+ 
+
+
   const handleLogout = async () => {
     try {
+      setLoading(true);
       const lastLoginTime = localStorage.getItem("lastLoginTime");
       console.log(lastLoginTime);
 
@@ -109,7 +115,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       localStorage.removeItem("lastVisitedPage");
       localStorage.removeItem("logs");
       localStorage.removeItem("output");
-      
+
 
       setIsAuthenticated(false);
     } catch (error) {
@@ -148,7 +154,9 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
             </>
           )}
         </Nav>
-        {isAuthenticated ? (
+        {loading ? (
+  <Spinner animation="border" variant="primary" />
+) : isAuthenticated ? (
           <div className="logout">
             <Nav>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>

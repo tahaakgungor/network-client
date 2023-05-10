@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
@@ -16,7 +16,7 @@ const Login = (props) => {
   const [error, setError] = useState("");
   const [loggedDate, setLoggedDate] = useState("");
   const [loggedTime, setLoggedTime] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,6 +44,7 @@ const Login = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+    setLoading(true);
 
     if (!email.includes("@") || !email.includes(".com")) {
       setError("Please enter a valid email address");
@@ -177,10 +178,13 @@ const Login = (props) => {
             {error && password.length < 6 ? error : " "}
           </Form.Control.Feedback>
         </Form.Group>
-
+        {loading ? (
+  <Spinner animation="border" variant="primary" />
+) : (
         <Button variant="success" type="submit">
           Submit
         </Button>
+        )}
       </Form>
 
       {error && (
