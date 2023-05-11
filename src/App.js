@@ -9,6 +9,7 @@ import TerminalPopUp from "./pages/TerminalPopUp";
 import UserLog from "./pages/UserLog";
 import SnmpManagment from "./pages/SnmpManagment";
 import SnmpInformations from "./pages/SnmpInformations";
+import ProfilePage from "./pages/ProfilePage";
 import Cookies from "js-cookie";
 import axios from "axios";
 import {
@@ -136,6 +137,19 @@ function App() {
                 isAuthenticated={isAuthenticated}
               />
               <AdminPanel onChange={handlePageChange} />
+            </>
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+        <Route exact path="/profile">
+          {isAuthenticated ? (
+            <>
+              <Header
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+              <ProfilePage onChange={handlePageChange} />
             </>
           ) : (
             <Redirect to="/login" />

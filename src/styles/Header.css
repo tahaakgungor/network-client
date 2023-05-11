@@ -93,16 +93,31 @@
 }
 
 .logout {
-  position: relative;
+  position: absolute;
+  right: 3rem;
 }
+
+
 
 @media (max-width: 991.98px) {
   .navbar-nav {
     margin-top: 1rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
   }
 
   .nav-link {
     margin-right: 0;
+  }
+  .logout{
+    position: absolute;
+    right: 0;
+    margin-right: 23.5rem;
+    margin-top: -1.5rem;
+    
+    
   }
 }

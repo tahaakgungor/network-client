@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Spinner } from "react-bootstrap";
+import { Navbar, Nav, Spinner, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
@@ -151,22 +151,15 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
                 Devices
               </Nav.Link>
               {isLocCihazlar ? (
-              <Nav.Link as={Link} to="/devices/command">
-                Command
-              </Nav.Link>
+                <Nav.Link as={Link} to="/devices/command">
+                  Command
+                </Nav.Link>
               ) : null}
-              
+
               <Nav.Link as={Link} to="/snmp">
                 SNMP
               </Nav.Link>
 
-
-
-              {userInfo != null && userRole == "admin" ? (
-                <Nav.Link as={Link} to="/admin">
-                  Admin
-                </Nav.Link>
-              ) : null}
             </>
           )}
         </Nav>
@@ -174,9 +167,23 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
           <Spinner animation="border" variant="primary" />
         ) : isAuthenticated ? (
           <div className="logout">
-            <Nav>
-              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-            </Nav>
+            <NavDropdown className="asd" title={userRole} id="basic-nav-dropdown">
+              <NavDropdown.Item as={Link} to="/profile">
+                Profile
+              </NavDropdown.Item>
+
+              {userInfo != null && userRole == "admin" ? (
+                <NavDropdown.Item as={Link} to="/admin">
+                  Admin Panel
+                </NavDropdown.Item>
+              ) : null}
+
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+
           </div>
         ) : (
           <Nav>
