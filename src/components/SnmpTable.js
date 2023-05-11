@@ -32,10 +32,9 @@ function SnmpTable() {
 
   const handleDelete = async (id) => {
     try {
-
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}snmp/${id}`);
-
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}snmp/register/${id}`);
       fetchSnmpTable();
+
     } catch (error) {
       console.error(error);
     }
@@ -73,19 +72,23 @@ function SnmpTable() {
   const getSelectedSnmpInfo = async () => {
     try {
       const ids = selectedRows.map((row) => row._id);
-      console.log("Selected SNMP Info IDs: ", ids);
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}snmp/selected-infos`, { ids });
+      localStorage.setItem("selectedSnmpIds", JSON.stringify(ids));
+      console.log("aradığım log : ", ids);
+      
+      // Güncellenen veriyi kullanarak isteği gönder
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}snmp/selected-infos`, { ids, updatedInfo});
       console.log("Selected SNMP Info: ", res.data);
+  
       history.push({
         pathname: "/snmp/informations",
         state: { snmpInfo: res.data }
       });
-
+  
     } catch (error) {
       console.error(error);
     }
   };
-
+  
 
   const handleSelectRow = (id) => {
     setSelectedRows((rows) =>

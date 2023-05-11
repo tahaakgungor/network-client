@@ -23,6 +23,7 @@ function CommandPage({ socket }) {
   const [activeTab, setActiveTab] = useState(null);
   const location = useLocation()
   const storedDevices = localStorage.getItem("cihazlar");
+ 
   const [devices, setDevices] = useState(storedDevices
     ? JSON.parse(storedDevices)
     : location.state.cihazlar);

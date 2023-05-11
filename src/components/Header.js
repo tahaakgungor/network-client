@@ -14,6 +14,15 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [userLog, setUserLog] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isLocCihazlar, setIsLocCihazlar] = useState(false);
+
+  const locCihazlar = localStorage.getItem("cihazlar");
+
+  useEffect(() => {
+    if (locCihazlar) {
+      setIsLocCihazlar(true);
+    }
+  }, [locCihazlar]);
 
 
   const getTokens = localStorage.getItem("token");
@@ -141,9 +150,12 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
               <Nav.Link as={Link} to="/devices">
                 Devices
               </Nav.Link>
+              {isLocCihazlar ? (
               <Nav.Link as={Link} to="/devices/command">
                 Command
               </Nav.Link>
+              ) : null}
+              
               <Nav.Link as={Link} to="/snmp">
                 SNMP
               </Nav.Link>

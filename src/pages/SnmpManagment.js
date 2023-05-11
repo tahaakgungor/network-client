@@ -10,8 +10,6 @@ function SnmpManagment() {
         <div className="container">
        
             <SnmpTable/>
-            <br/>
-            
             <SnmpForm/>
             
         </div>
