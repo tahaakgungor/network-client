@@ -20,6 +20,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 export default function ProfilePage() {
+  localStorage.setItem('lastVisitedPage', window.location.pathname);
   const [userInfos, setUserInfos] = useState([]);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
