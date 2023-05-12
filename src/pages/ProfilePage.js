@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   MDBCol,
   MDBContainer,
@@ -16,8 +16,46 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 export default function ProfilePage() {
+  const [userInfos, setUserInfos] = useState([]);
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userRole, setUserRole] = useState('');
+
+  const token = localStorage.getItem('token');
+
+  const decodedToken = jwt_decode(token);
+  const userId = decodedToken.userId;
+
+  console.log("UserInfos: ", userInfos);
+
+  const fetchUserInfoById = async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}auth/user/${userId}`,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    setUserInfos(response.data);
+    setUserName(response.data.name);
+    setUserEmail(response.data.email);
+    setUserRole(response.data.role);
+
+
+  };
+
+  useEffect(() => {
+    fetchUserInfoById();
+  }, []);
+
+
   return (
     <section style={{ backgroundColor: '#eee' }}>
       <MDBContainer className="py-5">
@@ -33,11 +71,11 @@ export default function ProfilePage() {
                   className="rounded-circle"
                   style={{ width: '150px' }}
                   fluid />
-                <p className="text-muted mb-1">Full Stack Developer</p>
+                <p className="text-muted mb-1">{userRole}</p>
                 <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
                 <div className="d-flex justify-content-center mb-2">
-                  <MDBBtn>Follow</MDBBtn>
-                  <MDBBtn outline className="ms-1">Message</MDBBtn>
+                  <MDBBtn>Edit</MDBBtn>
+           
                 </div>
               </MDBCardBody>
             </MDBCard>
@@ -77,7 +115,7 @@ export default function ProfilePage() {
                     <MDBCardText>Full Name</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Johnatan Smith</MDBCardText>
+                    <MDBCardText className="text-muted">{userName}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -86,7 +124,7 @@ export default function ProfilePage() {
                     <MDBCardText>Email</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                    <MDBCardText className="text-muted">{userEmail}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
@@ -110,10 +148,10 @@ export default function ProfilePage() {
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Address</MDBCardText>
+                    <MDBCardText>Role</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
+                    <MDBCardText className="text-muted">{userRole}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
               </MDBCardBody>
