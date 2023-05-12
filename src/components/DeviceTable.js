@@ -23,6 +23,8 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [filter, setFilter] = useState("");
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+
 
   const getTokens = localStorage.getItem("token");
 
@@ -142,12 +144,86 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log("file", file);
+    setSelectedFile(file.name);
+  
+    // FormData oluşturma
+    const formData = new FormData();
+    formData.append("files", file);
+  
+    console.log("formData", formData);
+  
+    setFormData(formData);
+  };
+  
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
+  
+  
+  
+  const sendConfig = async () => {
+    if (selectedDevices.length === 0) {
+      console.log("Please select at least one device.");
+      alert("Please select at least one device.");
+      return;
+    }
+  
+    if (!selectedFile) {
+      console.log("Please select a configuration file.");
+      alert("Please select a configuration file.");
+      return;
+    }
+  
+    try {
+      for (const deviceId of selectedDevices) {
+        const device = devices.find((device) => device._id === deviceId);
+        const { ip } = device;
+  
+        try {
+     
+          // TFTP sunucusuna dosya gönderme isteği
+        
+          console.log("formData", formData);
+  
+          const result = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}tftp/upload`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              params: {
+                ip
+
+            }
+            }
+          );
+          console.log("result", result.data);
+          console.log(`Config file uploaded to ${ip}`);
+        } catch (error) {
+          console.error(`Failed to upload config file to ${ip}`);
+          console.error(error);
+        }
+      }
+  
+      localStorage.setItem("cihazlar", JSON.stringify(selectedDevices));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
   const connectDevices = async (cihazlar = selectedDevices) => {
     if (cihazlar.length === 0) {
       console.log("Please select at least one device.");
       alert("Please select at least one device.");
       return;
     }
+
+
 
     try {
       // Get information of all selected devices
@@ -188,6 +264,9 @@ function DeviceTable({ devices, setDevices, socket }) {
         {}
       );
       console.log("RESPONSE:", response);
+      
+
+     
     } catch (error) {
       console.error(error);
     }
@@ -409,6 +488,19 @@ function DeviceTable({ devices, setDevices, socket }) {
         >
           Connect
         </button>
+        <button
+        className="btn btn-primary"
+        onClick={sendConfig}
+        disabled={selectedDevices.length === 0 || !selectedFile}
+      >
+        Send Config
+      </button>
+
+        <input
+  type="file"
+  onChange={(e) => handleFileChange(e)}
+/>
+
       </div>
     </div>
   );

@@ -1,0 +1,617 @@
+{
+    "extension": "linecount",
+    "version": "0.1.7",
+    "workspace": "/home/baykarstajyer/Documents/network-client",
+    "linecount": [
+        {
+            "version": "0.1.7",
+            "counttime": "2023-05-12 16:19:18",
+            "filesum": 99,
+            "codesum": 28397,
+            "commentsum": 577,
+            "blanksum": 945,
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 1,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": ".firebase/hosting.YnVpbGQ.cache"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": ".firebaserc"
+                },
+                {
+                    "blank": 1,
+                    "code": 19,
+                    "comment": 1,
+                    "filename": ".github/workflows/firebase-hosting-merge.yml"
+                },
+                {
+                    "blank": 1,
+                    "code": 16,
+                    "comment": 1,
+                    "filename": ".github/workflows/firebase-hosting-pull-request.yml"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/.gitignore"
+                },
+                {
+                    "blank": 17,
+                    "code": 36,
+                    "comment": 3,
+                    "filename": "/home/baykarstajyer/Documents/network-server/index.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/nodemon.json"
+                },
+                {
+                    "blank": 6,
+                    "code": 2659,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/package.json"
+                },
+                {
+                    "blank": 2,
+                    "code": 16,
+                    "comment": 1,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/config/database.js"
+                },
+                {
+                    "blank": 32,
+                    "code": 117,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/authController.js"
+                },
+                {
+                    "blank": 52,
+                    "code": 115,
+                    "comment": 127,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/device-controller.js"
+                },
+                {
+                    "blank": 12,
+                    "code": 86,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/logController.js"
+                },
+                {
+                    "blank": 14,
+                    "code": 60,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/roleController.js"
+                },
+                {
+                    "blank": 34,
+                    "code": 132,
+                    "comment": 6,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/snmpController.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 27,
+                    "comment": 2,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/controllers/tftpController.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/device.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/log.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/role.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/snmp.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/snmpInfos.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/models/user.js"
+                },
+                {
+                    "blank": 9,
+                    "code": 12,
+                    "comment": 4,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/authRoutes.js"
+                },
+                {
+                    "blank": 9,
+                    "code": 11,
+                    "comment": 9,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/device-routes.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/logRoutes.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/roleRoutes.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/snmpRoutes.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 5,
+                    "comment": 1,
+                    "filename": "/home/baykarstajyer/Documents/network-server/src/routes/tftpRoutes.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-socket/Procfile"
+                },
+                {
+                    "blank": 0,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "/home/baykarstajyer/Documents/network-socket/requirements.txt"
+                },
+                {
+                    "blank": 42,
+                    "code": 65,
+                    "comment": 14,
+                    "filename": "/home/baykarstajyer/Documents/network-socket/server.py"
+                },
+                {
+                    "blank": 2,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "build/asset-manifest.json"
+                },
+                {
+                    "filename": "build/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "build/index.html"
+                },
+                {
+                    "filename": "build/logo192.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "build/logo512.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "build/manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "build/robots.txt"
+                },
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 6,
+                    "filename": "build/static/css/main.c3154e54.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/css/main.c3154e54.css.map"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 6,
+                    "filename": "build/static/js/main.1f046185.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 0,
+                    "comment": 158,
+                    "filename": "build/static/js/main.1f046185.js.LICENSE.txt"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/js/main.1f046185.js.map"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 6,
+                    "filename": "build/static/js/main.3de83181.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 0,
+                    "comment": 158,
+                    "filename": "build/static/js/main.3de83181.js.LICENSE.txt"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/js/main.3de83181.js.map"
+                },
+                {
+                    "blank": 1,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "firebase.json"
+                },
+                {
+                    "blank": 2,
+                    "code": 20944,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 3,
+                    "code": 60,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 20,
+                    "comment": 23,
+                    "filename": "public/index.html"
+                },
+                {
+                    "filename": "public/logo192.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "public/logo512.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "public/manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "public/robots.txt"
+                },
+                {
+                    "blank": 15,
+                    "code": 21,
+                    "comment": 4,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 2,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "server.py"
+                },
+                {
+                    "blank": 29,
+                    "code": 161,
+                    "comment": 15,
+                    "filename": "src/App.js"
+                },
+                {
+                    "blank": 20,
+                    "code": 150,
+                    "comment": 0,
+                    "filename": "src/components/AddRole.js"
+                },
+                {
+                    "blank": 19,
+                    "code": 130,
+                    "comment": 0,
+                    "filename": "src/components/AddUser.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 157,
+                    "comment": 0,
+                    "filename": "src/components/DeviceForm.js"
+                },
+                {
+                    "blank": 59,
+                    "code": 440,
+                    "comment": 6,
+                    "filename": "src/components/DeviceTable.js"
+                },
+                {
+                    "blank": 32,
+                    "code": 169,
+                    "comment": 3,
+                    "filename": "src/components/Header.js"
+                },
+                {
+                    "blank": 34,
+                    "code": 172,
+                    "comment": 0,
+                    "filename": "src/components/Login.js"
+                },
+                {
+                    "blank": 33,
+                    "code": 121,
+                    "comment": 5,
+                    "filename": "src/components/Logout.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/components/Output.js"
+                },
+                {
+                    "blank": 12,
+                    "code": 89,
+                    "comment": 0,
+                    "filename": "src/components/Signup.js"
+                },
+                {
+                    "blank": 13,
+                    "code": 91,
+                    "comment": 0,
+                    "filename": "src/components/SnmpForm.js"
+                },
+                {
+                    "blank": 34,
+                    "code": 193,
+                    "comment": 1,
+                    "filename": "src/components/SnmpTable.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/index.css"
+                },
+                {
+                    "blank": 7,
+                    "code": 24,
+                    "comment": 6,
+                    "filename": "src/index.js"
+                },
+                {
+                    "blank": 23,
+                    "code": 247,
+                    "comment": 0,
+                    "filename": "src/pages/AdminPanel.js"
+                },
+                {
+                    "blank": 36,
+                    "code": 209,
+                    "comment": 1,
+                    "filename": "src/pages/CommandPage.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 39,
+                    "comment": 0,
+                    "filename": "src/pages/DeviceList.js"
+                },
+                {
+                    "blank": 24,
+                    "code": 207,
+                    "comment": 1,
+                    "filename": "src/pages/ProfilePage.js"
+                },
+                {
+                    "blank": 8,
+                    "code": 67,
+                    "comment": 1,
+                    "filename": "src/pages/SnmpInformations.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "src/pages/SnmpManagment.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 37,
+                    "comment": 1,
+                    "filename": "src/pages/TerminalPopUp.js"
+                },
+                {
+                    "blank": 11,
+                    "code": 101,
+                    "comment": 0,
+                    "filename": "src/pages/UserLog.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/Redux/Device/deviceSlice.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 20,
+                    "comment": 1,
+                    "filename": "src/Redux/Socket/socketSlice.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src/Redux/store.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/Redux/UserInformation/userInformationSlice.js"
+                },
+                {
+                    "blank": 18,
+                    "code": 60,
+                    "comment": 0,
+                    "filename": "src/styles/AddRole.css"
+                },
+                {
+                    "blank": 14,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/styles/AddUser.css"
+                },
+                {
+                    "blank": 18,
+                    "code": 72,
+                    "comment": 0,
+                    "filename": "src/styles/AdminPanel.css"
+                },
+                {
+                    "blank": 24,
+                    "code": 105,
+                    "comment": 0,
+                    "filename": "src/styles/CommandPage.css"
+                },
+                {
+                    "blank": 13,
+                    "code": 70,
+                    "comment": 0,
+                    "filename": "src/styles/DeviceForm.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/styles/DeviceList.css"
+                },
+                {
+                    "blank": 14,
+                    "code": 52,
+                    "comment": 0,
+                    "filename": "src/styles/DeviceTable.css"
+                },
+                {
+                    "blank": 23,
+                    "code": 100,
+                    "comment": 0,
+                    "filename": "src/styles/Header.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 36,
+                    "comment": 0,
+                    "filename": "src/styles/Login.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "src/styles/Output.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 25,
+                    "comment": 1,
+                    "filename": "src/styles/SnmpInformations.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "src/styles/SnmpManagment.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src/styles/TerminalPopUp.css"
+                },
+                {
+                    "blank": 16,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "src/styles/UserLog.css"
+                }
+            ]
+        }
+    ]
+}
