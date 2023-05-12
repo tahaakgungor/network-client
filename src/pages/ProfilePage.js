@@ -20,42 +20,6 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 export default function ProfilePage() {
-  const [userInfos, setUserInfos] = useState([]);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userRole, setUserRole] = useState('');
-
-  const token = localStorage.getItem('token');
-
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.userId;
-
-  console.log("UserInfos: ", userInfos);
-
-  const fetchUserInfoById = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}auth/user/${userId}`,
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    setUserInfos(response.data);
-    setUserName(response.data.name);
-    setUserEmail(response.data.email);
-    setUserRole(response.data.role);
-
-
-  };
-
-  useEffect(() => {
-    fetchUserInfoById();
-  }, []);
-
-
   return (
     <section style={{ backgroundColor: '#eee' }}>
       <MDBContainer className="py-5">
