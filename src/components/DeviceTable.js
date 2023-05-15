@@ -10,6 +10,7 @@ import {
 import CryptoJS from "crypto-js";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import jwt_decode from "jwt-decode";
+import FormData from "form-data";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
@@ -144,76 +145,75 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
   };
 
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     console.log("file", file);
-    setSelectedFile(file.name);
-  
-    // FormData oluşturma
+
     const formData = new FormData();
-    formData.append("files", file);
-  
+    formData.append("file", file);
+
     console.log("formData", formData);
-  
+
+    setSelectedFile(file);
     setFormData(formData);
   };
   
-  useEffect(() => {
-    console.log("formData", formData);
-  }, [formData]);
   
-  
-  
-  const sendConfig = async () => {
-    if (selectedDevices.length === 0) {
-      console.log("Please select at least one device.");
-      alert("Please select at least one device.");
-      return;
-    }
-  
-    if (!selectedFile) {
-      console.log("Please select a configuration file.");
-      alert("Please select a configuration file.");
-      return;
-    }
-  
-    try {
-      for (const deviceId of selectedDevices) {
-        const device = devices.find((device) => device._id === deviceId);
-        const { ip } = device;
-  
-        try {
-     
-          // TFTP sunucusuna dosya gönderme isteği
-        
-          console.log("formData", formData);
-  
-          const result = await axios.post(
-            `${process.env.REACT_APP_BACKEND_URL}tftp/upload`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              params: {
-                ip
+ const sendConfig = async () => {
+  if (selectedDevices.length === 0) {
+    console.log("Please select at least one device.");
+    alert("Please select at least one device.");
+    return;
+  }
 
-            }
-            }
-          );
-          console.log("result", result.data);
-          console.log(`Config file uploaded to ${ip}`);
-        } catch (error) {
-          console.error(`Failed to upload config file to ${ip}`);
-          console.error(error);
-        }
+  if (!selectedFile) {
+    console.log("Please select a configuration file.");
+    alert("Please select a configuration file.");
+    return;
+  }
+
+  try {
+    for (const deviceId of selectedDevices) {
+      const device = devices.find((device) => device._id === deviceId);
+      const { ip } = device;
+
+      try {
+        const dummyData = {
+          filename: selectedFile.name,
+          size: selectedFile.size,
+          type: selectedFile.type
+        };
+
+        const result = await axios.post(
+          `http://localhost:4000/tftp/upload/device`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            params: {
+              ip,
+              
+            },
+          }
+        );
+
+          
+        console.log("result", result);
+        console.log(`Config file uploaded to ${ip}`);
+      } catch (error) {
+        console.error(`Failed to upload config file to ${ip}`);
+        console.error(error);
       }
-  
-      localStorage.setItem("cihazlar", JSON.stringify(selectedDevices));
-    } catch (error) {
-      console.error(error);
     }
-  };
+
+    localStorage.setItem("cihazlar", JSON.stringify(selectedDevices));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   
 
   const connectDevices = async (cihazlar = selectedDevices) => {
