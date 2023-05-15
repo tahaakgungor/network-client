@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Output from "../components/Output";
 import SnmpForm from "../components/SnmpForm";
@@ -13,6 +13,9 @@ import "../styles/CommandPage.css";
 
 function CommandPage({ socket }) {
   const [command, setCommand] = useState("");
+  const [history, setHistory] = useState([]);
+  const inputRef = useRef();
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   
   const [output, setOutput] = useState(() => {
@@ -109,6 +112,7 @@ function CommandPage({ socket }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       devices.forEach((deviceId) => {
         socket.emit("command", {
@@ -116,10 +120,13 @@ function CommandPage({ socket }) {
           deviceId: deviceId,
         });
       });
+      setHistory((prevHistory) => [...prevHistory, command]);
       setCommand("");
+      setHistoryIndex(-1);
     } catch (error) {
       console.error(error);
     }
+
   };
 
   const handleChange = (e) => {
@@ -170,17 +177,43 @@ function CommandPage({ socket }) {
 
   };
 
+
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (historyIndex < history.length - 1) {
+        setHistoryIndex((prevIndex) => prevIndex + 1);
+        setCommand(history[historyIndex + 1]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        setHistoryIndex((prevIndex) => prevIndex - 1);
+        setCommand(history[historyIndex - 1]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setCommand("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <div className="command-page">
       <form className="all-command" onSubmit={(e) => handleSubmit(e)}>
         <h5 className="command-title">Command To All Devices</h5>
 
         <input
+        ref={inputRef}
           className="form-control form-control-sm"
           type="text"
           placeholder="Enter command"
           value={command}
           onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
         <Button type="primary" htmlType="submit">
           Send
