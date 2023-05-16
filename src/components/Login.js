@@ -17,6 +17,7 @@ const Login = (props) => {
   const [loggedDate, setLoggedDate] = useState("");
   const [loggedTime, setLoggedTime] = useState("");
   const [loading, setLoading] = useState(false);
+  const [permission, setPermission] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -102,7 +103,24 @@ const Login = (props) => {
  
 
         const userRole = res.data[0].role;
+        
         localStorage.setItem("userRole", userRole);
+          
+       
+            const response = await axios.get(
+              `${process.env.REACT_APP_BACKEND_URL}roles/user/${userRole}`
+            );
+            if (response.data[0] === undefined) {
+              return;
+            }
+            setPermission(response.data[0].permissions);
+            localStorage.setItem("permission", response.data[0].permissions);
+           
+      
+      
+           
+          
+
 
         
 

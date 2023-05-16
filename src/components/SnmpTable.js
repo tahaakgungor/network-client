@@ -13,7 +13,12 @@ function SnmpTable() {
 
   const history = useHistory();
 
+
+
+
+
   useEffect(() => {
+
 
     fetchSnmpTable();
 

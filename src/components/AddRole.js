@@ -10,6 +10,8 @@ function RoleManagement() {
   const [roleName, setRoleName] = useState("");
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState("read");
+
 
 
   useEffect(() => {
@@ -40,9 +42,11 @@ function RoleManagement() {
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(selectedPermission)
     const roleData = {
       name: roleName,
       devices: selectedDevices,
+      permissions: selectedPermission
     };
     try {
       if (roleName.length < 3) {
@@ -62,7 +66,7 @@ function RoleManagement() {
       setRoles([...roles, updatedRole]);
 
       setRoleName("");
-      setSelectedDevices([]); 
+      setSelectedDevices([]);
       console.log(response.data);
 
     } catch (error) {
@@ -99,8 +103,9 @@ function RoleManagement() {
         <Col>
           <Card.Body>
             <Form className="form-role" onSubmit={handleRoleSubmit}>
+              <h1 className="text-center">Add Role</h1>
               <Form.Group className="form-input-role">
-                <Form.Label>Role Name</Form.Label>
+       
                 <Form.Control
                   type="text"
                   placeholder="Enter role name"
@@ -108,7 +113,7 @@ function RoleManagement() {
                   onChange={(e) => setRoleName(e.target.value)}
                 />
               </Form.Group>
-              <Form.Label>Devices</Form.Label>
+            
               <Form.Group className="formDevList">
 
                 {devices.map((device) => (
@@ -122,6 +127,24 @@ function RoleManagement() {
                   </div>
                 ))}
               </Form.Group>
+              <Form.Label>Permission</Form.Label>
+              <Form.Check
+                type="radio"
+                label="Read Only"
+                name="permission"
+                value="read"
+                checked={selectedPermission === "read"}
+                onChange={(e) => setSelectedPermission(e.target.value)}
+              />
+              <Form.Check
+                type="radio"
+                label="Read and Write"
+                name="permission"
+                value="read-write"
+                checked={selectedPermission === "read-write"}
+                onChange={(e) => setSelectedPermission(e.target.value)}
+              />
+
 
               <br />
               {loading ? (
@@ -148,6 +171,7 @@ function RoleManagement() {
                         </li>
                       ))}
                       <br></br>
+                      <h5>Permission: {role.permissions}</h5>
 
                       <Button
                         variant="danger"

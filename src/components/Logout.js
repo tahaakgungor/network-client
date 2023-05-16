@@ -126,6 +126,10 @@ function Logout({setIsAuthenticated, isAuthenticated}){
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("token");
         localStorage.removeItem("loggedUser");
+        localStorage.removeItem("permission");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("cihazlar");
+        localStorage.clear();
    
         setIsAuthenticated(false);
       } catch (error) {

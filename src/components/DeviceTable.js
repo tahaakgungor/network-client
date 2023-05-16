@@ -25,11 +25,18 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const permission = localStorage.getItem("permission") || "read-write";
+
+
+
 
 
   const getTokens = localStorage.getItem("token");
 
+
+
   const userRole = localStorage.getItem("userRole");
+
 
   const time = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Istanbul",
@@ -57,12 +64,21 @@ function DeviceTable({ devices, setDevices, socket }) {
     }
   };
 
+ 
+
   useEffect(() => {
     if (getTokens) {
       
       const decoded = jwt_decode(getTokens);
       const uid = decoded.userId;
       fetchUserLog(uid);
+      
+
+   
+
+      
+
+
 
     }
     const fetchRoles = async () => {
@@ -71,6 +87,7 @@ function DeviceTable({ devices, setDevices, socket }) {
           `${process.env.REACT_APP_BACKEND_URL}roles`
         );
         setRole(response.data);
+     
       } catch (error) {
         console.error(error);
       }
@@ -335,7 +352,9 @@ function DeviceTable({ devices, setDevices, socket }) {
               <th>Host</th>
               <th>Device Type</th>
               <th>Secret</th>
+              {permission === "read-write"  &&  (
               <th>Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -434,6 +453,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                       device.secret
                     )}
                   </td>
+                  {permission === "read-write" && (
                   <td>
                     {editingDevice && editingDevice._id === device._id ? (
                       <div className="save-cancel">
@@ -459,6 +479,7 @@ function DeviceTable({ devices, setDevices, socket }) {
                         </div>
                       </div>
                     ) : (
+                
                       <div>
                         <button
                           className="btn btn-primary"
@@ -473,8 +494,11 @@ function DeviceTable({ devices, setDevices, socket }) {
                           Delete
                         </button>
                       </div>
+                      
+                
                     )}
                   </td>
+                  )}
                 </tr>
               );
             })}

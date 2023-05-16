@@ -124,6 +124,10 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       localStorage.removeItem("lastVisitedPage");
       localStorage.removeItem("logs");
       localStorage.removeItem("output");
+      localStorage.removeItem("permission");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("cihazlar");
+      localStorage.clear();
 
 
       setIsAuthenticated(false);
