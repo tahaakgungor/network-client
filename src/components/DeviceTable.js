@@ -40,15 +40,9 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
 
   const perm = location.state?.permission || permission;
 
-
-
-
   const getTokens = localStorage.getItem("token");
 
-
-
   const userRole = localStorage.getItem("userRole");
-
 
   const time = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Istanbul",
@@ -76,16 +70,11 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
     }
   };
 
-
-
   useEffect(() => {
     if (getTokens) {
-
       const decoded = jwt_decode(getTokens);
       const uid = decoded.userId;
       fetchUserLog(uid);
-
-
     }
     const fetchRoles = async () => {
       try {
@@ -203,8 +192,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
         const { ip } = device;
 
         try {
-
-
           const result = await axios.post(
             `http://localhost:4000/tftp/upload/device`,
             formData,
@@ -218,8 +205,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
               },
             }
           );
-
-
           console.log("result", result);
           console.log(`Config file uploaded to ${ip}`);
         } catch (error) {
@@ -235,7 +220,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
   };
 
 
-
   const connectDevices = async (cihazlar = selectedDevices) => {
     if (cihazlar.length === 0) {
       console.log("Please select at least one device.");
@@ -243,11 +227,7 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
       return;
     }
 
-
-
     try {
-      // Get information of all selected devices
-
       const deviceResArray = await Promise.all(
         cihazlar.map(async (deviceId) => {
           const response = await axios.get(
@@ -257,8 +237,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
         })
       );
 
-
-      // Construct activity string
       const activityString =
         deviceResArray
           .map((device) => `${device.name}/${device.ip}`)
@@ -267,16 +245,12 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
       const currentLogs = JSON.parse(localStorage.getItem("logs")) ?? [];
       const newLogs = [...currentLogs, activityString];
 
-      // Save the new logs to localStorage
       localStorage.setItem("logs", JSON.stringify(newLogs));
 
-
-
-
-      // Send log request
       const requestBody = {
         activity: newLogs,
       };
+
       console.log(newLogs);
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
@@ -284,15 +258,10 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
         {}
       );
 
-
-
-
     } catch (error) {
       console.error(error);
     }
-
     localStorage.setItem("cihazlar", JSON.stringify(cihazlar));
-
     history.push({
       pathname: "/devices/command",
       state: { cihazlar: cihazlar },
@@ -305,8 +274,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
         ? filteredDevices.map((device) => device)
         : devices.map((device) => device)
       : role.find((role) => role.name === userRole)?.devices ?? [];
-
-
 
   const filterSearch = (e) => {
     setFilter(e.target.value);
@@ -338,7 +305,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
           onChange={filterSearch}
         />
       </div>
-
       <div className="table-wrapper">
         <table className="table">
           <thead>
@@ -487,9 +453,7 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
                           </div>
                         </div>
                       ) : (
-
                         <div>
-
                           <button
                             className="btn btn-primary"
                             onClick={() => handleUpdate(device)}
@@ -513,15 +477,11 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
                           <button
                             className="btn btn-danger"
                             onClick={() => setShowDeleteModal(true)
-              }
+                            }
                           >
-
                             Delete
                           </button>
-
                         </div>
-
-
                       )}
                     </td>
                   )}
@@ -545,12 +505,10 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
         >
           Send Config
         </button>
-
         <input
           type="file"
           onChange={(e) => handleFileChange(e)}
         />
-
       </div>
     </div>
   );

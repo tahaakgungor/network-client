@@ -14,8 +14,6 @@ function RoleManagement() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -35,10 +33,8 @@ function RoleManagement() {
         console.error(error);
       }
     }
-
     fetchData();
   }, []);
-
 
 
   const handleRoleSubmit = async (e) => {
@@ -87,9 +83,9 @@ function RoleManagement() {
 
     } else {
       setSelectedDevices([...selectedDevices, deviceId]);
-
     }
   };
+
 
   const handleRoleDelete = async (roleId) => {
     setShowDeleteModal(false);
@@ -100,11 +96,7 @@ function RoleManagement() {
       console.error(error);
     }
   };
-
   return (
-
-
-
     <Container>
       <Row>
         <Col>
@@ -112,7 +104,6 @@ function RoleManagement() {
             <Form className="form-role" onSubmit={handleRoleSubmit}>
               <h1 className="text-center">Add Role</h1>
               <Form.Group className="form-input-role">
-
                 <Form.Control
                   type="text"
                   placeholder="Enter role name"
@@ -120,9 +111,7 @@ function RoleManagement() {
                   onChange={(e) => setRoleName(e.target.value)}
                 />
               </Form.Group>
-
               <Form.Group className="formDevList">
-
                 {devices.map((device) => (
                   <div className="mb-2" key={device._id}>
                     <Form.Check
@@ -151,8 +140,6 @@ function RoleManagement() {
                 checked={selectedPermission === "read-write"}
                 onChange={(e) => setSelectedPermission(e.target.value)}
               />
-
-
               <br />
               {loading ? (
                 <Spinner animation="border" variant="primary" />
@@ -180,19 +167,19 @@ function RoleManagement() {
                       <br></br>
                       <h5>Permission: {role.permissions}</h5>
                       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Delete Device</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        Close
-                      </Button>
-                      <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
-                        Delete
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Delete Device</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                            Close
+                          </Button>
+                          <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
+                            Delete
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
                       <Button
                         variant="danger"
                         onClick={() => setShowDeleteModal(true)}

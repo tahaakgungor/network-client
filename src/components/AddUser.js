@@ -13,16 +13,14 @@ const AddUser = ({ showModal, setShowModal }) => {
     role: "",
   });
   const [loading, setLoading] = useState(false);
-  
+
 
   useEffect(() => {
-
     fetchData();
-
   }, []);
 
 
-  const  fetchData = async () => {
+  const fetchData = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}roles`
@@ -39,6 +37,7 @@ const AddUser = ({ showModal, setShowModal }) => {
     const newRole = e.target.value;
     setSelectedUser({ ...selectedUser, role: newRole });
   };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -101,21 +100,18 @@ const AddUser = ({ showModal, setShowModal }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-
             <Form.Control
               type="email"
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-
             <Form.Control
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-
             <Form.Control
               as="select"
               value={selectedUser.role}
@@ -141,7 +137,6 @@ const AddUser = ({ showModal, setShowModal }) => {
               Add User
             </Button>
           )}
-
         </Modal.Footer>
       </Modal>
     </>

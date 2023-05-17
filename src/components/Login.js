@@ -103,16 +103,11 @@ const Login = (props) => {
           }
         );
 
-
-
         const userRole = res.data[0].role;
 
         localStorage.setItem("userRole", userRole);
 
-
-
-        const { role } = res.data[0];
-
+        const { role } = res.data[0]; s
 
         dispatch(saveUser({ userId, email, role }));
 
