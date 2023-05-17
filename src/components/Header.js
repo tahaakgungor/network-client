@@ -12,7 +12,6 @@ import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 
 const Header = ({ setIsAuthenticated, isAuthenticated }) => {
   const [userLog, setUserLog] = useState([]);
-  const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isLocCihazlar, setIsLocCihazlar] = useState(false);
 
@@ -35,19 +34,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
     (state) => state.userInformation.userInformation
   );
 
-  useEffect(() => {
-    if (getTokens) {
-      const intervalId = setInterval(() => {
-        setCount(count + 1);
-      }, 1000);
 
-      return () => {
-        clearInterval(intervalId);
-      };
-    } else {
-      setCount(0);
-    }
-  }, [count, getTokens]);
 
   useEffect(() => {
     if (getTokens) {
@@ -93,12 +80,15 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       });
       console.log(logoutTime);
 
+      const duration = calculateDuration(lastLoginTime, logoutTime);
+      console.log("Duration: ",duration);
+
       const requestBody = {
         status: "logout",
-        duration: count,
+        duration: duration,
         logouttime: logoutTime,
       };
-      console.log("userLOG", userLog.user);
+
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}logs/user/${userLog._id}`,
         requestBody,
@@ -109,7 +99,8 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
           },
         }
       );
-      console.log("PUTT", response.data);
+
+
 
       // Kullanıcının tarayıcısından tuttuğumuz verileri siliyoruz
       localStorage.removeItem("lastLoginDate");
@@ -135,6 +126,21 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       console.error(error);
     }
   };
+
+  const calculateDuration = (lastLoginTime, logoutTime) => {
+    const lastLoginTimeArray = lastLoginTime.split(":");
+    const logoutTimeArray = logoutTime.split(":");
+    const lastLoginHour = parseInt(lastLoginTimeArray[0]);
+    const lastLoginMinute = parseInt(lastLoginTimeArray[1]);
+    const logoutHour = parseInt(logoutTimeArray[0]);
+    const logoutMinute = parseInt(logoutTimeArray[1]);
+
+    const durationHour = logoutHour - lastLoginHour;
+    const durationMinute = logoutMinute - lastLoginMinute;
+
+    return `${durationHour}h ${durationMinute}m`;
+  };
+
 
   return (
     <Navbar bg="light" expand="lg">

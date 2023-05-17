@@ -10,6 +10,7 @@ function SnmpTable() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [updatedInfo, setUpdatedInfo] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const history = useHistory();
 
@@ -36,6 +37,7 @@ function SnmpTable() {
   };
 
   const handleDelete = async (id) => {
+    setShowDeleteModal(false);
     try {
       await axios.delete(`${process.env.REACT_APP_BACKEND_URL}snmp/register/${id}`);
       fetchSnmpTable();
@@ -78,22 +80,22 @@ function SnmpTable() {
     try {
       const ids = selectedRows.map((row) => row._id);
       localStorage.setItem("selectedSnmpIds", JSON.stringify(ids));
-      console.log("aradığım log : ", ids);
-      
+
+
       // Güncellenen veriyi kullanarak isteği gönder
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}snmp/selected-infos`, { ids, updatedInfo});
-      console.log("Selected SNMP Info: ", res.data);
-  
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}snmp/selected-infos`, { ids, updatedInfo });
+
+
       history.push({
         pathname: "/snmp/informations",
         state: { snmpInfo: res.data }
       });
-  
+
     } catch (error) {
       console.error(error);
     }
   };
-  
+
 
   const handleSelectRow = (id) => {
     setSelectedRows((rows) =>
@@ -101,7 +103,7 @@ function SnmpTable() {
         ? rows.filter((row) => row._id !== id)
         : [...rows, snmpTable.find((row) => row._id === id)]
     );
-    console.log(selectedRows);
+
   };
 
   const handleSelectAllRows = (e) => {
@@ -205,9 +207,23 @@ function SnmpTable() {
                   >
                     Edit
                   </Button>
+                  <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Delete Device</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Close
+                      </Button>
+                      <Button variant="danger" onClick={() => handleDelete(snmp._id)}>
+                        Delete
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                   <Button
                     variant="danger"
-                    onClick={() => handleDelete(snmp._id)}
+                    onClick={() => setShowDeleteModal(true)}
                   >
                     Delete
                   </Button>
@@ -217,7 +233,7 @@ function SnmpTable() {
           </tbody>
         </table>
       </div>
-<Link to="/snmp/informations">
+      <Link to="/snmp/informations">
         <div className="connect-button">
 
           <Button variant="primary" onClick={() => getSelectedSnmpInfo()}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Spinner, Modal } from "react-bootstrap";
 import "../styles/AddRole.css";
 
 function RoleManagement() {
@@ -11,6 +11,8 @@ function RoleManagement() {
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState("read");
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
 
@@ -42,7 +44,8 @@ function RoleManagement() {
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(selectedPermission)
+    setShowModal(true);
+
     const roleData = {
       name: roleName,
       devices: selectedDevices,
@@ -67,7 +70,7 @@ function RoleManagement() {
 
       setRoleName("");
       setSelectedDevices([]);
-      console.log(response.data);
+
 
     } catch (error) {
       console.error(error);
@@ -81,14 +84,15 @@ function RoleManagement() {
   const handleDeviceSelection = (deviceId) => {
     if (selectedDevices.includes(deviceId)) {
       setSelectedDevices(selectedDevices.filter((id) => id !== deviceId));
-      console.log("if", selectedDevices);
+
     } else {
       setSelectedDevices([...selectedDevices, deviceId]);
-      console.log("else", selectedDevices);
+
     }
   };
 
   const handleRoleDelete = async (roleId) => {
+    setShowDeleteModal(false);
     try {
       await axios.delete(`${process.env.REACT_APP_BACKEND_URL}roles/${roleId}`);
       setRoles(roles.filter((role) => role._id !== roleId));
@@ -98,6 +102,9 @@ function RoleManagement() {
   };
 
   return (
+
+
+
     <Container>
       <Row>
         <Col>
@@ -105,7 +112,7 @@ function RoleManagement() {
             <Form className="form-role" onSubmit={handleRoleSubmit}>
               <h1 className="text-center">Add Role</h1>
               <Form.Group className="form-input-role">
-       
+
                 <Form.Control
                   type="text"
                   placeholder="Enter role name"
@@ -113,7 +120,7 @@ function RoleManagement() {
                   onChange={(e) => setRoleName(e.target.value)}
                 />
               </Form.Group>
-            
+
               <Form.Group className="formDevList">
 
                 {devices.map((device) => (
@@ -172,10 +179,23 @@ function RoleManagement() {
                       ))}
                       <br></br>
                       <h5>Permission: {role.permissions}</h5>
-
+                      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Delete Device</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Close
+                      </Button>
+                      <Button variant="danger" onClick={() => handleRoleDelete(role._id)}>
+                        Delete
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                       <Button
                         variant="danger"
-                        onClick={() => handleRoleDelete(role._id)}
+                        onClick={() => setShowDeleteModal(true)}
                       >
                         Delete
                       </Button>
@@ -188,6 +208,7 @@ function RoleManagement() {
         </Col>
       </Row>
     </Container>
+
   );
 }
 

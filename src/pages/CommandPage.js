@@ -17,7 +17,7 @@
     const inputRef = useRef();
     const [historyIndex, setHistoryIndex] = useState(-1);
 
-    
+
     const [output, setOutput] = useState(() => {
       const storedOutput = localStorage.getItem("output");
       return storedOutput ? JSON.parse(storedOutput) : [];
@@ -26,7 +26,7 @@
     const [activeTab, setActiveTab] = useState(null);
     const location = useLocation()
     const storedDevices = localStorage.getItem("cihazlar");
-  
+
     const [devices, setDevices] = useState(storedDevices
       ? JSON.parse(storedDevices)
       : location.state.cihazlar);
@@ -40,7 +40,7 @@
       localStorage.setItem("output", JSON.stringify(output));
     }, [output]);
 
-  
+
 
     useEffect(() => {
       const storedOutput = JSON.parse(localStorage.getItem("output"));
@@ -59,7 +59,7 @@
         id,
         output: storedOutput?.find((o) => o.id === id)?.output || "",
       }));
-      console.log(initialOutput);
+
       setOutput(initialOutput);
 
       const initialCommandStates = devices.reduce(
@@ -69,7 +69,7 @@
       setCommandStates(initialCommandStates);
 
       devices.forEach((deviceId) => {
-        console.log("output" + deviceId);
+
         socket.on("output" + deviceId, (result) => {
           setOutput((prevState) =>
             prevState.map((deviceOutput) =>
@@ -169,11 +169,11 @@
 
       const newDevices = devices.filter((_, index) => index !== targetKey);
       setDevices(newDevices);
-    
+
       localStorage.setItem("output", JSON.stringify(output));
       localStorage.setItem("cihazlar", JSON.stringify(newDevices));
 
-      
+
 
     };
 

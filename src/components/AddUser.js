@@ -13,20 +13,22 @@ const AddUser = ({ showModal, setShowModal }) => {
     role: "",
   });
   const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchData();
-    }, 1000);
-    return () => clearInterval(interval);
+
+    fetchData();
+
   }, []);
 
-  async function fetchData() {
+
+  const  fetchData = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}roles`
       );
       setRoles(response.data);
+
       setSelectedUser({ role: response.data[0].name });
     } catch (error) {
       console.error(error);

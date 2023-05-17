@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
+import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
@@ -19,6 +20,8 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [permission, setPermission] = useState("");
   const dispatch = useDispatch();
+  const history = useHistory();
+
 
   useEffect(() => {
     const date = new Date().toLocaleString("en-US", {
@@ -70,21 +73,21 @@ const Login = (props) => {
           },
         }
       );
-      console.log("RESS LOG", response);
+
 
       const token = response.data.token;
-      console.log("tokeasdasdn", token);
+      console.log("token: ", token);
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
- 
 
-   
+
+
 
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
 
       if (token) {
-        console.log("token", userId);
+
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
 
@@ -100,36 +103,19 @@ const Login = (props) => {
           }
         );
 
- 
+
 
         const userRole = res.data[0].role;
-        
+
         localStorage.setItem("userRole", userRole);
-          
-       
-            const response = await axios.get(
-              `${process.env.REACT_APP_BACKEND_URL}roles/user/${userRole}`
-            );
-            if (response.data[0] === undefined) {
-              return;
-            }
-            setPermission(response.data[0].permissions);
-            localStorage.setItem("permission", response.data[0].permissions);
-           
-      
-      
-           
-          
 
 
-        
 
         const { role } = res.data[0];
 
-        console.log("role", role);
 
         dispatch(saveUser({ userId, email, role }));
-  
+
 
         console.log("date", loggedDate);
         console.log("time", loggedTime);
@@ -155,6 +141,16 @@ const Login = (props) => {
           }
         );
         console.log("userLogPost", userLogPost.data);
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}roles/user/${userRole}`
+        );
+        if (response.data[0] === undefined) {
+          return;
+        }
+        setPermission(response.data[0].permissions);
+        localStorage.setItem("permission", response.data[0].permissions);
+        history.push("/devices", { permission: response.data[0].permissions });
+
       } else {
         localStorage.setItem("isAuthenticated", false);
         props.setIsAuthenticated(false);
@@ -164,7 +160,7 @@ const Login = (props) => {
     } catch (error) {
       if (error.response.status === 400) {
         setError("Email or password is incorrect");
-        setLoading(false);  
+        setLoading(false);
       } else {
         console.error(error);
         setError("Something went wrong. Please try again later.");
@@ -176,7 +172,7 @@ const Login = (props) => {
   return (
     <div className="login">
       <Form className="login-form" onSubmit={handleSubmit}>
-        <Form.Group  controlId="formBasicEmail">
+        <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -204,11 +200,11 @@ const Login = (props) => {
           </Form.Control.Feedback>
         </Form.Group>
         {loading ? (
-  <Spinner animation="border" variant="primary" />
-) : (
-        <Button variant="success" type="submit">
-          Submit
-        </Button>
+          <Spinner animation="border" variant="primary" />
+        ) : (
+          <Button variant="success" type="submit">
+            Submit
+          </Button>
         )}
       </Form>
 

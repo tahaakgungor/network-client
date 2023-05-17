@@ -16,6 +16,7 @@ const AdminPanel = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [newUser, setNewUser] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -116,6 +117,7 @@ const AdminPanel = () => {
   };
 
   const handleDeleteUser = async (userId) => {
+    setShowDeleteModal(false);
     try {
       await axios.delete(
         `${process.env.REACT_APP_BACKEND_URL}auth/users/${userId}`
@@ -133,7 +135,7 @@ const AdminPanel = () => {
   };
 
   return (
-    
+
     <div>
       <RoleManagement />
     {!selectedUser ? null : (
@@ -245,9 +247,23 @@ const AdminPanel = () => {
                     >
                       Edit
                     </Button>
+                    <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Delete Device</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Close
+                      </Button>
+                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
+                        Delete
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                     <Button
                       variant="danger"
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={() => setShowDeleteModal(true)}
                     >
                       Delete
                     </Button>

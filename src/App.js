@@ -51,8 +51,8 @@ function App() {
   }, []);
 
 
-  const visitedPAge = localStorage.getItem("lastVisitedPage");
-  console.log("Terminall", visitedPAge);
+
+
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
 

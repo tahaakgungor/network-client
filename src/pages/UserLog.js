@@ -84,7 +84,7 @@ function UserLog() {
                 <td>{log.date}</td>
                 <td>{log.logintime}</td>
                 <td>{log.logouttime}</td>
-                <td>{log.duration} sec</td>
+                <td>{log.duration}</td>
                 <td>{log.activity}</td>
                 <td>
                   <Button
@@ -104,7 +104,7 @@ function UserLog() {
         <Button variant="primary">Back to Admin Panel</Button>
       </Link>
       </div>
-    
+
     </div>
   );
 }

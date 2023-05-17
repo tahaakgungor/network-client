@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
@@ -11,11 +11,13 @@ import CryptoJS from "crypto-js";
 import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import jwt_decode from "jwt-decode";
 import FormData from "form-data";
+import { Button } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/DeviceTable.css";
+import { Modal } from "react-bootstrap";
 
-function DeviceTable({ devices, setDevices, socket }) {
+function DeviceTable({ devices, setDevices, socket, perms }) {
   const history = useHistory();
   const [userLog, setUserLog] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
@@ -25,8 +27,18 @@ function DeviceTable({ devices, setDevices, socket }) {
   const [role, setRole] = useState([]);
   const [filteredDevices, setFilteredDevices] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const permission = localStorage.getItem("permission") || "read-write";
+  const [permission, setPermission] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+
+  useEffect(() => {
+    const permission = localStorage.getItem("permission") || "read-write";
+    setPermission(permission);
+  }, []);
+
+  const location = useLocation();
+
+  const perm = location.state?.permission || permission;
 
 
 
@@ -57,27 +69,21 @@ function DeviceTable({ devices, setDevices, socket }) {
           },
         }
       );
-      console.log("response", response.data);
+
       setUserLog(response.data[0]);
     } catch (error) {
       console.error(error);
     }
   };
 
- 
+
 
   useEffect(() => {
     if (getTokens) {
-      
+
       const decoded = jwt_decode(getTokens);
       const uid = decoded.userId;
       fetchUserLog(uid);
-      
-
-   
-
-      
-
 
 
     }
@@ -87,7 +93,7 @@ function DeviceTable({ devices, setDevices, socket }) {
           `${process.env.REACT_APP_BACKEND_URL}roles`
         );
         setRole(response.data);
-     
+
       } catch (error) {
         console.error(error);
       }
@@ -153,6 +159,7 @@ function DeviceTable({ devices, setDevices, socket }) {
   };
 
   const handleDelete = async (id) => {
+    setShowDeleteModal(false);
     try {
       await axios.delete(`${process.env.REACT_APP_BACKEND_URL}devices/${id}`);
       setDevices(devices.filter((device) => device._id !== id));
@@ -175,63 +182,59 @@ function DeviceTable({ devices, setDevices, socket }) {
     setSelectedFile(file);
     setFormData(formData);
   };
-  
-  
- const sendConfig = async () => {
-  if (selectedDevices.length === 0) {
-    console.log("Please select at least one device.");
-    alert("Please select at least one device.");
-    return;
-  }
 
-  if (!selectedFile) {
-    console.log("Please select a configuration file.");
-    alert("Please select a configuration file.");
-    return;
-  }
 
-  try {
-    for (const deviceId of selectedDevices) {
-      const device = devices.find((device) => device._id === deviceId);
-      const { ip } = device;
-
-      try {
-        const dummyData = {
-          filename: selectedFile.name,
-          size: selectedFile.size,
-          type: selectedFile.type
-        };
-
-        const result = await axios.post(
-          `http://localhost:4000/tftp/upload/device`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            params: {
-              ip,
-              
-            },
-          }
-        );
-
-          
-        console.log("result", result);
-        console.log(`Config file uploaded to ${ip}`);
-      } catch (error) {
-        console.error(`Failed to upload config file to ${ip}`);
-        console.error(error);
-      }
+  const sendConfig = async () => {
+    if (selectedDevices.length === 0) {
+      console.log("Please select at least one device.");
+      alert("Please select at least one device.");
+      return;
     }
 
-    localStorage.setItem("cihazlar", JSON.stringify(selectedDevices));
-  } catch (error) {
-    console.error(error);
-  }
-};
+    if (!selectedFile) {
+      console.log("Please select a configuration file.");
+      alert("Please select a configuration file.");
+      return;
+    }
 
-  
+    try {
+      for (const deviceId of selectedDevices) {
+        const device = devices.find((device) => device._id === deviceId);
+        const { ip } = device;
+
+        try {
+
+
+          const result = await axios.post(
+            `http://localhost:4000/tftp/upload/device`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              params: {
+                ip,
+
+              },
+            }
+          );
+
+
+          console.log("result", result);
+          console.log(`Config file uploaded to ${ip}`);
+        } catch (error) {
+          console.error(`Failed to upload config file to ${ip}`);
+          console.error(error);
+        }
+      }
+
+      localStorage.setItem("cihazlar", JSON.stringify(selectedDevices));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
   const connectDevices = async (cihazlar = selectedDevices) => {
     if (cihazlar.length === 0) {
@@ -253,7 +256,7 @@ function DeviceTable({ devices, setDevices, socket }) {
           return response.data[0];
         })
       );
-      console.log("DEVICE RES:", deviceResArray);
+
 
       // Construct activity string
       const activityString =
@@ -267,9 +270,9 @@ function DeviceTable({ devices, setDevices, socket }) {
       // Save the new logs to localStorage
       localStorage.setItem("logs", JSON.stringify(newLogs));
 
-      console.log("CONNECTED DEVICES:", connectDevices);
 
-      console.log("GET User Id", newLogs);
+
+
       // Send log request
       const requestBody = {
         activity: newLogs,
@@ -280,10 +283,10 @@ function DeviceTable({ devices, setDevices, socket }) {
         requestBody,
         {}
       );
-      console.log("RESPONSE:", response);
-      
 
-     
+
+
+
     } catch (error) {
       console.error(error);
     }
@@ -302,6 +305,8 @@ function DeviceTable({ devices, setDevices, socket }) {
         ? filteredDevices.map((device) => device)
         : devices.map((device) => device)
       : role.find((role) => role.name === userRole)?.devices ?? [];
+
+
 
   const filterSearch = (e) => {
     setFilter(e.target.value);
@@ -352,15 +357,18 @@ function DeviceTable({ devices, setDevices, socket }) {
               <th>Host</th>
               <th>Device Type</th>
               <th>Secret</th>
-              {permission === "read-write"  &&  (
-              <th>Actions</th>
+              {perm === "read-write" && (
+                <th>Actions</th>
               )}
             </tr>
           </thead>
           <tbody>
             {deviceIds.map((device) => {
+
               return (
+
                 <tr key={device._id}>
+
                   <td>
                     <input
                       type="checkbox"
@@ -453,51 +461,69 @@ function DeviceTable({ devices, setDevices, socket }) {
                       device.secret
                     )}
                   </td>
-                  {permission === "read-write" && (
-                  <td>
-                    {editingDevice && editingDevice._id === device._id ? (
-                      <div className="save-cancel">
-                        <div
-                          className="save-cancel"
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <button
-                            className="btn btn-success"
-                            onClick={handleSubmit}
+                  {perm === "read-write" && (
+                    <td>
+                      {editingDevice && editingDevice._id === device._id ? (
+                        <div className="save-cancel">
+                          <div
+                            className="save-cancel"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            Save
-                          </button>
-                          <button
-                            className="btn btn-secondary"
-                            onClick={handleCancel}
-                          >
-                            Cancel
-                          </button>
+                            <button
+                              className="btn btn-success"
+                              onClick={handleSubmit}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="btn btn-secondary"
+                              onClick={handleCancel}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                
-                      <div>
-                        <button
-                          className="btn btn-primary"
-                          onClick={() => handleUpdate(device)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => handleDelete(device._id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                      
-                
-                    )}
-                  </td>
+                      ) : (
+
+                        <div>
+
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => handleUpdate(device)}
+                          >
+                            Edit
+                          </button>
+                          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                            <Modal.Header closeButton>
+                              <Modal.Title>Delete Device</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                            <Modal.Footer>
+                              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                                Close
+                              </Button>
+                              <Button variant="danger" onClick={() => handleDelete(device._id)}>
+                                Delete
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => setShowDeleteModal(true)
+              }
+                          >
+
+                            Delete
+                          </button>
+
+                        </div>
+
+
+                      )}
+                    </td>
                   )}
                 </tr>
               );
@@ -513,17 +539,17 @@ function DeviceTable({ devices, setDevices, socket }) {
           Connect
         </button>
         <button
-        className="btn btn-primary"
-        onClick={sendConfig}
-        disabled={selectedDevices.length === 0 || !selectedFile}
-      >
-        Send Config
-      </button>
+          className="btn btn-primary"
+          onClick={sendConfig}
+          disabled={selectedDevices.length === 0 || !selectedFile}
+        >
+          Send Config
+        </button>
 
         <input
-  type="file"
-  onChange={(e) => handleFileChange(e)}
-/>
+          type="file"
+          onChange={(e) => handleFileChange(e)}
+        />
 
       </div>
     </div>

@@ -57,7 +57,7 @@ export default function ProfilePage() {
       }
     });
     setLogs(response.data);
-  
+
     setLogActivity(response.data[0].activity);
 
 
@@ -66,7 +66,7 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchUserInfoById();
     fetchLogs();
-    
+
   }, []);
 
 
@@ -90,20 +90,25 @@ export default function ProfilePage() {
                 <p className="text-muted mb-1">{userName}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <Button>Edit</Button>
-           
+
                 </div>
               </MDBCardBody>
             </MDBCard>
 
             <MDBCard className="mb-4 mb-lg-0">
               <MDBCardBody className="p-0">
-                <MDBListGroup flush className="rounded-3">
+                <MDBListGroup className="rounded-3">
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fas icon="globe fa-lg text-warning" />
-                    <MDBCardText><a 
+                    <MDBCardText><a
                     href="https://baykartech.com/"
-            
-                    >https://baykartech.com/</a></MDBCardText>
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: '#333333' }}
+                  >
+                    baykartech.com
+                  </a></MDBCardText>
+
                   </MDBListGroupItem>
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fab icon="github fa-lg" style={{ color: '#333333' }} />
@@ -158,7 +163,7 @@ export default function ProfilePage() {
               </MDBCardBody>
             </MDBCard>
 
-   
+
 
             <MDBRow>
   <MDBCol md="12">
