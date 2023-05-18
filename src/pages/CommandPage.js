@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Output from "../components/Output";
-import SnmpForm from "../components/SnmpForm";
 import { Tabs } from "antd";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "antd";
 import { FaTimes, FaPlusSquare, FaWindowMaximize } from "react-icons/fa";
@@ -21,11 +19,9 @@ function CommandPage({ socket }) {
     return storedOutput ? JSON.parse(storedOutput) : [];
   });
   const [deviceNames, setDeviceNames] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
 
   const location = useLocation()
   const storedDevices = localStorage.getItem("cihazlar");
-
 
   const [devices, setDevices] = useState(storedDevices
     ? JSON.parse(storedDevices)
@@ -46,7 +42,6 @@ function CommandPage({ socket }) {
   useEffect(() => {
     localStorage.setItem("output", JSON.stringify(output));
   }, [output]);
-
 
 
   useEffect(() => {
@@ -112,14 +107,18 @@ function CommandPage({ socket }) {
     fetchDeviceNames();
   }, [devices]);
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const handleOpenWindow = (deviceId) => {
     const url = `http://localhost:3000/terminal/${deviceId}`;
     window.open(url, "_blank", "width=800,height=600");
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       devices.forEach((deviceId) => {
         socket.emit("command", {
@@ -133,7 +132,6 @@ function CommandPage({ socket }) {
     } catch (error) {
       console.error(error);
     }
-
   };
 
   const handleChange = (e) => {
@@ -183,9 +181,6 @@ function CommandPage({ socket }) {
 
     localStorage.setItem("output", JSON.stringify(output));
     localStorage.setItem("cihazlar", JSON.stringify(newDevices));
-
-
-
   };
 
 
@@ -207,8 +202,8 @@ function CommandPage({ socket }) {
         setCommand("");
       }
     }
-
   };
+
   const handleKeyOtherDown = (e, deviceId) => {
     if (e.key === "ArrowUp") {
       if (historyIndices[deviceId] < commandHistories[deviceId].length - 1) {
@@ -242,19 +237,13 @@ function CommandPage({ socket }) {
         }));
       }
     }
-
-
   };
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   return (
     <div className="command-page">
       <form className="all-command" onSubmit={(e) => handleSubmit(e)}>
         <h5 className="command-title">Command To All Devices</h5>
-
         <input
           ref={inputRef}
           className="form-control form-control-sm"
@@ -268,7 +257,6 @@ function CommandPage({ socket }) {
           Send
         </Button>
       </form>
-
       <div>
         <Tabs
           hideAdd
@@ -279,7 +267,6 @@ function CommandPage({ socket }) {
               handleTabClose(targetKey);
             }
           }}
-
           items={output.map(({ id, output }, index) => ({
             key: index,
             label: (<div className="tab-label-wrapper">
@@ -310,7 +297,6 @@ function CommandPage({ socket }) {
                     onChange={(e) => handleOtherChange(e, id)}
                     onKeyDown={(e) => handleKeyOtherDown(e, id)}
                   />
-
                   <Button type="primary" htmlType="submit">
                     Send
                   </Button>
@@ -320,7 +306,6 @@ function CommandPage({ socket }) {
           }))}
         />
       </div>
-
     </div>
   );
 }
