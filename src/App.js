@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DeviceList from "./pages/DeviceList";
 import CommandPage from "./pages/CommandPage";
-import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Header from "./components/Header";
 import AdminPanel from "./pages/AdminPanel";
@@ -11,7 +10,6 @@ import SnmpManagment from "./pages/SnmpManagment";
 import SnmpInformations from "./pages/SnmpInformations";
 import ProfilePage from "./pages/ProfilePage";
 import Cookies from "js-cookie";
-import axios from "axios";
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,9 +23,6 @@ import { io } from "socket.io-client";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [socket, setSocket] = useState(null);
-
-
-
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -45,20 +40,12 @@ function App() {
 
   useEffect(() => {
     const auth = localStorage.getItem("isAuthenticated");
-
-
     setIsAuthenticated(auth === "true");
   }, []);
 
-
-
-
   const handlePageChange = () => {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
-
   };
-
-
 
   return (
     <Router>

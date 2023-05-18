@@ -8,23 +8,8 @@ import "../styles/UserLog.css";
 function UserLog() {
   const [userLog, setUserLog] = useState([]);
   const [userInfo, setUserInfo] = useState([]);
-  const history = useHistory();
   const location = useLocation();
-
   const user = location.state.user;
-
-  const deleteLog = async (id) => {
-    try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}logs/user/${id}`);
-      fetchUserLog();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDelete = (id) => {
-    deleteLog(id);
-  };
 
   useEffect(() => {
     fetchUserInformation();
@@ -36,6 +21,15 @@ function UserLog() {
       clearInterval(intervalId);
     };
   }, []);
+
+  const deleteLog = async (id) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}logs/user/${id}`);
+      fetchUserLog();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchUserLog = async () => {
     try {
@@ -59,10 +53,14 @@ function UserLog() {
     }
   };
 
+  const handleDelete = (id) => {
+    deleteLog(id);
+  };
+
+
   return (
     <div className="user-log-container">
       <br></br>
-
       <h5>{userInfo.name}</h5>
       <div className="user-table">
         <table>
@@ -100,11 +98,10 @@ function UserLog() {
         </table>
       </div>
       <div className="back-to-admin">
-      <Link to="/admin">
-        <Button variant="primary">Back to Admin Panel</Button>
-      </Link>
+        <Link to="/admin">
+          <Button variant="primary">Back to Admin Panel</Button>
+        </Link>
       </div>
-
     </div>
   );
 }

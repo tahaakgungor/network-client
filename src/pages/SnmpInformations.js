@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import SnmpForm from "../components/SnmpForm";
-import SnmpTable from "../components/SnmpTable";
 import axios from "axios";
 import '../styles/SnmpInformations.css'
 
 function SnmpInformations() {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
     const [snmpInformations, setSnmpInformations] = useState([]);
-
-    const selectedSnmpIds = JSON.parse(localStorage.getItem("selectedSnmpIds")); // localStorage'dan seçili cihazların id'lerini al
 
     useEffect(() => {
         fetchSelectedSnmpInformations();

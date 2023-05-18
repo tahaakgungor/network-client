@@ -6,13 +6,12 @@ import SnmpTable from "../components/SnmpTable";
 
 function SnmpManagment() {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
+
     return (
         <div className="container">
-       
             <SnmpTable/>
             <br/>
             <SnmpForm/>
-            
         </div>
     )
 }

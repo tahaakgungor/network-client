@@ -7,8 +7,6 @@ import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import '../styles/Login.css'
 import jwt_decode from "jwt-decode";
 
-
-
 import Cookies from "js-cookie";
 
 const Login = (props) => {
@@ -19,6 +17,7 @@ const Login = (props) => {
   const [loggedTime, setLoggedTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [permission, setPermission] = useState("");
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -38,8 +37,8 @@ const Login = (props) => {
       hour12: true,
     });
 
-    const localDate = localStorage.setItem("lastLoginDate", date);
-    const localTime = localStorage.setItem("lastLoginTime", time);
+    localStorage.setItem("lastLoginDate", date);
+    localStorage.setItem("lastLoginTime", time);
 
     setLoggedDate(date);
     setLoggedTime(time);
@@ -74,20 +73,15 @@ const Login = (props) => {
         }
       );
 
-
       const token = response.data.token;
       console.log("token: ", token);
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
 
-
-
-
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
 
       if (token) {
-
         localStorage.setItem("isAuthenticated", true);
         props.setIsAuthenticated(true);
 
@@ -107,10 +101,9 @@ const Login = (props) => {
 
         localStorage.setItem("userRole", userRole);
 
-        const { role } = res.data[0]; s
+        const { role } = res.data[0];
 
         dispatch(saveUser({ userId, email, role }));
-
 
         console.log("date", loggedDate);
         console.log("time", loggedTime);

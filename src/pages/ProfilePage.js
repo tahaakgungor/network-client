@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MDBCol,
   MDBContainer,
@@ -33,6 +33,12 @@ export default function ProfilePage() {
   const decodedToken = jwt_decode(token);
   const userId = decodedToken.userId;
 
+  useEffect(() => {
+    fetchUserInfoById();
+    fetchLogs();
+
+  }, []);
+
   const fetchUserInfoById = async () => {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}auth/user/${userId}`,
@@ -59,21 +65,11 @@ export default function ProfilePage() {
     setLogs(response.data);
 
     setLogActivity(response.data[0].activity);
-
-
   };
-
-  useEffect(() => {
-    fetchUserInfoById();
-    fetchLogs();
-
-  }, []);
-
-
 
 
   return (
-    <section style={{ backgroundColor: '#eee' ,margin:40}}>
+    <section style={{ backgroundColor: '#eee', margin: 40 }}>
       <MDBContainer className="py-5">
 
 
@@ -101,13 +97,13 @@ export default function ProfilePage() {
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fas icon="globe fa-lg text-warning" />
                     <MDBCardText><a
-                    href="https://baykartech.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: '#333333' }}
-                  >
-                    baykartech.com
-                  </a></MDBCardText>
+                      href="https://baykartech.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: '#333333' }}
+                    >
+                      baykartech.com
+                    </a></MDBCardText>
 
                   </MDBListGroupItem>
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
@@ -166,17 +162,17 @@ export default function ProfilePage() {
 
 
             <MDBRow>
-  <MDBCol md="12">
-    <MDBCard>
-      <MDBCardBody>
-        <h5 className="mb-4">Logs</h5>
-        {logs.map((log, index) => (
-          <p key={index}>{log.activity}</p>
-        ))}
-      </MDBCardBody>
-    </MDBCard>
-  </MDBCol>
-</MDBRow>
+              <MDBCol md="12">
+                <MDBCard>
+                  <MDBCardBody>
+                    <h5 className="mb-4">Logs</h5>
+                    {logs.map((log, index) => (
+                      <p key={index}>{log.activity}</p>
+                    ))}
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+            </MDBRow>
 
           </MDBCol>
         </MDBRow>

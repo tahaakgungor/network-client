@@ -3,9 +3,7 @@ import axios from "axios";
 import { Modal, Button, Table } from "react-bootstrap";
 import AddUser from "../components/AddUser";
 import RoleManagement from "../components/AddRole";
-import UserLog from "./UserLog";
 import "../styles/AdminPanel.css";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 const AdminPanel = () => {
@@ -107,8 +105,6 @@ const AdminPanel = () => {
         `${process.env.REACT_APP_BACKEND_URL}auth/users/${selectedUser._id}`,
         updatedUser
       );
-
-
       fetchUsers();
       setShowEditModal(false);
     } catch (error) {
@@ -138,64 +134,64 @@ const AdminPanel = () => {
 
     <div>
       <RoleManagement />
-    {!selectedUser ? null : (
-      <div className="modal-container">
-  <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-    <Modal.Header closeButton>
-      <Modal.Title>Edit User</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <form onSubmit={handleUpdateUser}>
-        <div className="form-group">
-          <label>Name:</label>
-          <input
-            type="text"
-            value={selectedUser.name}
-            onChange={(event) =>
-              setSelectedUser({ ...selectedUser, name: event.target.value })
-            }
-            required
-          />
+      {!selectedUser ? null : (
+        <div className="modal-container">
+          <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit User</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <form onSubmit={handleUpdateUser}>
+                <div className="form-group">
+                  <label>Name:</label>
+                  <input
+                    type="text"
+                    value={selectedUser.name}
+                    onChange={(event) =>
+                      setSelectedUser({ ...selectedUser, name: event.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email:</label>
+                  <input
+                    type="email"
+                    value={selectedUser.email}
+                    onChange={(event) =>
+                      setSelectedUser({
+                        ...selectedUser,
+                        email: event.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+                <div className="form-group role-changes">
+                  <label>Role:</label>
+                  <select value={role} onChange={handleRoleChange}>
+                    {roles.map((role) => (
+                      <option key={role._id} value={role.name}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group edit-update-cancel">
+                  <Button variant="success" type="submit">
+                    Update
+                  </Button>
+                  <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </Modal.Body>
+          </Modal>
         </div>
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            value={selectedUser.email}
-            onChange={(event) =>
-              setSelectedUser({
-                ...selectedUser,
-                email: event.target.value,
-              })
-            }
-            required
-          />
-        </div>
-        <div className="form-group role-changes">
-          <label>Role:</label>
-          <select value={role} onChange={handleRoleChange}>
-            {roles.map((role) => (
-              <option key={role._id} value={role.name}>
-                {role.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group edit-update-cancel">
-          <Button variant="success" type="submit">
-            Update
-          </Button>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Cancel
-          </Button>
-        </div>
-      </form>
-    </Modal.Body>
-  </Modal>
-</div>
 
 
-    )}
+      )}
       <AddUser
         onAddUser={handleAddUser}
         setShowModal={setShowAddUser}
@@ -248,19 +244,19 @@ const AdminPanel = () => {
                       Edit
                     </Button>
                     <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Delete Device</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        Close
-                      </Button>
-                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
-                        Delete
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Delete Device</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>Are you sure you want to delete this device?</Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                          Close
+                        </Button>
+                        <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
+                          Delete
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                     <Button
                       variant="danger"
                       onClick={() => setShowDeleteModal(true)}

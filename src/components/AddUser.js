@@ -85,7 +85,6 @@ const AddUser = ({ showModal, setShowModal }) => {
     }
   };
 
-
   return (
     <>
       <Modal show={showModal} onHide={() => setShowModal(false)}>

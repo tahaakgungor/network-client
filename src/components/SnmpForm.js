@@ -32,7 +32,7 @@ function SnmpForm() {
       setHost("");
       setCommunity("");
       setOids("");
-      
+
 
     } catch (error) {
       setIsError(true);
@@ -42,11 +42,7 @@ function SnmpForm() {
     }
   };
 
-  const handleOidChange = (index, value) => {
-    const tempOids = [...oids];
-    tempOids[index] = value;
-    setOids(tempOids);
-  };
+
   return (
     <>
       <Button className="btn-list" variant="primary" onClick={() => setShowModal(true)}>

@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import {
-  addConnectedDevice,
-  removeConnectedDevice,
-} from "../Redux/Device/deviceSlice";
-import CryptoJS from "crypto-js";
-import { saveUser } from "../Redux/UserInformation/userInformationSlice";
 import jwt_decode from "jwt-decode";
 import FormData from "form-data";
 import { Button } from "react-bootstrap";
@@ -30,12 +22,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
   const [permission, setPermission] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-
-  useEffect(() => {
-    const permission = localStorage.getItem("permission") || "read-write";
-    setPermission(permission);
-  }, []);
-
   const location = useLocation();
 
   const perm = location.state?.permission || permission;
@@ -51,24 +37,10 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
     hour12: true,
   });
 
-  const fetchUserLog = async (uid) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${uid}`,
-        {
-          params: {
-            $orderby: { createdAt: -1 },
-            $limit: 1,
-            userId: uid,
-          },
-        }
-      );
-
-      setUserLog(response.data[0]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    const permission = localStorage.getItem("permission") || "read-write";
+    setPermission(permission);
+  }, []);
 
   useEffect(() => {
     if (getTokens) {
@@ -90,6 +62,25 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
     fetchRoles();
   }, []);
 
+
+  const fetchUserLog = async (uid) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}logs/user/last/${uid}`,
+        {
+          params: {
+            $orderby: { createdAt: -1 },
+            $limit: 1,
+            userId: uid,
+          },
+        }
+      );
+
+      setUserLog(response.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   const handleSelect = (id) => {
@@ -236,7 +227,6 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
           return response.data[0];
         })
       );
-
       const activityString =
         deviceResArray
           .map((device) => `${device.name}/${device.ip}`)
@@ -267,6 +257,7 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
       state: { cihazlar: cihazlar },
     });
   };
+
 
   const deviceIds =
     userRole === "admin"

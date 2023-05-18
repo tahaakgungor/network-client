@@ -5,7 +5,6 @@ import axios from "axios";
 
 function SnmpTable() {
   const [snmpTable, setSnmpTable] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [updatedInfo, setUpdatedInfo] = useState({});
@@ -14,16 +13,8 @@ function SnmpTable() {
 
   const history = useHistory();
 
-
-
-
-
   useEffect(() => {
-
-
     fetchSnmpTable();
-
-
   }, [snmpTable]);
 
 
@@ -66,8 +57,6 @@ function SnmpTable() {
       oid: updatedInfo.oid.split(",")
     });
     console.log(updatedInfo);
-
-
     try {
       await axios.put(`${process.env.REACT_APP_BACKEND_URL}snmp/${updatedInfo._id}`, updatedInfo);
       fetchSnmpTable();
@@ -80,12 +69,7 @@ function SnmpTable() {
     try {
       const ids = selectedRows.map((row) => row._id);
       localStorage.setItem("selectedSnmpIds", JSON.stringify(ids));
-
-
-      // Güncellenen veriyi kullanarak isteği gönder
       const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}snmp/selected-infos`, { ids, updatedInfo });
-
-
       history.push({
         pathname: "/snmp/informations",
         state: { snmpInfo: res.data }

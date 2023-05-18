@@ -17,16 +17,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
 
   const locCihazlar = localStorage.getItem("cihazlar");
 
-  useEffect(() => {
-    if (locCihazlar) {
-      setIsLocCihazlar(true);
-    }
-  }, [locCihazlar]);
-
-
   const getTokens = localStorage.getItem("token");
-  if (getTokens) {
-  }
 
   const userRole = localStorage.getItem("userRole");
 
@@ -34,6 +25,12 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
     (state) => state.userInformation.userInformation
   );
 
+
+  useEffect(() => {
+    if (locCihazlar) {
+      setIsLocCihazlar(true);
+    }
+  }, [locCihazlar]);
 
 
   useEffect(() => {
@@ -45,6 +42,7 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       fetchUserLog(uid);
     }
   }, [userLog, getTokens]);
+
 
   const fetchUserLog = async (uid) => {
     try {
@@ -62,8 +60,6 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
       console.error(error);
     }
   };
-
-
 
 
   const handleLogout = async () => {
@@ -100,9 +96,6 @@ const Header = ({ setIsAuthenticated, isAuthenticated }) => {
         }
       );
 
-
-
-      // Kullanıcının tarayıcısından tuttuğumuz verileri siliyoruz
       localStorage.removeItem("lastLoginDate");
       localStorage.removeItem("lastLoginTime");
       Cookies.remove("token");
