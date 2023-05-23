@@ -21,6 +21,8 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [permission, setPermission] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+
 
   const location = useLocation();
 
@@ -90,6 +92,7 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
       setSelectedDevices([...selectedDevices, id]);
     }
   };
+
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
@@ -161,6 +164,16 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
 
     setSelectedFile(file);
     setFormData(formData);
+  };
+
+  const handleRowClick = (id) => {
+    if (selectedRows.includes(id)) {
+      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
+      setSelectedDevices(selectedDevices.filter((deviceId) => deviceId !== id));
+    } else {
+      setSelectedRows([...selectedRows, id]);
+      setSelectedDevices([...selectedDevices, id]);
+    }
   };
 
 
@@ -321,10 +334,13 @@ function DeviceTable({ devices, setDevices, socket, perms }) {
           </thead>
           <tbody>
             {deviceIds.map((device) => {
-
+              const isSelected = selectedRows.includes(device._id);
               return (
-
-                <tr key={device._id}>
+                <tr
+                  key={device._id}
+                  className={isSelected ? "selected-row" : ""}
+                  onClick={() => handleRowClick(device._id)}
+                >
 
                   <td>
                     <input

@@ -55,6 +55,7 @@ function CommandPage({ socket }) {
     localStorage.setItem("lastVisitedPage", window.location.pathname);
 
     socket.emit("createSSH", devices);
+    console.log(devices);
 
     const storedOutput = JSON.parse(localStorage.getItem("output"));
     const initialOutput = devices.map((id) => ({
